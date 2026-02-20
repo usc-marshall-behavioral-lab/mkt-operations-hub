@@ -1,0 +1,4399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>MKT Subject Pool — Operations Hub · Spring 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ── PASSWORD GATE ── */
+.pw-gate {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: #990000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+.pw-gate.unlocked { display: none; }
+.pw-box {
+  background: white;
+  border-radius: 16px;
+  padding: 40px 32px;
+  max-width: 360px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+}
+.pw-box h1 {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: #1A1714;
+  margin-bottom: 6px;
+  line-height: 1.3;
+}
+.pw-box .pw-sub {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  color: #8A8379;
+  margin-bottom: 24px;
+}
+.pw-box input {
+  width: 100%;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+  padding: 12px 16px;
+  border: 2px solid #E2DFD8;
+  border-radius: 8px;
+  outline: none;
+  text-align: center;
+  transition: border-color 0.15s;
+}
+.pw-box input:focus { border-color: #990000; }
+.pw-box input.pw-error {
+  border-color: #E03131;
+  animation: pwShake 0.4s ease;
+}
+@keyframes pwShake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-6px); }
+  40%, 80% { transform: translateX(6px); }
+}
+.pw-box button {
+  width: 100%;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 12px;
+  margin-top: 12px;
+  background: #990000;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.pw-box button:active { background: #7a0000; }
+.pw-box .pw-hint {
+  font-size: 12px;
+  color: #E03131;
+  margin-top: 10px;
+  min-height: 18px;
+}
+.app-content { display: none; }
+.app-content.unlocked { display: block; }
+
+:root {
+  --cardinal: #990000;
+  --cardinal-dark: #7a0000;
+  --gold: #FFCC00;
+  --gold-muted: #FFC72C;
+  --bg: #FAF9F7;
+  --surface: #FFFFFF;
+  --surface-alt: #F3F1ED;
+  --border: #E2DFD8;
+  --border-light: #EDEBE6;
+  --text: #1A1714;
+  --text-secondary: #5C564D;
+  --text-muted: #8A8379;
+  --phd-bg: #F0EAFF;
+  --phd-border: #C4B0F0;
+  --phd-text: #4A2D8A;
+  --ra-bg: #E6F4ED;
+  --ra-border: #8ECFAA;
+  --ra-text: #1B6B3A;
+  --hard-bg: #FFF0F0;
+  --hard-border: #E8A0A0;
+  --hard-text: #8B1A1A;
+  --say-bg: #EBF5FF;
+  --say-border: #90C4F0;
+  --say-text: #1A4A7A;
+  --emergency-bg: #FFF3E0;
+  --emergency-border: #FFB74D;
+  --emergency-text: #BF360C;
+  --radius: 10px;
+  --radius-sm: 6px;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+  --shadow-lg: 0 8px 30px rgba(0,0,0,0.1);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  scroll-padding-top: 150px;
+}
+
+body {
+  font-family: 'DM Sans', -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 15px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  padding-bottom: 100px;
+}
+
+/* ── STICKY HEADER ── */
+.top-bar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--cardinal);
+  color: white;
+  padding: 12px 16px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
+
+.top-bar-inner {
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.top-bar h1 {
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  line-height: 1.2;
+}
+
+.top-bar h1 small {
+  display: block;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  opacity: 0.75;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.btn-emergency {
+  flex-shrink: 0;
+  background: var(--gold);
+  color: var(--cardinal-dark);
+  border: none;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  white-space: nowrap;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: transform 0.15s;
+}
+.btn-emergency:active { transform: scale(0.96); }
+
+.btn-checklist {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12.5px;
+  font-weight: 600;
+  padding: 8px 12px;
+  border-radius: 8px;
+  text-decoration: none;
+  color: white;
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.25);
+  white-space: nowrap;
+  cursor: pointer;
+}
+.btn-checklist:active { transform: scale(0.96); }
+
+/* ── CHECKLISTS PANEL ── */
+.cl-panel {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  background: var(--bg);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.cl-panel.open { display: block; }
+.cl-panel-bar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--cardinal);
+  color: white;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+.cl-panel-bar h2 { font-size: 16px; font-weight: 700; }
+.cl-panel-close {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: white;
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 6px;
+  padding: 5px 12px;
+  cursor: pointer;
+}
+.cl-panel-close:active { background: rgba(255,255,255,0.25); }
+.cl-panel-content {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 16px;
+}
+/* Checklist scope tabs */
+.cl-tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 2px solid var(--border);
+  margin-bottom: 16px;
+}
+.cl-tab {
+  flex: 1;
+  padding: 10px 14px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13.5px;
+  font-weight: 600;
+  text-align: center;
+  cursor: pointer;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  transition: color 0.15s, border-color 0.15s;
+}
+.cl-tab:hover { color: var(--text); }
+.cl-tab.active { color: var(--cardinal); border-bottom-color: var(--cardinal); }
+.cl-tab-icon { margin-right: 6px; }
+.cl-tab-content { display: none; }
+.cl-tab-content.active { display: block; }
+.cl-intro {
+  text-align: center;
+  padding: 16px 0 12px;
+  border-bottom: 1px solid var(--border-light);
+  margin-bottom: 16px;
+}
+.cl-intro p { font-size: 13px; color: var(--text-muted); }
+.cl-progress {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px 16px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.cl-progress-track {
+  flex: 1;
+  height: 8px;
+  background: var(--surface-alt);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.cl-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--cardinal), #cc3333);
+  border-radius: 4px;
+  width: 0%;
+  transition: width 0.3s ease;
+}
+.cl-progress-text {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  font-family: 'JetBrains Mono', monospace;
+}
+.cl-section {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-bottom: 16px;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+.cl-section-head {
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid var(--border-light);
+}
+.cl-badge {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 4px;
+  color: white;
+  white-space: nowrap;
+}
+.cl-badge.before { background: #E8590C; }
+.cl-badge.checkin { background: #2F9E44; }
+.cl-badge.session { background: #7048E8; }
+.cl-badge.after { background: #0C8599; }
+.cl-badge.between { background: #C49A10; }
+.cl-section-head h3 { font-size: 15px; font-weight: 700; }
+.cl-section-head .cl-when {
+  margin-left: auto;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+.cl-section-body { padding: 4px 16px 16px; }
+.cl-group-label {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 10px 0 6px;
+}
+.cl-group-label.hard { color: var(--hard-text); }
+.cl-group-label.start { color: #1A4A7A; }
+.cl-reset {
+  display: block;
+  margin: 20px auto 24px;
+  padding: 10px 24px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  cursor: pointer;
+}
+.cl-reset:active { background: var(--surface-alt); }
+
+/* ── SEARCH ── */
+.search-bar {
+  position: sticky;
+  top: 56px;
+  z-index: 99;
+  background: var(--bg);
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border);
+  transition: transform 0.25s, opacity 0.25s;
+}
+.search-bar.hidden {
+  transform: translateY(-100%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.search-bar-inner {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.search-input {
+  width: 100%;
+  padding: 10px 14px 10px 38px;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  background: var(--surface);
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.2s;
+}
+.search-input:focus { border-color: var(--cardinal); }
+.search-input::placeholder { color: var(--text-muted); }
+
+.search-wrap {
+  position: relative;
+}
+.search-wrap svg {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+}
+
+.search-clear {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-muted);
+  display: none;
+  padding: 4px;
+}
+.search-clear.visible { display: block; }
+
+/* ── NAV PILLS ── */
+.nav-pills {
+  position: sticky;
+  top: 105px;
+  z-index: 98;
+  background: var(--bg);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding: 8px 16px 10px;
+  border-bottom: 1px solid var(--border-light);
+  white-space: nowrap;
+  transition: top 0.25s;
+}
+.nav-pills::-webkit-scrollbar { display: none; }
+
+.nav-pills-inner {
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.nav-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.15s;
+  flex-shrink: 0;
+}
+.nav-pill:hover, .nav-pill.active {
+  background: var(--cardinal);
+  color: white;
+  border-color: var(--cardinal);
+}
+/* Match pill active colors to section tab colors */
+.nav-pill[href="#schedule"]:hover, .nav-pill[href="#schedule"].active { background: #C49A10; border-color: #C49A10; color: white; }
+.nav-pill[href="#onlineSchedule"]:hover, .nav-pill[href="#onlineSchedule"].active { background: #1976D2; border-color: #1976D2; color: white; }
+.nav-pill[href="#onlineGuides"]:hover, .nav-pill[href="#onlineGuides"].active { background: #1976D2; border-color: #1976D2; color: white; }
+.nav-pill[href="#s1"]:hover, .nav-pill[href="#s1"].active { background: #E03131; border-color: #E03131; }
+.nav-pill[href="#s2"]:hover, .nav-pill[href="#s2"].active { background: #E8590C; border-color: #E8590C; }
+.nav-pill[href="#s3"]:hover, .nav-pill[href="#s3"].active { background: #2F9E44; border-color: #2F9E44; }
+.nav-pill[href="#script"]:hover, .nav-pill[href="#script"].active { background: #7048E8; border-color: #7048E8; color: white; }
+.nav-pill[href="#s4"]:hover, .nav-pill[href="#s4"].active { background: #7048E8; border-color: #7048E8; }
+.nav-pill[href="#s5"]:hover, .nav-pill[href="#s5"].active { background: #0C8599; border-color: #0C8599; }
+.nav-pill[href="#s6"]:hover, .nav-pill[href="#s6"].active { background: #C2255C; border-color: #C2255C; }
+.nav-pill[href="#sA"]:hover, .nav-pill[href="#sA"].active { background: #C2255C; border-color: #C2255C; color: white; }
+.nav-pill[href="#sC"]:hover, .nav-pill[href="#sC"].active { background: #990033; border-color: #990033; }
+.nav-pill .pill-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  opacity: 0.7;
+}
+
+/* Sub-pills removed — all pills at same level */
+
+/* Divider between nav groups */
+.nav-divider {
+  width: 1px;
+  height: 20px;
+  background: var(--border);
+  flex-shrink: 0;
+  margin: 0 2px;
+  align-self: center;
+}
+
+/* Nav group labels — hidden on mobile, visible in sidebar */
+.nav-group-label {
+  display: none;
+}
+
+/* Scope badge for section headers */
+.badge-scope {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  padding: 2px 7px;
+  border-radius: 4px;
+  vertical-align: middle;
+  margin-left: 8px;
+  position: relative;
+  top: -1px;
+}
+.badge-scope-inperson {
+  background: #FFF3E0;
+  color: #B45309;
+  border: 1px solid #FBBF24;
+}
+
+/* ── MAIN CONTENT ── */
+.content {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+/* ── SECTION ── */
+.section {
+  margin-top: 20px;
+}
+
+.section-header {
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px 18px;
+  cursor: pointer;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 0.2s;
+}
+.section-header:hover { box-shadow: var(--shadow-md); }
+
+.section-num {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: var(--cardinal);
+  color: white;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Section colors matching one-page lifecycle handout */
+#s1 .section-num { background: #E03131; } /* Red */
+#s2 .section-num { background: #E8590C; } /* Orange */
+#s3 .section-num { background: #2F9E44; } /* Green */
+#s4 .section-num { background: #7048E8; } /* Purple */
+#s5 .section-num { background: #0C8599; } /* Teal */
+#s6 .section-num { background: #C2255C; } /* Magenta */
+#sA .section-num { background: #C2255C; } /* Magenta (matches §6) */
+#sC .section-num { background: #990033; } /* Dark Cardinal */
+
+#s1 .section-header { border-left: 4px solid #E03131; }
+#s2 .section-header { border-left: 4px solid #E8590C; }
+#s3 .section-header { border-left: 4px solid #2F9E44; }
+#s4 .section-header { border-left: 4px solid #7048E8; }
+#s5 .section-header { border-left: 4px solid #0C8599; }
+#s6 .section-header { border-left: 4px solid #C2255C; }
+#sA .section-header { border-left: 4px solid #C2255C; }
+#sC .section-header { border-left: 4px solid #990033; }
+
+.section-title {
+  flex: 1;
+}
+.section-title h2 {
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.25;
+}
+.section-title .section-sub {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.section-chevron {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  color: var(--text-muted);
+  transition: transform 0.25s;
+}
+.section.open .section-chevron { transform: rotate(180deg); }
+
+.section-body {
+  display: none;
+  padding: 4px 0 0;
+  margin-left: 18px;
+  padding-left: 14px;
+  border-left: 2px solid var(--border-light);
+}
+.section.open .section-body { display: block; }
+
+/* Match section-body border to section color */
+#s1 .section-body { border-left-color: rgba(224,49,49,0.2); }
+#s2 .section-body { border-left-color: rgba(232,89,12,0.2); }
+#s3 .section-body { border-left-color: rgba(47,158,68,0.2); }
+#s4 .section-body { border-left-color: rgba(112,72,232,0.2); }
+#s5 .section-body { border-left-color: rgba(12,133,153,0.2); }
+#s6 .section-body { border-left-color: rgba(194,37,92,0.2); }
+#sA .section-body { border-left-color: rgba(194,37,92,0.2); }
+#sC .section-body { border-left-color: rgba(153,0,51,0.2); }
+
+/* ── CARDS ── */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-top: 8px;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  scroll-margin-top: 150px;
+}
+
+.card-head {
+  padding: 12px 16px;
+  font-weight: 600;
+  font-size: 14px;
+  border-bottom: 1px solid var(--border-light);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  user-select: none;
+}
+.card-head .ch-icon { font-size: 16px; flex-shrink: 0; }
+.card-head .ch-chevron {
+  margin-left: auto;
+  width: 16px; height: 16px;
+  color: var(--text-muted);
+  transition: transform 0.2s;
+  flex-shrink: 0;
+}
+.card.open .card-head .ch-chevron { transform: rotate(180deg); }
+
+.card-body {
+  display: none;
+  padding: 14px 16px;
+}
+.card.open .card-body { display: block; }
+.card.always-open .card-body { display: block; }
+
+.card-body p { margin-bottom: 10px; }
+.card-body p:last-child { margin-bottom: 0; }
+
+/* ── ROLE BADGES ── */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 4px;
+  margin-right: 6px;
+  vertical-align: middle;
+}
+.badge-phd { background: var(--phd-bg); color: var(--phd-text); border: 1px solid var(--phd-border); }
+.badge-ra { background: var(--ra-bg); color: var(--ra-text); border: 1px solid var(--ra-border); }
+
+/* ── CALLOUT BOXES ── */
+.callout {
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  margin: 10px 0;
+  font-size: 14px;
+  line-height: 1.55;
+}
+.callout:first-child { margin-top: 0; }
+
+.callout-hard {
+  background: var(--hard-bg);
+  border-left: 4px solid var(--hard-border);
+  color: var(--hard-text);
+}
+.callout-say {
+  background: var(--say-bg);
+  border-left: 4px solid var(--say-border);
+  color: var(--say-text);
+  font-style: italic;
+}
+.callout-emergency {
+  background: var(--emergency-bg);
+  border-left: 4px solid var(--emergency-border);
+  color: var(--emergency-text);
+}
+.callout-info {
+  background: #F0F4FF;
+  border-left: 4px solid #7090D0;
+  color: #2A3F6F;
+}
+.callout-phd {
+  background: var(--phd-bg);
+  border-left: 4px solid var(--phd-border);
+  color: var(--phd-text);
+}
+.callout-ra {
+  background: var(--ra-bg);
+  border-left: 4px solid var(--ra-border);
+  color: var(--ra-text);
+}
+
+.callout strong, .callout b { font-weight: 700; }
+.callout .label {
+  font-weight: 700;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: block;
+  margin-bottom: 4px;
+}
+
+/* ── SCRIPT BLOCK ── */
+.script-block {
+  background: var(--surface-alt);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  margin: 10px 0;
+  font-size: 14px;
+}
+.script-block .speaker {
+  font-weight: 700;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--cardinal);
+  margin-bottom: 4px;
+}
+.script-block p {
+  margin: 6px 0;
+}
+
+/* ── STEPS ── */
+.steps { counter-reset: step; }
+.step {
+  display: flex;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border-light);
+}
+.step:last-child { border-bottom: none; }
+.step::before {
+  counter-increment: step;
+  content: counter(step);
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--cardinal);
+  color: white;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1px;
+}
+.step-content { flex: 1; font-size: 14px; }
+
+/* ── TABLE ── */
+.ref-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+  margin: 10px 0;
+}
+/* Allow wide tables to scroll horizontally on mobile */
+.card-body { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.ref-table th {
+  text-align: left;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  padding: 8px 10px;
+  border-bottom: 2px solid var(--border);
+  background: var(--surface-alt);
+}
+.ref-table td {
+  padding: 10px;
+  border-bottom: 1px solid var(--border-light);
+  vertical-align: top;
+}
+.ref-table tr:last-child td { border-bottom: none; }
+
+/* ── SESSION CLOCK ── */
+.session-clock {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.85);
+  background: rgba(255,255,255,0.12);
+  padding: 4px 10px;
+  border-radius: 5px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  letter-spacing: 0.5px;
+}
+
+/* ── INTERACTIVE CHECKLISTS ── */
+.checklist { list-style: none; padding: 0; margin: 8px 0; }
+.checklist li {
+  position: relative;
+  padding: 8px 0 8px 34px;
+  font-size: 14px;
+  border-bottom: 1px solid var(--border-light);
+  cursor: pointer;
+  user-select: none;
+  transition: opacity 0.2s;
+}
+.checklist li:last-child { border-bottom: none; }
+.checklist li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 10px;
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--border);
+  border-radius: 5px;
+  background: var(--surface);
+  transition: all 0.15s;
+}
+.checklist li.checked { opacity: 0.5; text-decoration: line-through; }
+.checklist li.checked::before {
+  background: #2F9E44;
+  border-color: #2F9E44;
+}
+.checklist li.checked::after {
+  content: '✓';
+  position: absolute;
+  left: 3px;
+  top: 10px;
+  font-size: 14px;
+  font-weight: 700;
+  color: white;
+  line-height: 20px;
+  width: 20px;
+  text-align: center;
+}
+
+/* ── KEYBOARD HINT ── */
+.search-kbd {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--text-muted);
+  background: var(--surface-alt);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 1px 6px;
+  pointer-events: none;
+  opacity: 0.6;
+}
+.search-input:focus ~ .search-kbd,
+.search-clear.visible ~ .search-kbd { display: none; }
+
+/* ── SENSITIVE DATA REVEAL ── */
+.sensitive-mask { display: inline-flex; align-items: center; gap: 6px; }
+.sensitive-mask .masked-value { font-family: 'JetBrains Mono', monospace; font-size: 13px; letter-spacing: 2px; color: var(--text-muted); }
+.sensitive-mask .real-value { display: none; font-family: 'JetBrains Mono', monospace; font-size: 13px; }
+.sensitive-mask.revealed .masked-value { display: none; }
+.sensitive-mask.revealed .real-value { display: inline; }
+.btn-reveal { font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 4px; border: 1px solid var(--border); background: var(--surface-alt); color: var(--text-secondary); cursor: pointer; }
+.btn-reveal:hover { background: var(--border-light); }
+.phone-col-hidden .phone-col { display: none; }
+.btn-toggle-phones { font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 600; padding: 5px 12px; border-radius: 6px; border: 1px solid var(--border); background: var(--surface-alt); color: var(--text-secondary); cursor: pointer; margin-bottom: 10px; display: inline-flex; align-items: center; gap: 5px; }
+.btn-toggle-phones:hover { background: var(--border-light); }
+
+/* ── PRINT STYLES ── */
+@media print {
+  .top-bar, .search-bar, .nav-pills, .btn-top, .btn-emergency,
+  .btn-expand-all, .section-chevron, .ch-chevron, .overlay, .emergency-panel { display: none !important; }
+  body { padding: 0; background: white; font-size: 12px; }
+  html { scroll-padding-top: 0; }
+  .section, .section-body, .card, .card-body { display: block !important; }
+  .section { margin-top: 14px; break-inside: avoid; }
+  .section-header { border-left: 4px solid currentColor; padding: 8px 12px; }
+  .card { margin-top: 6px; box-shadow: none; border: 1px solid #ccc; }
+  .card-body { padding: 10px 12px; }
+  .callout { break-inside: avoid; }
+  .lab-frame { break-inside: avoid; }
+  .site-footer { padding-top: 20px; border-top: 1px solid #ccc; }
+  a[href^="tel:"]::after { content: " (" attr(href) ")"; font-size: 10px; color: #666; }
+  .sensitive-mask .real-value { display: inline !important; }
+  .sensitive-mask .masked-value { display: none !important; }
+  .btn-reveal, .btn-toggle-phones { display: none !important; }
+  .phone-col-hidden .phone-col { display: table-cell !important; }
+}
+
+/* ── LAB LAYOUT ── */
+.lab-frame {
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--surface-alt);
+  margin: 10px 0;
+}
+.lab-room-bar {
+  background: #4285F4;
+  color: white;
+  text-align: center;
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+.lab-layout {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.lab-entrance {
+  text-align: center;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 6px 0;
+  border-bottom: 1.5px dashed var(--border);
+}
+.lab-entrance span {
+  display: inline-block;
+  padding: 2px 14px;
+  background: var(--surface);
+  border-radius: 8px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+}
+.lab-banks {
+  display: flex;
+  gap: 0;
+  align-items: stretch;
+}
+.lab-bank {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.lab-bank-label {
+  text-align: center;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+  font-family: 'JetBrains Mono', monospace;
+}
+.lab-aisle {
+  width: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.lab-aisle span {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  font-weight: 600;
+  color: var(--text-muted);
+  letter-spacing: 3px;
+  writing-mode: vertical-lr;
+  text-orientation: mixed;
+}
+.lab-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+.lab-cubicle {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 6px;
+  text-align: center;
+  transition: all 0.15s;
+}
+.lab-cubicle:hover {
+  border-color: #4285F4;
+  box-shadow: 0 2px 8px rgba(66,133,244,0.15);
+  transform: translateY(-1px);
+}
+.lab-num {
+  display: block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  font-weight: 700;
+  color: #4285F4;
+  line-height: 1;
+}
+.lab-icon {
+  display: block;
+  font-size: 13px;
+  margin-top: 3px;
+  opacity: 0.5;
+}
+.lab-proctor {
+  display: flex;
+  justify-content: center;
+  padding-top: 8px;
+  border-top: 1.5px dashed var(--border);
+}
+.lab-proctor-desk {
+  background: var(--cardinal);
+  color: white;
+  padding: 8px 28px;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  text-align: center;
+}
+.lab-info {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 10px;
+  padding: 10px 14px;
+  background: var(--surface-alt);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-sm);
+}
+.lab-info-item {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.lab-info-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+@media (max-width: 420px) {
+  .lab-layout { padding: 14px; }
+  .lab-aisle { width: 32px; }
+  .lab-num { font-size: 12px; }
+  .lab-cubicle { padding: 8px 4px; }
+}
+
+
+
+/* ── EMERGENCY PANEL ── */
+.emergency-panel {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 200;
+  background: rgba(0,0,0,0.85);
+  color: white;
+  transform: translateY(100%);
+  transition: transform 0.3s ease;
+  max-height: 85vh;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+}
+.emergency-panel.open { transform: translateY(0); }
+
+.emergency-panel-header {
+  position: sticky;
+  top: 0;
+  background: var(--cardinal-dark);
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+}
+.emergency-panel-header h3 {
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-size: 18px;
+  font-weight: 700;
+}
+.emergency-close {
+  background: rgba(255,255,255,0.15);
+  border: none;
+  color: white;
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.emergency-panel-body { padding: 16px 20px 32px; }
+
+.e-contact {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.12);
+}
+.e-contact:last-child { border-bottom: none; }
+
+.e-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+.e-icon.red { background: #D32F2F; }
+.e-icon.blue { background: #1565C0; }
+.e-icon.amber { background: #F57F17; }
+.e-icon.green { background: #2E7D32; }
+.e-icon.teal { background: #00838F; }
+
+.e-info { flex: 1; }
+.e-info .e-name { font-weight: 700; font-size: 15px; }
+.e-info .e-role { font-size: 12px; opacity: 0.65; }
+
+.e-action a {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: var(--gold);
+  color: var(--cardinal-dark);
+  font-weight: 700;
+  font-size: 13px;
+  padding: 8px 14px;
+  border-radius: 6px;
+  text-decoration: none;
+}
+
+.e-protocol {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255,255,255,0.12);
+}
+.e-protocol h4 {
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  opacity: 0.7;
+}
+.e-protocol-item {
+  background: rgba(255,255,255,0.07);
+  border-radius: 8px;
+  padding: 12px 14px;
+  margin-bottom: 8px;
+}
+.e-protocol-item .e-label {
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--gold);
+  margin-bottom: 3px;
+}
+.e-protocol-item p { font-size: 13px; opacity: 0.85; line-height: 1.5; }
+
+/* ── SEARCH HIGHLIGHTING ── */
+.highlight {
+  background: var(--gold);
+  color: var(--cardinal-dark);
+  padding: 1px 3px;
+  border-radius: 2px;
+}
+
+.no-results {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--text-muted);
+}
+.no-results svg { margin-bottom: 12px; }
+
+/* ── OVERLAY ── */
+.overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  z-index: 199;
+}
+.overlay.open { display: block; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 420px) {
+  .top-bar h1 { font-size: 14px; }
+  .btn-emergency { font-size: 11px; padding: 7px 10px; }
+  .section-header { padding: 12px 14px; gap: 10px; }
+  .section-num { width: 32px; height: 32px; font-size: 13px; }
+  .section-title h2 { font-size: 15px; }
+  .section-body { margin-left: 10px; padding-left: 10px; }
+  html { scroll-padding-top: 150px; }
+}
+
+@media (min-width: 600px) {
+  .top-bar h1 { font-size: 18px; }
+  .section-title h2 { font-size: 19px; }
+  .card-body { padding: 16px 20px; }
+}
+
+/* ── DESKTOP ENHANCEMENTS ── */
+@media (min-width: 900px) {
+  .top-bar-inner,
+  .search-bar-inner,
+  .nav-pills-inner,
+  .content { max-width: 940px; }
+  .cl-panel-content { max-width: 760px; }
+
+  .top-bar { padding: 14px 24px; }
+  .search-bar { padding: 12px 24px; }
+  .nav-pills { padding: 10px 24px 12px; overflow-x: visible; }
+  .nav-pills-inner { flex-wrap: wrap; row-gap: 6px; }
+  .content { padding: 0 24px; }
+
+  .section-header { padding: 18px 22px; gap: 16px; }
+  .section-num { width: 40px; height: 40px; font-size: 15px; border-radius: 10px; }
+  .section-title h2 { font-size: 20px; }
+  .section-body { margin-left: 24px; padding-left: 18px; }
+
+  .card-head { padding: 14px 20px; font-size: 15px; }
+  .card-body { padding: 18px 24px; }
+
+  .callout { padding: 14px 18px; }
+  .script-block { padding: 16px 20px; }
+  .ref-table th { padding: 10px 14px; }
+  .ref-table td { padding: 12px 14px; }
+
+  /* Schedule — tabs don't need to wrap */
+  .lab-tabs { gap: 0; }
+  .lab-tab { padding: 10px 18px; font-size: 13.5px; }
+
+  /* Lab layout scales up */
+  .lab-cubicle { padding: 12px 8px; }
+  .lab-num { font-size: 16px; }
+
+  .site-footer { font-size: 12px; padding: 36px 24px 16px; }
+}
+
+@media (min-width: 1100px) {
+  /* ── SIDEBAR NAV LAYOUT ── */
+  .nav-pills {
+    position: fixed;
+    top: 56px; /* below top-bar */
+    left: 0;
+    bottom: 0;
+    width: 200px;
+    z-index: 98;
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    border-bottom: none;
+    border-right: 1px solid var(--border);
+    padding: 16px 12px;
+    white-space: normal;
+    background: var(--surface);
+    transition: none;
+  }
+  .nav-pills.hidden-by-search { transform: none; opacity: 1; pointer-events: auto; }
+  .nav-pills-inner {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 3px;
+    max-width: none;
+  }
+  .nav-pill {
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 13px;
+    justify-content: flex-start;
+    white-space: normal;
+    border: 1px solid transparent;
+    background: transparent;
+  }
+  .nav-pill:hover {
+    background: var(--surface-alt);
+    border-color: var(--border-light);
+  }
+  /* Active pill: use left accent bar instead of fill */
+  .nav-pill.active {
+    background: var(--surface-alt);
+    border-color: var(--border);
+    color: var(--text);
+    position: relative;
+  }
+  .nav-pill.active::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 6px;
+    bottom: 6px;
+    width: 3px;
+    border-radius: 2px;
+  }
+  /* Active accent colors */
+  .nav-pill[href="#schedule"].active { color: #C49A10; }
+  .nav-pill[href="#schedule"].active::before { background: #C49A10; }
+  .nav-pill[href="#onlineSchedule"].active { color: #1976D2; }
+  .nav-pill[href="#onlineSchedule"].active::before { background: #1976D2; }
+  .nav-pill[href="#s1"].active { color: #E03131; }
+  .nav-pill[href="#s1"].active::before { background: #E03131; }
+  .nav-pill[href="#s2"].active { color: #E8590C; }
+  .nav-pill[href="#s2"].active::before { background: #E8590C; }
+  .nav-pill[href="#s3"].active { color: #2F9E44; }
+  .nav-pill[href="#s3"].active::before { background: #2F9E44; }
+  .nav-pill[href="#s4"].active { color: #7048E8; }
+  .nav-pill[href="#s4"].active::before { background: #7048E8; }
+  .nav-pill[href="#script"].active { color: #7048E8; }
+  .nav-pill[href="#script"].active::before { background: #7048E8; }
+  .nav-pill[href="#s5"].active { color: #0C8599; }
+  .nav-pill[href="#s5"].active::before { background: #0C8599; }
+  .nav-pill[href="#s6"].active { color: #C2255C; }
+  .nav-pill[href="#s6"].active::before { background: #C2255C; }
+  .nav-pill[href="#sA"].active { color: #C2255C; }
+  .nav-pill[href="#sA"].active::before { background: #C2255C; }
+  .nav-pill[href="#sC"].active { color: #990033; }
+  .nav-pill[href="#sC"].active::before { background: #990033; }
+
+  /* Hover colors still fill on hover */
+  .nav-pill[href="#schedule"]:hover { color: #C49A10; }
+  .nav-pill[href="#onlineSchedule"]:hover { color: #1976D2; }
+  .nav-pill[href="#onlineGuides"].active { color: #1976D2; }
+  .nav-pill[href="#onlineGuides"].active::before { background: #1976D2; }
+  .nav-pill[href="#onlineGuides"]:hover { color: #1976D2; }
+  .nav-pill[href="#s1"]:hover { color: #E03131; }
+  .nav-pill[href="#s2"]:hover { color: #E8590C; }
+  .nav-pill[href="#s3"]:hover { color: #2F9E44; }
+  .nav-pill[href="#s4"]:hover,
+  .nav-pill[href="#script"]:hover { color: #7048E8; }
+  .nav-pill[href="#s5"]:hover { color: #0C8599; }
+  .nav-pill[href="#s6"]:hover,
+  .nav-pill[href="#sA"]:hover { color: #C2255C; }
+  .nav-pill[href="#sC"]:hover { color: #990033; }
+
+  .nav-pill .pill-num { font-size: 11px; min-width: 22px; }
+  .nav-divider {
+    width: auto;
+    height: 1px;
+    background: var(--border-light);
+    margin: 6px 4px;
+  }
+
+  /* Group labels visible in sidebar */
+  .nav-group-label {
+    display: block;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    padding: 10px 12px 4px;
+    margin-top: 2px;
+  }
+  .nav-group-label:first-child { padding-top: 0; margin-top: 0; }
+
+  /* ── Push content right of sidebar ── */
+  .search-bar { margin-left: 200px; }
+  .content { margin-left: 200px; max-width: 860px; padding: 0 28px; }
+  #noResults { margin-left: 200px; }
+  .site-footer { margin-left: 200px; }
+
+  /* Remove the max-width centering — now left-aligned next to sidebar */
+  .search-bar-inner { max-width: none; }
+  .top-bar-inner { max-width: none; }
+
+  /* ── Spacing & typography ── */
+  body { font-size: 15.5px; }
+  .top-bar h1 { font-size: 19px; }
+  .top-bar h1 small { font-size: 12px; }
+  .section-title h2 { font-size: 21px; }
+  .card-head { font-size: 15.5px; }
+
+  .section-header:hover { box-shadow: var(--shadow-lg); transform: translateY(-1px); }
+  .section-header { transition: box-shadow 0.2s, transform 0.2s; }
+  .card { transition: box-shadow 0.2s; }
+  .card:hover { box-shadow: var(--shadow-md); }
+
+  .search-input { font-size: 15.5px; padding: 11px 16px 11px 40px; }
+  .schedule-filter select { max-width: 260px; }
+  .sched-view-btn { padding: 10px 16px; font-size: 13.5px; }
+  .step { padding: 12px 0; gap: 14px; }
+
+  /* Emergency panel as centered modal */
+  .emergency-panel {
+    left: 50%;
+    right: auto;
+    width: 560px;
+    transform: translate(-50%, 100%);
+    border-radius: 16px 16px 0 0;
+    max-height: 80vh;
+  }
+  .emergency-panel.open { transform: translate(-50%, 0); }
+
+  /* Checklists panel as right drawer */
+  .cl-panel {
+    left: auto;
+    right: 0;
+    width: 520px;
+    box-shadow: -4px 0 24px rgba(0,0,0,0.15);
+    border-left: 1px solid var(--border);
+  }
+
+  .pw-box { max-width: 400px; padding: 48px 40px; }
+
+  /* Scroll offset: only top-bar + search-bar on desktop (no nav strip) */
+  html { scroll-padding-top: 115px; }
+  .card { scroll-margin-top: 115px; }
+  #schedule, #onlineSchedule { scroll-margin-top: 115px; }
+}
+
+@media (min-width: 1400px) {
+  .nav-pills { width: 230px; padding: 18px 14px; }
+  .nav-pill { padding: 9px 14px; font-size: 13.5px; }
+
+  .search-bar { margin-left: 230px; }
+  .content { margin-left: 230px; max-width: 960px; padding: 0 36px; }
+  #noResults { margin-left: 230px; }
+  .site-footer { margin-left: 230px; }
+
+  .top-bar { padding: 16px 32px; }
+  .search-bar { padding: 12px 32px; }
+
+  .section-header { padding: 20px 24px; }
+  .card-body { padding: 20px 28px; }
+
+  .cl-panel { width: 560px; }
+}
+
+/* Smooth open/close animation */
+.section-body, .card-body { animation: fadeIn 0.2s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ── BACK TO TOP ── */
+.btn-top {
+  position: fixed;
+  bottom: 24px;
+  right: 20px;
+  z-index: 90;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--cardinal);
+  color: white;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 3px 12px rgba(0,0,0,0.25);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(10px);
+  transition: opacity 0.25s, transform 0.25s;
+}
+.btn-top.visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+.btn-top:active { transform: scale(0.9); }
+.btn-top svg { width: 20px; height: 20px; }
+
+/* ── EXPAND ALL BUTTON ── */
+.btn-expand-all {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  background: var(--surface-alt);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 3px 8px;
+  cursor: pointer;
+  margin-left: auto;
+  flex-shrink: 0;
+  transition: all 0.15s;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+.btn-expand-all:hover { background: var(--border-light); }
+.btn-expand-all:active { transform: scale(0.95); }
+
+/* ── SEARCH COUNT ── */
+.search-count {
+  font-size: 12px;
+  color: var(--text-muted);
+  text-align: center;
+  padding: 6px 0 0;
+  display: none;
+}
+.search-count.visible { display: block; }
+
+/* ── CARD COUNT BADGE ── */
+.section-count {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-muted);
+  background: var(--surface-alt);
+  border: 1px solid var(--border-light);
+  border-radius: 10px;
+  padding: 1px 7px;
+  margin-left: 6px;
+  flex-shrink: 0;
+}
+
+/* ── SCHEDULE VIEW TOGGLE ── */
+.sched-views {
+  display: flex;
+  gap: 0;
+  margin-bottom: 16px;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--surface-alt);
+}
+.sched-view-btn {
+  flex: 1;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 9px 12px;
+  border: none;
+  background: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+.sched-view-btn:first-child { border-right: 1.5px solid var(--border); }
+.sched-view-btn.active {
+  background: var(--cardinal);
+  color: white;
+}
+.sched-view-btn:not(.active):hover {
+  background: var(--border-light);
+  color: var(--text);
+}
+
+/* ── MY SCHEDULE VIEW ── */
+.sched-my { display: none; }
+.sched-my.active { display: block; }
+.sched-bylab { display: none; }
+.sched-bylab.active { display: block; }
+
+.sched-summary {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+  padding: 12px 14px;
+  background: var(--surface-alt);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-sm);
+}
+.sched-stat {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+.sched-stat strong {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--cardinal);
+  display: block;
+  line-height: 1.1;
+}
+
+.sched-date-header {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  padding: 14px 0 6px;
+  border-bottom: 1.5px solid var(--border);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.sched-date-header:first-child { padding-top: 0; }
+.sched-date-header .sched-date-lab {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 4px;
+  color: white;
+  margin-left: auto;
+}
+.sched-date-count {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-muted);
+  margin-left: auto;
+}
+
+.sched-shift {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  margin-bottom: 4px;
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  border: 1px solid var(--border-light);
+  transition: border-color 0.15s;
+}
+.sched-shift:hover { border-color: var(--border); }
+.sched-shift.is-setup {
+  background: var(--surface-alt);
+  border-style: dashed;
+  opacity: 0.7;
+}
+
+.sched-shift-time {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  min-width: 120px;
+  flex-shrink: 0;
+}
+@media (max-width: 420px) {
+  .sched-shift-time { min-width: 95px; font-size: 11px; }
+}
+
+.sched-lab-badge {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 4px;
+  color: white;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.sched-lab-badge.lab-1 { background: #E03131; }
+.sched-lab-badge.lab-2 { background: #E8590C; }
+.sched-lab-badge.lab-3 { background: #2F9E44; }
+.sched-lab-badge.lab-4 { background: #7048E8; }
+.sched-lab-badge.lab-5 { background: #0C8599; }
+
+.sched-shift-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  min-width: 18px;
+}
+
+.sched-shift-partner {
+  font-size: 12.5px;
+  color: var(--text-secondary);
+  flex: 1;
+  text-align: right;
+}
+.sched-shift-partner strong { font-weight: 600; color: var(--text); }
+
+.sched-empty {
+  text-align: center;
+  padding: 32px 20px;
+  color: var(--text-muted);
+}
+.sched-empty .sched-empty-icon {
+  font-size: 32px;
+  margin-bottom: 8px;
+  opacity: 0.4;
+}
+.sched-empty p { font-size: 14px; }
+.sched-empty p strong { color: var(--text-secondary); }
+
+.sched-next-badge {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 3px;
+  background: #FFF3CD;
+  color: #856404;
+  border: 1px solid #FFE69C;
+  margin-left: 6px;
+}
+
+/* ── LAB TABS ── */
+.lab-tabs {
+  display: flex;
+  gap: 0;
+  margin-top: 18px;
+  border-bottom: 2px solid var(--border);
+}
+.lab-tab {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px 14px;
+  background: none;
+  border: none;
+  border-bottom: 2.5px solid transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  margin-bottom: -2px;
+  transition: color 0.15s, border-color 0.15s;
+  white-space: nowrap;
+}
+.lab-tab:hover { color: var(--text-secondary); }
+.lab-tab.active {
+  color: var(--cardinal);
+  border-bottom-color: var(--cardinal);
+}
+.lab-tab .tab-date {
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--text-muted);
+  margin-left: 4px;
+}
+.lab-tab.active .tab-date { color: var(--cardinal); opacity: 0.7; }
+.lab-tab-panel { display: none; padding-top: 12px; }
+.lab-tab-panel.active { display: block; }
+
+/* ── SCHEDULE FILTER ── */
+.schedule-filter {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+.schedule-filter label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+.schedule-filter select {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  padding: 6px 30px 6px 10px;
+  border: 1.5px solid var(--border);
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%235C564D' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  flex: 1;
+  max-width: 220px;
+}
+.schedule-filter select:focus { border-color: var(--cardinal); }
+.schedule-filter .filter-count {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+.schedule-row-hidden { display: none; }
+.schedule-row-highlight td { background: #FFF8E1 !important; font-weight: 600; }
+.ref-table tr.schedule-next {
+  background: #FFF8E1;
+  font-weight: 600;
+}
+.ref-table tr.schedule-next td:first-child::before {
+  content: '▶ ';
+  color: #C49A10;
+  font-size: 11px;
+}
+.ref-table tr.schedule-past td {
+  opacity: 0.45;
+  text-decoration: line-through;
+}
+.table-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin: 10px 0;
+}
+.table-wrap .ref-table { margin: 0; min-width: 380px; }
+
+/* ── TOUCH FEEDBACK ── */
+.section-header:active { background: var(--surface-alt); }
+.card-head:active { background: var(--surface-alt); }
+
+/* ── FOOTER ── */
+.site-footer {
+  text-align: center;
+  padding: 30px 20px 10px;
+  font-size: 11px;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+.site-footer strong { font-weight: 600; color: var(--text-secondary); }
+</style>
+</head>
+<body>
+
+<!-- ═══ PASSWORD GATE ═══ -->
+<div class="pw-gate" id="pwGate">
+  <div class="pw-box">
+    <h1>MKT Subject Pool — Operations Hub</h1>
+    <p class="pw-sub">Marshall Behavioral Research Lab · BUAD 307 · Spring 2026</p>
+    <div style="width:40px;height:2px;background:var(--cardinal);margin:16px auto 20px;border-radius:1px;"></div>
+    <input type="password" id="pwInput" placeholder="Enter password" autocomplete="off">
+    <button id="pwSubmit">Unlock</button>
+    <div class="pw-hint" id="pwHint"></div>
+  </div>
+</div>
+
+<!-- ═══ APP CONTENT (hidden until authenticated) ═══ -->
+<div class="app-content" id="appContent">
+
+<!-- ═══ TOP BAR ═══ -->
+<header class="top-bar">
+  <div class="top-bar-inner">
+    <h1>MKT Subject Pool — Operations Hub <small>Marshall Behavioral Research Lab · BUAD 307 · Spring 2026</small></h1>
+    <div class="session-clock" id="sessionClock"></div>
+    <div style="display:flex;gap:8px;align-items:center;">
+      <button class="btn-checklist" id="btnChecklists">✅ Checklists</button>
+      <button class="btn-emergency">⚠ Help</button>
+    </div>
+  </div>
+</header>
+
+<!-- ═══ SEARCH ═══ -->
+<div class="search-bar">
+  <div class="search-bar-inner">
+    <div class="search-wrap">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      <input type="text" class="search-input" id="searchInput" placeholder="Search procedures, contacts, policies…" autocomplete="off">
+      <button class="search-clear" id="searchClear">✕</button>
+    </div>
+    <div class="search-count" id="searchCount"></div>
+  </div>
+</div>
+
+<!-- ═══ NAV PILLS ═══ -->
+<nav class="nav-pills" id="navPills">
+  <div class="nav-pills-inner">
+    <span class="nav-group-label">Schedules</span>
+    <a class="nav-pill" href="#schedule"><span class="pill-num">📅</span> In-Person Schedule</a>
+    <a class="nav-pill" href="#onlineSchedule"><span class="pill-num">💻</span> Online Schedule</a>
+    <span class="nav-divider"></span>
+    <span class="nav-group-label">In-Person Session Guides</span>
+    <a class="nav-pill" href="#s1"><span class="pill-num">§1</span> Orientation</a>
+    <a class="nav-pill" href="#s2"><span class="pill-num">§2</span> Before</a>
+    <a class="nav-pill" href="#s3"><span class="pill-num">§3</span> Check-In</a>
+    <a class="nav-pill" href="#s4"><span class="pill-num">§4</span> Session</a>
+    <a class="nav-pill" href="#script"><span class="pill-num">📝</span> Script</a>
+    <a class="nav-pill" href="#s5"><span class="pill-num">§5</span> After</a>
+    <a class="nav-pill" href="#s6"><span class="pill-num">§6</span> Scenarios</a>
+    <span class="nav-divider"></span>
+    <span class="nav-group-label">Online Study Guides</span>
+    <a class="nav-pill" href="#onlineGuides"><span class="pill-num">💻</span> Online Guides <span style="font-size:9px;opacity:0.7;margin-left:2px;">🚧</span></a>
+    <span class="nav-divider"></span>
+    <span class="nav-group-label">Reference</span>
+    <a class="nav-pill" href="#sA"><span class="pill-num">A–F</span> Appendices</a>
+    <a class="nav-pill" href="#sC"><span class="pill-num">☎</span> Contacts</a>
+  </div>
+</nav>
+
+<div id="noResults" class="no-results" style="display:none;">
+  <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" color="#8A8379"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+  <p>No matching content found.<br>Try different keywords.</p>
+</div>
+
+<!-- ═══ MAIN CONTENT ═══ -->
+<main class="content" id="mainContent">
+
+<!-- ═══ CONTEXT BANNER ═══ -->
+<div style="display:flex;gap:12px;flex-wrap:wrap;margin:16px 0 8px;font-size:13px;" data-search>
+  <div style="flex:1;min-width:220px;padding:12px 16px;background:linear-gradient(135deg,#FFF8E1,#FFFDF5);border:1px solid #F0E4B8;border-radius:var(--radius);display:flex;align-items:center;gap:10px;">
+    <span style="font-size:18px;">🏢</span>
+    <div><strong style="color:#7A6400;">In-Person Sessions</strong><br><span style="color:var(--text-muted);font-size:12px;">Schedules, procedures, guides &amp; policies (§1–§6)</span></div>
+  </div>
+  <div style="flex:1;min-width:220px;padding:12px 16px;background:linear-gradient(135deg,#E3F2FD,#F5FAFF);border:1px solid #B8D4F0;border-radius:var(--radius);display:flex;align-items:center;gap:10px;">
+    <span style="font-size:18px;">💻</span>
+    <div><strong style="color:#1565C0;">Online Studies</strong><br><span style="color:var(--text-muted);font-size:12px;">Release schedule only — procedures coming soon</span></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════ -->
+<!-- SESSION SCHEDULE -->
+<!-- ══════════════════════════════════════ -->
+<div class="card" id="schedule" data-search style="border-left:4px solid var(--gold-muted);margin-bottom:16px;scroll-margin-top:150px;">
+  <div class="card-head" style="background:linear-gradient(135deg,#FFF8E1,#FFFDF5);">
+    <span class="ch-icon">📅</span> Spring 2026 In-Person Lab Session Schedule
+    <svg class="ch-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+  </div>
+  <div class="card-body">
+    <table class="ref-table">
+      <tr><th>Session</th><th>Date</th><th>PhD Supervisor</th></tr>
+      <tr><td><strong>Lab 1</strong></td><td>Week of Feb 23</td><td>Steve Carney</td></tr>
+      <tr><td><strong>Lab 2</strong></td><td>Week of Mar 2</td><td>Maansi Dalmia</td></tr>
+      <tr><td><strong>Lab 3</strong></td><td>Week of Apr 6</td><td>Swaroop Poudel</td></tr>
+      <tr><td><strong>Lab 4</strong></td><td>Week of Apr 13</td><td>Reyna Wang</td></tr>
+      <tr><td><strong>Lab 5</strong></td><td>Week of Apr 27</td><td>Minjeong Ko</td></tr>
+    </table>
+    <p style="font-size:12.5px;color:var(--text-muted);margin-top:8px;">The PhD Supervisor listed is your point of contact for that session's study prep, order, and credits.</p>
+
+    <!-- View Toggle + RA Filter Row -->
+    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:16px;">
+      <div class="sched-views" style="flex:none;width:auto;">
+        <button class="sched-view-btn active" data-view="bylab">📋 By Lab</button>
+        <button class="sched-view-btn" data-view="my">👤 My Schedule</button>
+      </div>
+      <div class="schedule-filter" style="margin:0;flex:1;min-width:180px;">
+        <label for="raFilter">RA:</label>
+        <select id="raFilter">
+          <option value="">Everyone</option>
+          <option value="Agustin">Agustin</option>
+          <option value="Alex">Alex</option>
+          <option value="Atvika">Atvika</option>
+          <option value="Joseph">Joseph</option>
+          <option value="Leia">Leia</option>
+          <option value="Lissa">Lissa</option>
+          <option value="Saumya">Saumya</option>
+        </select>
+        <span class="filter-count" id="raFilterCount"></span>
+      </div>
+    </div>
+
+    <!-- ═══ BY LAB VIEW ═══ -->
+    <div class="sched-bylab active" id="schedByLab">
+      <div class="lab-tabs" id="labTabs">
+        <button class="lab-tab" data-lab="1">Lab 1 <span class="tab-date">Wk of Feb 23</span></button>
+        <button class="lab-tab" data-lab="2">Lab 2 <span class="tab-date">Wk of Mar 2</span></button>
+        <button class="lab-tab" data-lab="3">Lab 3 <span class="tab-date">Wk of Apr 6</span></button>
+        <button class="lab-tab" data-lab="4">Lab 4 <span class="tab-date">Wk of Apr 13</span></button>
+        <button class="lab-tab" data-lab="5">Lab 5 <span class="tab-date">Wk of Apr 27</span></button>
+      </div>
+
+      <div class="sched-empty" id="bylabPrompt" style="padding:24px 20px;">
+        <div class="sched-empty-icon">📋</div>
+        <p>Select a lab above to view its session schedule.</p>
+      </div>
+
+      <!-- Lab 1 -->
+      <div class="lab-tab-panel" id="labPanel1">
+        <p style="font-weight:700;font-size:14px;margin-bottom:8px;">Steve Carney · 14 sessions · 2 days</p>
+        <p style="font-weight:600;font-size:13px;color:var(--text-secondary);margin-bottom:6px;" class="schedule-day">Tuesday, Feb 24</p>
+        <table class="ref-table schedule-table" style="font-size:13px;">
+          <tr><th>#</th><th>Time</th><th>RAs</th></tr>
+          <tr data-ra="Saumya" data-date="2026-02-24" style="background:var(--surface-alt);font-style:italic;color:var(--text-secondary);"><td>SETUP</td><td>8:30 – 9:00 AM</td><td>Saumya</td></tr>
+          <tr data-ra="Saumya,Joseph" data-date="2026-02-24"><td>1</td><td>9:00 – 10:00 AM</td><td>Saumya, Joseph</td></tr>
+          <tr data-ra="Saumya,Joseph" data-date="2026-02-24"><td>2</td><td>10:00 – 11:00 AM</td><td>Saumya, Joseph</td></tr>
+          <tr data-ra="Saumya,Joseph" data-date="2026-02-24"><td>3</td><td>11:00 – 12:00 PM</td><td>Saumya, Joseph</td></tr>
+          <tr data-ra="Saumya,Joseph" data-date="2026-02-24"><td>4</td><td>12:00 – 1:00 PM</td><td>Saumya, Joseph</td></tr>
+          <tr data-ra="Joseph" data-date="2026-02-24" style="background:var(--surface-alt);font-style:italic;color:var(--text-secondary);"><td>SETUP</td><td>1:30 – 2:00 PM</td><td>Joseph</td></tr>
+          <tr data-ra="Joseph,Atvika" data-date="2026-02-24"><td>5</td><td>2:00 – 3:00 PM</td><td>Joseph, Atvika</td></tr>
+          <tr data-ra="Joseph,Atvika" data-date="2026-02-24"><td>6</td><td>3:00 – 4:00 PM</td><td>Joseph, Atvika</td></tr>
+          <tr data-ra="Joseph,Atvika" data-date="2026-02-24"><td>7</td><td>4:00 – 5:00 PM</td><td>Joseph, Atvika</td></tr>
+        </table>
+        <p style="font-weight:600;font-size:13px;color:var(--text-secondary);margin:14px 0 6px;" class="schedule-day">Friday, Feb 27</p>
+        <table class="ref-table schedule-table" style="font-size:13px;">
+          <tr><th>#</th><th>Time</th><th>RAs</th></tr>
+          <tr data-ra="Agustin" data-date="2026-02-27" style="background:var(--surface-alt);font-style:italic;color:var(--text-secondary);"><td>SETUP</td><td>8:30 – 9:00 AM</td><td>Agustin</td></tr>
+          <tr data-ra="Agustin,Leia" data-date="2026-02-27"><td>8</td><td>9:00 – 10:00 AM</td><td>Agustin, Leia</td></tr>
+          <tr data-ra="Agustin,Leia" data-date="2026-02-27"><td>9</td><td>10:00 – 11:00 AM</td><td>Agustin, Leia</td></tr>
+          <tr data-ra="Agustin,Leia" data-date="2026-02-27"><td>10</td><td>11:00 – 12:00 PM</td><td>Agustin, Leia</td></tr>
+          <tr data-ra="Agustin,Leia" data-date="2026-02-27"><td>11</td><td>12:00 – 1:00 PM</td><td>Agustin, Leia</td></tr>
+          <tr data-ra="Agustin,Alex" data-date="2026-02-27"><td>12</td><td>1:00 – 2:00 PM</td><td>Agustin, Alex</td></tr>
+          <tr data-ra="Agustin,Alex" data-date="2026-02-27"><td>13</td><td>2:00 – 3:00 PM</td><td>Agustin, Alex</td></tr>
+          <tr data-ra="Agustin,Alex" data-date="2026-02-27"><td>14</td><td>3:00 – 4:00 PM</td><td>Agustin, Alex</td></tr>
+        </table>
+      </div>
+
+      <!-- Lab 2 -->
+      <div class="lab-tab-panel" id="labPanel2">
+        <p style="font-weight:700;font-size:14px;margin-bottom:8px;">Maansi Dalmia · 14 sessions · 3 days</p>
+        <p style="font-weight:600;font-size:13px;color:var(--text-secondary);margin-bottom:6px;" class="schedule-day">Monday, Mar 2</p>
+        <table class="ref-table schedule-table" style="font-size:13px;">
+          <tr><th>#</th><th>Time</th><th>RAs</th></tr>
+          <tr data-ra="Joseph" data-date="2026-03-02" style="background:var(--surface-alt);font-style:italic;color:var(--text-secondary);"><td>SETUP</td><td>10:30 – 11:00 AM</td><td>Joseph</td></tr>
+          <tr data-ra="Joseph,Agustin" data-date="2026-03-02"><td>1</td><td>11:00 – 12:00 PM</td><td>Joseph, Agustin</td></tr>
+          <tr data-ra="Joseph,Agustin" data-date="2026-03-02"><td>2</td><td>12:00 – 1:00 PM</td><td>Joseph, Agustin</td></tr>
+          <tr data-ra="Joseph,Agustin" data-date="2026-03-02"><td>3</td><td>1:00 – 2:00 PM</td><td>Joseph, Agustin</td></tr>
+          <tr data-ra="Joseph,Agustin" data-date="2026-03-02"><td>4</td><td>2:00 – 3:00 PM</td><td>Joseph, Agustin</td></tr>
+          <tr data-ra="Joseph,Agustin" data-date="2026-03-02"><td>5</td><td>3:00 – 4:00 PM</td><td>Joseph, Agustin</td></tr>
+          <tr data-ra="Joseph,Agustin" data-date="2026-03-02"><td>6</td><td>4:00 – 5:00 PM</td><td>Joseph, Agustin</td></tr>
+        </table>
+        <p style="font-weight:600;font-size:13px;color:var(--text-secondary);margin:14px 0 6px;" class="schedule-day">Tuesday, Mar 3</p>
+        <table class="ref-table schedule-table" style="font-size:13px;">
+          <tr><th>#</th><th>Time</th><th>RAs</th></tr>
+          <tr data-ra="Saumya" data-date="2026-03-03" style="background:var(--surface-alt);font-style:italic;color:var(--text-secondary);"><td>SETUP</td><td>11:30 – 12:00 PM</td><td>Saumya</td></tr>
+          <tr data-ra="Saumya,Alex" data-date="2026-03-03"><td>7</td><td>12:00 – 1:00 PM</td><td>Saumya, Alex</td></tr>
+        </table>
+        <p style="font-weight:600;font-size:13px;color:var(--text-secondary);margin:14px 0 6px;" class="schedule-day">Wednesday, Mar 4</p>
+        <table class="ref-table schedule-table" style="font-size:13px;">
+          <tr><th>#</th><th>Time</th><th>RAs</th></tr>
+          <tr data-ra="Agustin" data-date="2026-03-04" style="background:var(--surface-alt);font-style:italic;color:var(--text-secondary);"><td>SETUP</td><td>10:30 – 11:00 AM</td><td>Agustin</td></tr>
+          <tr data-ra="Agustin,Joseph" data-date="2026-03-04"><td>8</td><td>11:00 – 12:00 PM</td><td>Agustin, Joseph</td></tr>
+          <tr data-ra="Agustin,Joseph" data-date="2026-03-04"><td>9</td><td>12:00 – 1:00 PM</td><td>Agustin, Joseph</td></tr>
+          <tr data-ra="Agustin,Joseph" data-date="2026-03-04"><td>10</td><td>1:00 – 2:00 PM</td><td>Agustin, Joseph</td></tr>
+          <tr data-ra="Agustin,Joseph" data-date="2026-03-04"><td>11</td><td>2:00 – 3:00 PM</td><td>Agustin, Joseph</td></tr>
+          <tr data-ra="Agustin,Alex" data-date="2026-03-04"><td>12</td><td>3:00 – 4:00 PM</td><td>Agustin, Alex</td></tr>
+          <tr data-ra="Agustin,Alex" data-date="2026-03-04"><td>13</td><td>4:00 – 5:00 PM</td><td>Agustin, Alex</td></tr>
+          <tr data-ra="Agustin,Alex" data-date="2026-03-04"><td>14</td><td>5:00 – 6:00 PM</td><td>Agustin, Alex</td></tr>
+        </table>
+      </div>
+
+      <!-- Lab 3 -->
+      <div class="lab-tab-panel" id="labPanel3">
+        <p style="font-weight:700;font-size:14px;margin-bottom:8px;">Swaroop Poudel · 14 sessions · 3 days</p>
+        <p style="font-weight:600;font-size:13px;color:var(--text-secondary);margin-bottom:6px;" class="schedule-day">Monday, Apr 6</p>
+        <table class="ref-table schedule-table" style="font-size:13px;">
+          <tr><th>#</th><th>Time</th><th>RAs</th></tr>
+          <tr data-ra="Agustin" data-date="2026-04-06" style="background:var(--surface-alt);font-style:italic;color:var(--text-secondary);"><td>SETUP</td><td>11:30 – 12:00 PM</td><td>Agustin</td></tr>
+          <tr data-ra="Joseph,Agustin" data-date="2026-04-06"><td>1</td><td>12:00 – 1:00 PM</td><td>Joseph, Agustin</td></tr>
+          <tr data-ra="Joseph,Agustin" data-date="2026-04-06"><td>2</td><td>1:00 – 2:00 PM</td><td>Joseph, Agustin</td></tr>
+        </table>
+        <p style="font-weight:600;font-size:13px;color:var(--text-secondary);margin:14px 0 6px;" class="schedule-day">Tuesday, Apr 7</p>
+        <table class="ref-table schedule-table" style="font-size:13px;">
+          <tr><th>#</th><th>Time</th><th>RAs</th></tr>
+          <tr data-ra="Saumya" data-date="2026-04-07" style="background:var(--surface-alt);font-style:italic;color:var(--text-secondary);"><td>SETUP</td><td>9:30 – 10:00 AM</td><td>Saumya</td></tr>
+          <tr data-ra="Saumya,Joseph" data-date="2026-04-07"><td>3</td><td>10:00 – 11:00 AM</td><td>Saumya, Joseph</td></tr>
+          <tr data-ra="Saumya,Joseph" data-date="2026-04-07"><td>4</td><td>11:00 – 12:00 PM</td><td>Saumya, Joseph</td></tr>
+          <tr data-ra="Saumya,Joseph" data-date="2026-04-07"><td>5</td><td>12:00 – 1:00 PM</td><td>Saumya, Joseph</td></tr>
+          <tr data-ra="Saumya" data-date="2026-04-07" style="background:var(--surface-alt);font-style:italic;color:var(--text-secondary);"><td>SETUP</td><td>2:30 – 3:00 PM</td><td>Saumya</td></tr>
+          <tr data-ra="Saumya,Atvika" data-date="2026-04-07"><td>6</td><td>3:00 – 4:00 PM</td><td>Saumya, Atvika</td></tr>
+          <tr data-ra="Saumya,Atvika" data-date="2026-04-07"><td>7</td><td>4:00 – 5:00 PM</td><td>Saumya, Atvika</td></tr>
+        </table>
+        <p style="font-weight:600;font-size:13px;color:var(--text-secondary);margin:14px 0 6px;" class="schedule-day">Wednesday, Apr 8</p>
+        <table class="ref-table schedule-table" style="font-size:13px;">
+          <tr><th>#</th><th>Time</th><th>RAs</th></tr>
+          <tr data-ra="Leia" data-date="2026-04-08" style="background:var(--surface-alt);font-style:italic;color:var(--text-secondary);"><td>SETUP</td><td>8:30 – 9:00 AM</td><td>Leia</td></tr>
+          <tr data-ra="Leia,Agustin" data-date="2026-04-08"><td>8</td><td>9:00 – 10:00 AM</td><td>Leia, Agustin</td></tr>
+          <tr data-ra="Leia,Agustin" data-date="2026-04-08"><td>9</td><td>10:00 – 11:00 AM</td><td>Leia, Agustin</td></tr>
+          <tr data-ra="Leia,Agustin" data-date="2026-04-08"><td>10</td><td>11:00 – 12:00 PM</td><td>Leia, Agustin</td></tr>
+          <tr data-ra="Leia,Agustin" data-date="2026-04-08"><td>11</td><td>12:00 – 1:00 PM</td><td>Leia, Agustin</td></tr>
+          <tr data-ra="Agustin,Alex" data-date="2026-04-08"><td>12</td><td>1:00 – 2:00 PM</td><td>Agustin, Alex</td></tr>
+          <tr data-ra="Agustin,Alex" data-date="2026-04-08"><td>13</td><td>2:00 – 3:00 PM</td><td>Agustin, Alex</td></tr>
+          <tr data-ra="Agustin,Alex" data-date="2026-04-08"><td>14</td><td>3:00 – 4:00 PM</td><td>Agustin, Alex</td></tr>
+        </table>
+      </div>
+
+      <!-- Lab 4 -->
+      <div class="lab-tab-panel" id="labPanel4">
+        <p style="font-weight:700;font-size:14px;margin-bottom:8px;">Reyna Wang · 14 sessions · 2 days</p>
+        <p style="font-weight:600;font-size:13px;color:var(--text-secondary);margin-bottom:6px;" class="schedule-day">Tuesday, Apr 14</p>
+        <table class="ref-table schedule-table" style="font-size:13px;">
+          <tr><th>#</th><th>Time</th><th>RAs</th></tr>
+          <tr data-ra="Joseph" data-date="2026-04-14" style="background:var(--surface-alt);font-style:italic;color:var(--text-secondary);"><td>SETUP</td><td>8:30 – 9:00 AM</td><td>Joseph</td></tr>
+          <tr data-ra="Joseph,Saumya" data-date="2026-04-14"><td>1</td><td>9:00 – 10:00 AM</td><td>Joseph, Saumya</td></tr>
+          <tr data-ra="Joseph,Saumya" data-date="2026-04-14"><td>2</td><td>10:00 – 11:00 AM</td><td>Joseph, Saumya</td></tr>
+          <tr data-ra="Joseph,Saumya" data-date="2026-04-14"><td>3</td><td>11:00 – 12:00 PM</td><td>Joseph, Saumya</td></tr>
+          <tr data-ra="Joseph,Saumya" data-date="2026-04-14"><td>4</td><td>12:00 – 1:00 PM</td><td>Joseph, Saumya</td></tr>
+          <tr data-ra="Joseph,Saumya" data-date="2026-04-14"><td>5</td><td>1:00 – 2:00 PM</td><td>Joseph, Saumya</td></tr>
+          <tr data-ra="Joseph,Saumya" data-date="2026-04-14"><td>6</td><td>2:00 – 3:00 PM</td><td>Joseph, Saumya</td></tr>
+          <tr data-ra="Joseph,Saumya" data-date="2026-04-14"><td>7</td><td>3:00 – 4:00 PM</td><td>Joseph, Saumya</td></tr>
+        </table>
+        <p style="font-weight:600;font-size:13px;color:var(--text-secondary);margin:14px 0 6px;" class="schedule-day">Wednesday, Apr 15</p>
+        <table class="ref-table schedule-table" style="font-size:13px;">
+          <tr><th>#</th><th>Time</th><th>RAs</th></tr>
+          <tr data-ra="Leia" data-date="2026-04-15" style="background:var(--surface-alt);font-style:italic;color:var(--text-secondary);"><td>SETUP</td><td>8:30 – 9:00 AM</td><td>Leia</td></tr>
+          <tr data-ra="Leia,Agustin" data-date="2026-04-15"><td>8</td><td>9:00 – 10:00 AM</td><td>Leia, Agustin</td></tr>
+          <tr data-ra="Leia,Agustin" data-date="2026-04-15"><td>9</td><td>10:00 – 11:00 AM</td><td>Leia, Agustin</td></tr>
+          <tr data-ra="Leia,Agustin" data-date="2026-04-15"><td>10</td><td>11:00 – 12:00 PM</td><td>Leia, Agustin</td></tr>
+          <tr data-ra="Leia,Agustin" data-date="2026-04-15"><td>11</td><td>12:00 – 1:00 PM</td><td>Leia, Agustin</td></tr>
+          <tr data-ra="Agustin,Saumya" data-date="2026-04-15"><td>12</td><td>1:00 – 2:00 PM</td><td>Agustin, Saumya</td></tr>
+          <tr data-ra="Agustin,Saumya" data-date="2026-04-15"><td>13</td><td>2:00 – 3:00 PM</td><td>Agustin, Saumya</td></tr>
+          <tr data-ra="Agustin,Saumya" data-date="2026-04-15"><td>14</td><td>3:00 – 4:00 PM</td><td>Agustin, Saumya</td></tr>
+        </table>
+      </div>
+
+      <!-- Lab 5 -->
+      <div class="lab-tab-panel" id="labPanel5">
+        <p style="font-weight:700;font-size:14px;margin-bottom:8px;">Minjeong Ko · 14 sessions · 3 days</p>
+        <p style="font-weight:600;font-size:13px;color:var(--text-secondary);margin-bottom:6px;" class="schedule-day">Monday, Apr 27</p>
+        <table class="ref-table schedule-table" style="font-size:13px;">
+          <tr><th>#</th><th>Time</th><th>RAs</th></tr>
+          <tr data-ra="Saumya" data-date="2026-04-27" style="background:var(--surface-alt);font-style:italic;color:var(--text-secondary);"><td>SETUP</td><td>2:30 – 3:00 PM</td><td>Saumya</td></tr>
+          <tr data-ra="Saumya,Alex" data-date="2026-04-27"><td>1</td><td>3:00 – 4:00 PM</td><td>Saumya, Alex</td></tr>
+          <tr data-ra="Saumya,Alex" data-date="2026-04-27"><td>2</td><td>4:00 – 5:00 PM</td><td>Saumya, Alex</td></tr>
+          <tr data-ra="Saumya,Alex" data-date="2026-04-27"><td>3</td><td>5:00 – 6:00 PM</td><td>Saumya, Alex</td></tr>
+        </table>
+        <p style="font-weight:600;font-size:13px;color:var(--text-secondary);margin:14px 0 6px;" class="schedule-day">Wednesday, Apr 29</p>
+        <table class="ref-table schedule-table" style="font-size:13px;">
+          <tr><th>#</th><th>Time</th><th>RAs</th></tr>
+          <tr data-ra="Alex" data-date="2026-04-29" style="background:var(--surface-alt);font-style:italic;color:var(--text-secondary);"><td>SETUP</td><td>2:30 – 3:00 PM</td><td>Alex</td></tr>
+          <tr data-ra="Saumya,Alex" data-date="2026-04-29"><td>4</td><td>3:00 – 4:00 PM</td><td>Saumya, Alex</td></tr>
+          <tr data-ra="Saumya,Alex" data-date="2026-04-29"><td>5</td><td>4:00 – 5:00 PM</td><td>Saumya, Alex</td></tr>
+          <tr data-ra="Saumya,Alex" data-date="2026-04-29"><td>6</td><td>5:00 – 6:00 PM</td><td>Saumya, Alex</td></tr>
+          <tr data-ra="Saumya,Alex" data-date="2026-04-29"><td>7</td><td>6:00 – 7:00 PM</td><td>Saumya, Alex</td></tr>
+          <tr data-ra="Saumya,Alex" data-date="2026-04-29"><td>8</td><td>7:00 – 8:00 PM</td><td>Saumya, Alex</td></tr>
+        </table>
+        <p style="font-weight:600;font-size:13px;color:var(--text-secondary);margin:14px 0 6px;" class="schedule-day">Friday, May 1</p>
+        <table class="ref-table schedule-table" style="font-size:13px;">
+          <tr><th>#</th><th>Time</th><th>RAs</th></tr>
+          <tr data-ra="Lissa" data-date="2026-05-01" style="background:var(--surface-alt);font-style:italic;color:var(--text-secondary);"><td>SETUP</td><td>1:30 – 2:00 PM</td><td>Lissa</td></tr>
+          <tr data-ra="Lissa,Joseph" data-date="2026-05-01"><td>9</td><td>2:00 – 3:00 PM</td><td>Lissa, Joseph</td></tr>
+          <tr data-ra="Lissa,Joseph" data-date="2026-05-01"><td>10</td><td>3:00 – 4:00 PM</td><td>Lissa, Joseph</td></tr>
+          <tr data-ra="Lissa,Joseph" data-date="2026-05-01"><td>11</td><td>4:00 – 5:00 PM</td><td>Lissa, Joseph</td></tr>
+          <tr data-ra="Lissa,Agustin" data-date="2026-05-01"><td>12</td><td>5:00 – 6:00 PM</td><td>Lissa, Agustin</td></tr>
+          <tr data-ra="Lissa,Agustin" data-date="2026-05-01"><td>13</td><td>6:00 – 7:00 PM</td><td>Lissa, Agustin</td></tr>
+          <tr data-ra="Lissa,Agustin" data-date="2026-05-01"><td>14</td><td>7:00 – 8:00 PM</td><td>Lissa, Agustin</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- ═══ MY SCHEDULE VIEW ═══ -->
+    <div class="sched-my" id="schedMy"></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════ -->
+<!-- ONLINE STUDIES SCHEDULE -->
+<!-- ══════════════════════════════════════ -->
+<div class="card" id="onlineSchedule" data-search style="border-left:4px solid #1976D2;margin-bottom:16px;scroll-margin-top:150px;">
+  <div class="card-head" style="background:linear-gradient(135deg,#E3F2FD,#F5FAFF);">
+    <span class="ch-icon">💻</span> Spring 2026 Online Studies Schedule
+    <svg class="ch-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+  </div>
+  <div class="card-body">
+    <div class="callout" style="background:#E3F2FD;border-left:4px solid #1976D2;padding:10px 14px;margin-bottom:14px;font-size:13px;">
+      <strong style="color:#1565C0;">Schedule only.</strong> <span style="color:var(--text-secondary);">This section shows when online studies go live and their participant allocations. Online study procedures and guides are managed separately and are not yet covered on this hub.</span>
+    </div>
+    <p style="font-size:13px;color:var(--text-muted);margin-bottom:12px;">Allocation = number of participant slots for that wave.</p>
+    <table class="ref-table" id="onlineTable">
+      <tr><th>Researcher</th><th>Live On</th><th>Allocation</th></tr>
+      <tr data-online-date="2026-02-03"><td>Evan Weingarten</td><td>Tue, Feb 3</td><td style="font-family:'JetBrains Mono',monospace;text-align:right;">400</td></tr>
+      <tr data-online-date="2026-02-10"><td>Luca Cascio Rizzo</td><td>Tue, Feb 10</td><td style="font-family:'JetBrains Mono',monospace;text-align:right;">600</td></tr>
+      <tr data-online-date="2026-02-17"><td>Minjeong Ko</td><td>Tue, Feb 17</td><td style="font-family:'JetBrains Mono',monospace;text-align:right;">400</td></tr>
+      <tr data-online-date="2026-02-24"><td>Maansi Dalmia</td><td>Tue, Feb 24</td><td style="font-family:'JetBrains Mono',monospace;text-align:right;">400</td></tr>
+      <tr data-online-date="2026-03-03"><td>Evan Weingarten</td><td>Tue, Mar 3</td><td style="font-family:'JetBrains Mono',monospace;text-align:right;">400</td></tr>
+      <tr data-online-date="2026-03-10"><td>Luca Cascio Rizzo</td><td>Tue, Mar 10</td><td style="font-family:'JetBrains Mono',monospace;text-align:right;">400</td></tr>
+      <tr data-online-date="2026-03-30"><td>Nofar Duani</td><td>Mon, Mar 30</td><td style="font-family:'JetBrains Mono',monospace;text-align:right;">600</td></tr>
+      <tr data-online-date="2026-04-06"><td>Ike Silver</td><td>Mon, Apr 6</td><td style="font-family:'JetBrains Mono',monospace;text-align:right;">400</td></tr>
+      <tr data-online-date="2026-04-13"><td>Nofar Duani</td><td>Mon, Apr 13</td><td style="font-family:'JetBrains Mono',monospace;text-align:right;">600</td></tr>
+      <tr data-online-date="2026-04-20"><td>Gulden Ulkumen</td><td>Mon, Apr 20</td><td style="font-family:'JetBrains Mono',monospace;text-align:right;">200</td></tr>
+      <tr data-online-date="2026-04-27"><td>Ike Silver</td><td>Mon, Apr 27</td><td style="font-family:'JetBrains Mono',monospace;text-align:right;">400</td></tr>
+    </table>
+    <div style="display:flex;gap:14px;flex-wrap:wrap;margin-top:10px;padding:8px 12px;background:var(--surface-alt);border:1px solid var(--border-light);border-radius:var(--radius-sm);font-size:12px;color:var(--text-muted);">
+      <span><strong style="color:var(--text-secondary);">Total allocation:</strong> 4,800 slots</span>
+      <span><strong style="color:var(--text-secondary);">11 waves</strong> · Feb 3 – Apr 27</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════ -->
+<!-- §1 ORIENTATION -->
+<!-- ══════════════════════════════════════ -->
+<div class="section" id="s1" data-search>
+  <div class="section-header">
+    <div class="section-num">§1</div>
+    <div class="section-title">
+      <h2>Orientation — Know Your Lab <span class="badge-scope badge-scope-inperson">In-Person</span></h2>
+      <div class="section-sub">Floor Plan · Roles · Access · Communication</div>
+    </div>
+    <svg class="section-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+  </div>
+  <div class="section-body">
+
+    <!-- Lab Layout -->
+    <div class="card" data-search>
+      <div class="card-head">
+        <span class="ch-icon">🗺</span> Lab Layout — VPD LL102
+        <svg class="ch-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="card-body">
+        <p>16 computer stations across two banks, plus a Proctor/RA Desk with VOIP phone and doorbell monitor.</p>
+
+        <!-- Visual Lab Layout -->
+        <div class="lab-frame">
+          <div class="lab-room-bar">LL102 — COMPUTER LAB</div>
+          <div class="lab-layout">
+            <div class="lab-entrance"><span>▼ ENTRANCE ▼</span></div>
+            <div class="lab-banks">
+              <div class="lab-bank">
+                <div class="lab-bank-label">Left Bank · 6</div>
+                <div class="lab-row">
+                  <div class="lab-cubicle"><span class="lab-num">5</span><span class="lab-icon">🖥️</span></div>
+                  <div class="lab-cubicle"><span class="lab-num">6</span><span class="lab-icon">🖥️</span></div>
+                </div>
+                <div class="lab-row">
+                  <div class="lab-cubicle"><span class="lab-num">3</span><span class="lab-icon">🖥️</span></div>
+                  <div class="lab-cubicle"><span class="lab-num">4</span><span class="lab-icon">🖥️</span></div>
+                </div>
+                <div class="lab-row">
+                  <div class="lab-cubicle"><span class="lab-num">1</span><span class="lab-icon">🖥️</span></div>
+                  <div class="lab-cubicle"><span class="lab-num">2</span><span class="lab-icon">🖥️</span></div>
+                </div>
+              </div>
+              <div class="lab-aisle"><span>A I S L E</span></div>
+              <div class="lab-bank">
+                <div class="lab-bank-label">Right Bank · 10</div>
+                <div class="lab-row">
+                  <div class="lab-cubicle"><span class="lab-num">15</span><span class="lab-icon">🖥️</span></div>
+                  <div class="lab-cubicle"><span class="lab-num">16</span><span class="lab-icon">🖥️</span></div>
+                </div>
+                <div class="lab-row">
+                  <div class="lab-cubicle"><span class="lab-num">13</span><span class="lab-icon">🖥️</span></div>
+                  <div class="lab-cubicle"><span class="lab-num">14</span><span class="lab-icon">🖥️</span></div>
+                </div>
+                <div class="lab-row">
+                  <div class="lab-cubicle"><span class="lab-num">11</span><span class="lab-icon">🖥️</span></div>
+                  <div class="lab-cubicle"><span class="lab-num">12</span><span class="lab-icon">🖥️</span></div>
+                </div>
+                <div class="lab-row">
+                  <div class="lab-cubicle"><span class="lab-num">9</span><span class="lab-icon">🖥️</span></div>
+                  <div class="lab-cubicle"><span class="lab-num">10</span><span class="lab-icon">🖥️</span></div>
+                </div>
+                <div class="lab-row">
+                  <div class="lab-cubicle"><span class="lab-num">7</span><span class="lab-icon">🖥️</span></div>
+                  <div class="lab-cubicle"><span class="lab-num">8</span><span class="lab-icon">🖥️</span></div>
+                </div>
+              </div>
+            </div>
+            <div class="lab-proctor">
+              <div class="lab-proctor-desk">🪑 PROCTOR DESK · VOIP · DOORBELL</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="lab-info">
+          <div class="lab-info-item"><span class="lab-info-dot" style="background:var(--say-border)"></span>16 workstations</div>
+          <div class="lab-info-item"><span class="lab-info-dot" style="background:var(--cardinal)"></span>1 proctor station</div>
+          <div class="lab-info-item"><span class="lab-info-dot" style="background:var(--text-muted)"></span>Numbered from proctor desk</div>
+        </div>
+        <p><strong>Full Address (for emergency services):</strong><br>VPD Building (Verna & Peter Dauterive Hall), Room LL102, 635 Downey Way, Los Angeles, CA 90089</p>
+      </div>
+    </div>
+
+    <!-- Roles -->
+    <div class="card" data-search>
+      <div class="card-head">
+        <span class="ch-icon">👤</span> Roles & Responsibilities
+        <svg class="ch-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="card-body">
+        <div class="callout callout-phd">
+          <span class="label">PhD Research Supervisor</span>
+          Study setup, link creation, study order/rotation, distributing sign-up sheets, managing filler studies, and posting credits by end of day. Collects study info by Thursday the week before and specifies order in Google Spreadsheet. May supervise remotely.
+        </div>
+        <div class="callout callout-ra">
+          <span class="label">Research Assistant</span>
+          Day-of operations: arrive 30 min early, power on computers, set up via School View, print sign-up sheet, prepare Post-its/materials, run check-in, monitor participants, document in Google Spreadsheet, and manage end-of-session. Must have PhD Supervisor's email + phone.
+        </div>
+        <p><strong>Lead RA:</strong> The person who performed setup. If the Lead RA leaves early, the assistant RA who started the day takes over as Lead for remaining sessions.</p>
+      </div>
+    </div>
+
+    <!-- Card Access -->
+    <div class="card" data-search>
+      <div class="card-head">
+        <span class="ch-icon">🪪</span> Card Access & Building Policy
+        <svg class="ch-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="card-body">
+        <div class="callout callout-hard">
+          <span class="label">⬛ Hard Rule</span>
+          Per Provost policy, all card access to VPD expires at the end of each semester. This affects all undergraduates, master's, and PhD students. Access must be reactivated each semester.
+        </div>
+        <p>Faculty and full-time staff are not affected. Test your card access before your first session each semester (ideally during training).</p>
+        <p>If access isn't working, contact Brian Huh immediately: <a href="/cdn-cgi/l/email-protection#7d1508151f3d101c0f0e151c111153080e1e53181908"><span class="__cf_email__" data-cfemail="1078657872507d71626378717c7c3e6563733e757465">[email&#160;protected]</span></a> / <a href="tel:2138219746">213-821-9746</a></p>
+        <div class="callout callout-phd">
+          <span class="label">PhD Reminder</span>
+          Remind your RAs to verify access is working before the first session of each new semester.
+        </div>
+      </div>
+    </div>
+
+    <!-- Communication -->
+    <div class="card" data-search>
+      <div class="card-head">
+        <span class="ch-icon">💬</span> Communication & Escalation Chain
+        <svg class="ch-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="card-body">
+        <p>The lab has full cell reception and WiFi, so you can reach contacts by phone, text, or Teams at any time during sessions. All lab communication goes to <strong>@marshall.usc.edu</strong> email — NOT @usc.edu. Make sure you are checking your Marshall email regularly.</p>
+        <div class="callout callout-info">
+          <span class="label">Escalation for Immediate Help</span>
+          <strong>1.</strong> On-site admin RA (LL110/LL112) → <strong>2.</strong> Brian Huh (<a href="tel:2138219746" style="color:inherit;text-decoration:underline dotted;text-underline-offset:2px;">213-821-9746</a>) → <strong>3.</strong> PhD Supervisor
+        </div>
+        <p><strong>Teams Group Chat:</strong> <em>MKT In-Person Research Sessions – SPRING 2026</em>. All session coordination and real-time updates are posted here. Join before your first session.<br><a href="https://teams.microsoft.com/l/chat/19:be4aa85bf842401fbad417308372cfb9@thread.v2/conversations?context=%7B%22contextType%22%3A%22chat%22%7D" target="_blank" style="color:var(--say-text);font-weight:600;">→ Join Teams Group Chat</a></p>
+        <p>All RAs must have a Marshall Teams account. If you don't have one, let Brian know right away.</p>
+      </div>
+    </div>
+
+    <!-- SimpleTexting -->
+    <div class="card" data-search>
+      <div class="card-head">
+        <span class="ch-icon">📱</span> SimpleTexting — RA Quick Reference
+        <svg class="ch-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="card-body">
+        <p>SimpleTexting gives participants a way to text the lab during active study sessions for real-time logistical needs — running late, can't find the lab, waiting at the door, or communicating an issue upon arrival. This channel is <strong>not for general lab inquiries</strong>. General questions (scheduling, study information, compensation, etc.) should be directed to the respective study's email contact.</p>
+
+        <table class="ref-table">
+          <tr><th>Detail</th><th>Value</th></tr>
+          <tr><td>Platform</td><td><a href="https://simpletexting.com" target="_blank" style="color:inherit;font-weight:600;">simpletexting.com</a></td></tr>
+          <tr><td>Account Name</td><td>Behavioral (first), Lab (last)</td></tr>
+          <tr><td>Login Email</td><td><a href="/cdn-cgi/l/email-protection#6301060b02150a0c11020f0f0201230e0211100b020f0f4d1610004d060716"><span class="__cf_email__" data-cfemail="583a3d30392e31372a393434393a1835392a2b30393434762d2b3b763d3c2d">[email&#160;protected]</span></a></td></tr>
+          <tr><td>Password</td><td><span class="sensitive-mask" id="stPw"><span class="masked-value">••••••••••••••••</span><span class="real-value">JTExT9Qr*ur+LiP</span></span> <button class="btn-reveal" onclick="this.previousElementSibling.classList.toggle('revealed');this.textContent=this.previousElementSibling.classList.contains('revealed')?'Hide':'Show';">Show</button></td></tr>
+          <tr><td>Subject-Facing SMS #</td><td>(404) 446-4399</td></tr>
+        </table>
+
+        <p style="margin-top:12px;"><strong>Session Workflow:</strong></p>
+        <div class="steps">
+          <div class="step"><div class="step-content"><strong>Log in</strong> as part of your session setup. Go to <a href="https://simpletexting.com" target="_blank" style="color:inherit;font-weight:600;">simpletexting.com</a>, sign in with the lab credentials above, and open the Inbox alongside your other pre-session checklist items.</div></div>
+          <div class="step"><div class="step-content"><strong>Keep the Inbox tab open</strong> for the duration of your session. Check it if a participant is late, or periodically between tasks.</div></div>
+          <div class="step"><div class="step-content"><strong>When a text comes in, verify before responding</strong> (see verification checklist below).</div></div>
+          <div class="step"><div class="step-content"><strong>Reply directly</strong> in the conversation thread. Keep messages brief and limited to logistics.</div></div>
+          <div class="step"><div class="step-content"><strong>Log out</strong> when your session is over, especially on shared lab computers.</div></div>
+        </div>
+
+        <div class="callout callout-hard" style="margin-top:14px;">
+          <span class="label">⬛ Shared Number — Verify Before Responding</span>
+          This number is used across multiple studies and subject pools. Verify before replying.
+          <br><br>
+          <strong>Is this participant yours?</strong> Ask for their full name and cross-reference with your session's expected participant list.<br>
+          <strong>Which study are they here for?</strong> Confirm the study name or ID — they may be enrolled in a different study that also uses this number.<br>
+          <strong>Which subject pool?</strong> Verify whether they signed up through SONA, Prolific, direct recruitment, etc.<br>
+          <strong>Is their concern logistical?</strong> Day-of needs only (running late, finding the lab, arrival). Redirect general inquiries to the study's email.<br>
+          <strong>Can you answer this, or should you escalate?</strong> Study content, compensation disputes, or consent → escalate to Brian Huh (<a href="/cdn-cgi/l/email-protection#5c3429343e1c313d2e2f343d303072292f3f72393829" style="color:inherit;"><span class="__cf_email__" data-cfemail="6e061b060c2e030f1c1d060f0202401b1d0d400b0a1b">[email&#160;protected]</span></a>).<br>
+          <strong>Is another RA already handling this?</strong> Check the thread for prior replies to avoid duplicate or conflicting responses.
+        </div>
+
+        <p><strong>✔ Do:</strong> Help with directions to VPD LL110-112-102, confirm appointment times, let them know you're on your way to open the door, redirect non-logistical questions to email.</p>
+        <p><strong>✘ Don't:</strong> Share study details or results over text, answer questions meant for a different study, delete conversation threads, leave the dashboard logged in after your session.</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════ -->
+<!-- §2 BEFORE THE SESSION -->
+<!-- ══════════════════════════════════════ -->
+<div class="section" id="s2" data-search>
+  <div class="section-header">
+    <div class="section-num">§2</div>
+    <div class="section-title">
+      <h2>Before the Session <span class="badge-scope badge-scope-inperson">In-Person</span></h2>
+      <div class="section-sub">30 Min Early · Study Prep · Computer Setup · Materials</div>
+    </div>
+    <svg class="section-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+  </div>
+  <div class="section-body">
+
+    <!-- Study Prep -->
+    <div class="card" data-search>
+      <div class="card-head">
+        <span class="ch-icon">📋</span> Study Preparation (Week Before — By Thursday)
+        <svg class="ch-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="card-body">
+        <div class="callout callout-phd">
+          <span class="label">PhD Supervisor Tasks</span>
+          Collect study info from researchers by Thursday. Decide study order & rotation. Specify order in Google Spreadsheet per session. Create browser links in Chrome (unless another browser was requested) in the study folder with meaningful names (<strong>never the researcher's name</strong>). Secure study materials throughout the session (make sure they do not run out). Prepare materials, Post-its, pens. Distribute physical sign-up sheet to RAs.
+        </div>
+        <div class="callout callout-ra">
+          <span class="label">RA Tasks</span>
+          Review Google Spreadsheet for your session's study order. Confirm you have PhD Supervisor contact info (email + phone). Check the spreadsheet prior to each session.
+        </div>
+        <div class="callout callout-hard">
+          <span class="label">⬛ Privacy Rule</span>
+          Names on paper only — IDs only in Google Spreadsheet. <strong>Never</strong> put names in the spreadsheet.
+        </div>
+      </div>
+    </div>
+
+    <!-- Computer Setup -->
+    <div class="card" data-search>
+      <div class="card-head">
+        <span class="ch-icon">🖥</span> Checklist: Lab & Computer Setup (30 Min Early)
+        <svg class="ch-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="card-body">
+        <ul class="checklist">
+          <li><strong>Power on all 16 computers individually.</strong> Walk to each station and press the power button. Cannot be done remotely.</li>
+          <li><strong>Log in via Cross Tech School View</strong> at Proctor/RA Desk → click "Okay" → click "Continue" for collective login.</li>
+          <li><strong>Log into SimpleTexting</strong> (<a href="https://simpletexting.com" target="_blank" style="color:inherit;font-weight:600;">simpletexting.com</a>) with lab credentials. Keep Inbox tab open.</li>
+          <li><strong>Open study folders on each machine:</strong> VPD folder → Temp → [current week's folder]. Hide webcams if unused.</li>
+          <li><strong>Print sign-up sheet</strong> Brian will email to the setup RA (lab server laser printer or inkjet if no access). Verify the printed list matches the Google Spreadsheet.</li>
+          <li><strong>Write SONA IDs on Post-its — 2 per person.</strong> One Post-it goes on their phone (placed in wall pocket at check-in), the other goes with them to their station.</li>
+          <li><strong>Stage materials for 16 stations.</strong> Hide food/supplies under tables.</li>
+        </ul>
+        <div class="callout callout-hard" style="margin-top:14px;">
+          <span class="label">⬛ Verify Before Session</span>
+          <ul class="checklist">
+            <li>VOIP phone working</li>
+            <li>Video doorbell active</li>
+            <li>Both emergency exits located</li>
+            <li>Card access works</li>
+            <li>SimpleTexting Inbox open</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Materials & Printing -->
+    <div class="card" data-search>
+      <div class="card-head">
+        <span class="ch-icon">🖨</span> Materials & Printing
+        <svg class="ch-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="card-body">
+        <p><strong>Lab Server Laser Printer:</strong> In the main lab suite just outside Brian's office. Print via Web Print, then release at the printer by tapping your USCard.</p>
+        <p><strong>Inkjet Printer:</strong> For non-Marshall USC students who don't have laser printer access. See the separate Inkjet Printer How-To Guide.</p>
+
+        <div class="callout callout-info">
+          <span class="label">How to Print — Web Print (Xerox)</span>
+          <div class="steps">
+            <div class="step"><div class="step-content">Go to <a href="https://print.marshall.usc.edu" target="_blank" style="color:inherit;font-weight:600;">print.marshall.usc.edu</a></div></div>
+            <div class="step"><div class="step-content">Log in with your USCNetID followed by <strong>@marshall.usc.edu</strong> and your Marshall password</div></div>
+            <div class="step"><div class="step-content">Under <strong>My Printing → Job List</strong>, click <strong>Upload</strong> and select your file<br><span style="font-size:12px;color:var(--text-muted);">Supported: Word, Excel, PowerPoint, PDF, Images, CSV/RTF/TXT, Visio</span></div></div>
+            <div class="step"><div class="step-content">At the bottom, select your <strong>cost center</strong> (or type account number — numbers only, no dashes)</div></div>
+            <div class="step"><div class="step-content">Choose print settings: <strong>Color/BW</strong>, single/double-sided, copies, page range</div></div>
+            <div class="step"><div class="step-content"><strong>Release at the printer</strong> by tapping your USCard on the card reader (recommended) or typing your Marshall credentials</div></div>
+          </div>
+          <p style="margin-top:8px;font-size:12.5px;">All print jobs are secure — they only release once you authenticate at the printer.</p>
+        </div>
+
+        <p>Keep at least one master copy of materials for the week — cloud printing can be slow.</p>
+        <p><strong>Remember:</strong> Anything with a name must stay on paper only — never enter names into the Google Spreadsheet.</p>
+        <p style="font-size:13px;color:var(--text-muted);margin-top:8px;">Printer issues? Contact Xerox: <a href="tel:2138214106">213-821-4106</a> · <a href="/cdn-cgi/l/email-protection#1a427f687562595b574a37574a495a627f68756234797577"><span class="__cf_email__" data-cfemail="633b06110c1b20222e334e2e3330231b06110c1b4d000c0e">[email&#160;protected]</span></a></p>
+      </div>
+    </div>
+
+    <!-- Phone Policy -->
+    <div class="card" data-search>
+      <div class="card-head">
+        <span class="ch-icon">📵</span> Phone Policy
+        <svg class="ch-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="card-body">
+        <div class="callout callout-hard">
+          <span class="label">⬛ Hard Rule</span>
+          All participant phones must be turned off <strong>completely</strong> and placed in the designated check-in pocket on the wall during check-in. Phones will be returned at the end of the session. RAs should verify each phone is powered off before placing it in the pocket.
+        </div>
+        <p><strong>Note:</strong> The lab has full cell reception and WiFi access — this policy is for research integrity, not connectivity.</p>
+      </div>
+    </div>
+
+    <!-- Video Display -->
+    <div class="card" data-search>
+      <div class="card-head">
+        <span class="ch-icon">🖥</span> Troubleshooting: Video Display Issues
+        <svg class="ch-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="card-body">
+        <p><strong>Problem:</strong> Participants can hear audio but cannot see video.</p>
+        <p><strong>Try:</strong> Check video source/input on displays → Verify all cable connections (HDMI, DisplayPort) → In School View, check video/screen sharing is enabled → Contact PhD Supervisor or Brian immediately if issue persists.</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════ -->
+<!-- §3 CHECK-IN -->
+<!-- ══════════════════════════════════════ -->
+<div class="section" id="s3" data-search>
+  <div class="section-header">
+    <div class="section-num">§3</div>
+    <div class="section-title">
+      <h2>Check-In & Seating <span class="badge-scope badge-scope-inperson">In-Person</span></h2>
+      <div class="section-sub">5 Min Before → Door Close · Phone Collection · Flowchart</div>
+    </div>
+    <svg class="section-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+  </div>
+  <div class="section-body">
+
+    <!-- Pre-Hour -->
+    <div class="card" data-search>
+      <div class="card-head">
+        <span class="ch-icon">🕐</span> 5 Minutes Before the Hour
+        <svg class="ch-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="card-body">
+        <div class="callout callout-ra">
+          <span class="label">RA: Go Outside</span>
+          Greet arriving participants. Confirm they are here for <strong>MARKETING</strong> (not management).
+        </div>
+        <div class="callout callout-say">
+          <span class="label">🔵 Say This</span>
+          "Find your 5- or 6-digit ID in the email that reminded you about the session. You'll need that number."<br>
+          "Please turn off your phones — they'll be placed in the wall pocket at check-in."
+        </div>
+      </div>
+    </div>
+
+    <!-- At the Hour -->
+    <div class="card" data-search>
+      <div class="card-head">
+        <span class="ch-icon">🚪</span> At the Hour — Check-In Procedure
+        <svg class="ch-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="card-body">
+        <div class="steps">
+          <div class="step"><div class="step-content">Open the door. Have participants enter <strong>one by one</strong>.</div></div>
+          <div class="step"><div class="step-content">Ask for their <strong>5- or 6-digit SONA ID</strong>. Check them off the list.</div></div>
+          <div class="step"><div class="step-content">Collect phone — verify it is <strong>completely off</strong> (not just silenced). Stick one Post-it with their SONA ID on the phone, then place phone in wall pocket. Remind any late-comers before doors close.</div></div>
+          <div class="step"><div class="step-content">Give them the <strong>second Post-it</strong> with their ID number. Ask them to place it on their station where they can see it.</div></div>
+          <div class="step"><div class="step-content"><strong>Backpacks along the back wall.</strong> Water OK (unless study specifies otherwise). No other drinks or food — leave with their belongings in the back.</div></div>
+          <div class="step"><div class="step-content"><strong>Assign random seat</strong> (stations are numbered). Alternate throughout the room. Separate friends who enter together.</div></div>
+          <div class="step"><div class="step-content">Tell them: <strong>"Don't touch the computer — everybody starts together."</strong> (This announcement may have to be repeated midway through check-in.)</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Special Cases -->
+    <div class="card" data-search>
+      <div class="card-head">
+        <span class="ch-icon">❓</span> Special Check-In Scenarios
+        <svg class="ch-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="card-body">
+        <table class="ref-table">
+          <tr><th>Scenario</th><th>Action</th></tr>
+          <tr>
+            <td><strong>No ID</strong></td>
+            <td>They can give name + USC email (must be USC email). Easier if they have their 5-/6-digit number.</td>
+          </tr>
+          <tr>
+            <td><strong>Walk-in (not on list)</strong></td>
+            <td>Have they done ANY in-person session before?<br><strong>YES →</strong> Cannot participate. One in-person session total, ever.<br><strong>NO →</strong> Wait until 5-min mark. If space, allow in. Assign temp ID (2222). Note in Google Spreadsheet.</td>
+          </tr>
+          <tr>
+            <td><strong>Wrong session time</strong></td>
+            <td>Same as walk-in. Need 5-/6-digit ID, wait until 5 after to see if space. Note original session in Google Spreadsheet.</td>
+          </tr>
+          <tr>
+            <td><strong>Not registered with SONA</strong></td>
+            <td>Cannot participate. Must complete registration first. Can come at a different time (even in an hour) but should not rush registration on the spot.</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- Door Close -->
+    <div class="card always-open" data-search>
+      <div class="card-head">
+        <span class="ch-icon">🔒</span> Door Close Policy
+      </div>
+      <div class="card-body">
+        <div class="callout callout-hard">
+          <span class="label">⬛ Hard Rule — No Exceptions</span>
+          Close the door <strong>5 minutes after the hour</strong> or when done checking (whichever is later). <strong>No one enters after doors close.</strong> Research validity requires all participants start and end together.
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════ -->
+<!-- §4 DURING THE SESSION -->
+<!-- ══════════════════════════════════════ -->
+<div class="section" id="s4" data-search>
+  <div class="section-header">
+    <div class="section-num">§4</div>
+    <div class="section-title">
+      <h2>Running the Session <span class="badge-scope badge-scope-inperson">In-Person</span></h2>
+      <div class="section-sub">~60 Min · Script · Observation · Tech Issues · Documentation</div>
+    </div>
+    <svg class="section-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+  </div>
+  <div class="section-body">
+
+    <!-- Opening Script -->
+    <div class="card" id="script" data-search>
+      <div class="card-head">
+        <span class="ch-icon">📝</span> Session Opening Script + Checklist
+        <svg class="ch-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="card-body">
+        <div class="callout callout-info" style="margin-bottom:14px;">
+          <span class="label">How to Use This Script</span>
+          Lead RA (setup RA) stands at front, assistant RA at back. Both introduce themselves. Read the script below to participants. After the announcement, the person in back should come to the front of the room. It is important that participants feel they have privacy — when you come to their station, be as unobtrusive as possible.
+        </div>
+
+        <div class="script-block">
+          <div class="speaker">Lead RA</div>
+          <p>Thank you for participating in the marketing research studies. My name is <strong>[NAME of the person making the announcement]</strong>.</p>
+        </div>
+        <div class="script-block">
+          <div class="speaker">Assistant RA</div>
+          <p>Hi, and I am <strong>[name of the person in the back of the room]</strong>.</p>
+        </div>
+        <div class="script-block">
+          <div class="speaker">Lead RA</div>
+          <p>We will be taking you through a series of studies today.</p>
+          <p>Over the course of this session, you will be participating in several studies related to marketing and consumer behavior.</p>
+        </div>
+        <div class="script-block">
+          <div class="speaker">Lead RA — Pacing</div>
+          <p>Everyone will be here for the ENTIRE session, so please take your time with the studies. There's no sense rushing. Everybody has their own pace, and you will not be penalized if you do not finish all studies.</p>
+        </div>
+        <div class="script-block">
+          <div class="speaker">Lead RA — ID Instructions</div>
+          <p>You have a 6-digit ID written on the Post-it I handed you when you walked in. Each study will prompt you to write down or enter this number. Make sure to use THIS number and NOT your USC ID—we need the 6-digit number to give you credit for taking all the studies today.</p>
+        </div>
+        <div class="script-block">
+          <div class="speaker">Lead RA — Tech</div>
+          <p>If you experience any technical difficulties with a study, please raise your hand and let one of us know.</p>
+        </div>
+        <div class="script-block">
+          <div class="speaker">Lead RA — Headphones (if applicable)</div>
+          <p>[If one of the studies requires headphones,] One of the studies requires using the headphones. We will let you know when to put on the headphones.</p>
+        </div>
+        <div class="script-block">
+          <div class="speaker">Lead RA — Study Order</div>
+          <p>There is a SET ORDER in which these studies are arranged. You will NOT be taking the studies in the order they are listed in the folder in front of you. The reason for that order is that it allows me to keep track that you were here and get credit.</p>
+          <p>We will all start the first study together, and then EVERY TIME you finish a study, raise your hand, and one of us will come get you started on the next study.</p>
+        </div>
+        <div class="script-block">
+          <div class="speaker">Lead RA — Focus</div>
+          <p>It is really important that you do not engage in any tasks other than these studies during this session.</p>
+        </div>
+        <div class="script-block">
+          <div class="speaker">Lead RA — Questions</div>
+          <p>Are there any questions before we get started?</p>
+          <p style="font-style:italic;color:var(--text-muted);">[Pause for questions. Address any concerns.]</p>
+        </div>
+        <div class="script-block">
+          <div class="speaker">Lead RA — Start</div>
+          <p>Ok, your first study is <strong>[NAME OF STUDY 1]</strong>. Please remember to raise your hand when you are done.</p>
+        </div>
+
+        <div class="callout callout-info" style="margin-top:14px;">
+          <span class="label">✔ Session Start Checklist</span>
+          <ul class="checklist">
+            <li>All participants have their 6-digit ID on Post-it</li>
+            <li>Headphones distributed (if applicable)</li>
+            <li>Participants ready to begin</li>
+            <li>Both RAs positioned and ready</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Monitoring -->
+    <div class="card" data-search>
+      <div class="card-head">
+        <span class="ch-icon">👁</span> Observation & Monitoring
+        <svg class="ch-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="card-body">
+        <p>Privacy is critical. Be discreet when monitoring.</p>
+        <div class="callout callout-ra">
+          <span class="label">Being Discreet</span>
+          Record IDs subtly using a small notepad or Google Spreadsheet on the Proctor/RA Desk. Don't stare — use casual glances while walking around. Position yourself to see multiple stations without being intrusive. If a participant notices you, smile briefly and look away naturally. Try to gauge if people are still working but don't rush them.
+        </div>
+        <p><strong>Watch for:</strong> Rushing, confusion, distress, pattern-clicking, excessive dictionary use, not paying attention.</p>
+      </div>
+    </div>
+
+    <!-- Participant Questions -->
+    <div class="card" data-search>
+      <div class="card-head">
+        <span class="ch-icon">🙋</span> Common Participant Questions
+        <svg class="ch-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="card-body">
+        <table class="ref-table">
+          <tr><th>Question</th><th>Response</th></tr>
+          <tr>
+            <td>"I don't understand this question"</td>
+            <td>"Interpret however you understand it." Note in Google Spreadsheet if persistent.</td>
+          </tr>
+          <tr>
+            <td>Errors or typos in the study</td>
+            <td>Note in Google Spreadsheet; inform PhD Supervisor.</td>
+          </tr>
+          <tr>
+            <td>Don't know a word</td>
+            <td>Tell them the meaning or they can use a dictionary. Note if constant use.</td>
+          </tr>
+          <tr>
+            <td>Restroom request</td>
+            <td>Ask if urgent. If yes, let them go after completing current study. One at a time only.</td>
+          </tr>
+          <tr>
+            <td>Done early</td>
+            <td>Sit quietly at station; may browse the web on their computer.</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- Tech Issues -->
+    <div class="card" data-search>
+      <div class="card-head">
+        <span class="ch-icon">⚙️</span> Technical Issues — Previous Respondent Data
+        <svg class="ch-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="card-body">
+        <table class="ref-table">
+          <tr><th>Situation</th><th>Action</th></tr>
+          <tr>
+            <td><strong>No meaningful input</strong> on page (just advancing)</td>
+            <td>Advance to end (most often it is just to the last page they are missing) → Close → Reopen study</td>
+          </tr>
+          <tr>
+            <td><strong>Meaningful input present</strong> (actual answers)</td>
+            <td><strong>DO NOT enter data.</strong> Close study → Clear cache/cookies → Reopen</td>
+          </tr>
+        </table>
+        <div class="callout callout-info" style="margin-top:12px;">
+          <span class="label">How to Clear Cache & Cookies in Chrome</span>
+          Open Chrome → Click More (⋮) → More tools → Clear browsing data → Select "All time" → Check "Cookies and other site data" and "Cached images and files" → Click Clear data.
+          <br><br><strong>Prevention Tip:</strong> If you know someone didn't finish in the previous session, clear cache after that session.
+        </div>
+      </div>
+    </div>
+
+    <!-- Fillers -->
+    <div class="card" data-search>
+      <div class="card-head">
+        <span class="ch-icon">📄</span> Filler Studies & Headphones
+        <svg class="ch-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="card-body">
+        <div class="callout callout-hard">
+          <span class="label">⬛ Filler Rules</span>
+          Only give filler studies if participants finish before 50 minutes. <strong>Never disclose which studies are fillers.</strong> RAs should know which studies are fillers/non-scheduled.
+        </div>
+        <p><strong>Headphone studies:</strong> If a study uses headphones, make sure participants take headphones off after that study and don't continue using them (e.g., to listen to music).</p>
+      </div>
+    </div>
+
+    <!-- Documentation -->
+    <div class="card" data-search>
+      <div class="card-head">
+        <span class="ch-icon">📊</span> Session Documentation
+        <svg class="ch-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="card-body">
+        <div class="callout callout-hard">
+          <span class="label">⬛ Documentation Is Mandatory</span>
+          Document EVERYTHING in Google Spreadsheet: tech issues, behavior, departures, disruptions. IDs only — NEVER names. Be specific & objective. When in doubt, document it.<br><br>Failing to document issues can compromise research validity and waste months of work. PhD Supervisors rely on your observations to make informed decisions about data inclusion.
+        </div>
+
+        <div class="callout callout-info">
+          <span class="label">Accessing the Google Spreadsheet</span>
+          The PhD Supervisor shares the spreadsheet URL each week. Access it on the Proctor/RA Desk computer during your shift and keep it open throughout the session for real-time documentation. If you don't have the URL, contact the PhD Supervisor immediately.
+        </div>
+
+        <p><strong>Spreadsheet Columns:</strong></p>
+        <table class="ref-table">
+          <tr><th>Column</th><th>What to Enter</th></tr>
+          <tr><td>Participant SONA ID</td><td>5- or 6-digit ID (or temp ID like 2222) — NEVER names</td></tr>
+          <tr><td>Time</td><td>Session time (e.g., 10:00 AM, 2:00 PM)</td></tr>
+          <tr><td>Day</td><td>Date of session (e.g., Monday 2/16/26)</td></tr>
+          <tr><td>Study Name</td><td>Name of the study (as labeled in folder)</td></tr>
+          <tr><td>Order of Studies</td><td>Sequence given (e.g., "Study A → Study B → Study C")</td></tr>
+          <tr><td>Notes/Issues</td><td>Behavioral issues, tech problems, early departure, etc.</td></tr>
+        </table>
+
+        <p style="margin-top:12px;"><strong>What to Document:</strong></p>
+        <table class="ref-table">
+          <tr><th>Category</th><th>What to Note</th><th>Example Entry</th></tr>
+          <tr><td>Technical Issues</td><td>Computer crashes, browser errors, audio/video problems, study not loading, internet issues, School View problems</td><td style="font-size:12px;font-style:italic;">"ID 123456 – Computer froze during Study B, restarted at 10:15 AM"</td></tr>
+          <tr><td>Participant Behavior</td><td>Rushing, excessive confusion, constant dictionary use, pattern-clicking, visible distress, disruptive behavior</td><td style="font-size:12px;font-style:italic;">"ID 789012 – Used dictionary for 5+ words, seemed to struggle with English comprehension"</td></tr>
+          <tr><td>Early Departure</td><td>Left before completing, long bathroom break, medical issue, personal emergency</td><td style="font-size:12px;font-style:italic;">"ID 345678 – Left at 10:42 AM, completed Studies A & B only, cited family emergency"</td></tr>
+          <tr><td>Environmental Issues</td><td>Noise disruptions, temperature, lighting, interruptions, equipment malfunction</td><td style="font-size:12px;font-style:italic;">"All participants – Fire alarm test at 10:25 AM, 3 min disruption, studies paused"</td></tr>
+          <tr><td>Session Irregularities</td><td>Walk-ins, wrong session, late start, modified order, study errors, materials shortage</td><td style="font-size:12px;font-style:italic;">"ID 901234 – Walk-in, assigned temp ID 2222, participated in different session than registered"</td></tr>
+        </table>
+
+        <div class="callout callout-info" style="margin-top:12px;">
+          <span class="label">Best Practices</span>
+          Be specific ("Completed Study A in 2 min, typical is 8–10 min" not just "rushed"). Be objective (describe behaviors, not judgments — "Clicked through without scrolling" not "lazy participant"). Include timing. Use station numbers for equipment-specific problems. Note patterns across participants. Document in real time when possible; be discreet. All documentation must be entered before you sign out — memories fade quickly. When you observe something unusual, ask: <strong>"Could this affect how this participant responded?"</strong> If yes, document it.<br><br><strong>Unsure whether to document?</strong> Document it anyway and mention it to the PhD Supervisor. It's always better to over-document than to lose important context about potential data issues.
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════ -->
+<!-- §5 AFTER SESSION -->
+<!-- ══════════════════════════════════════ -->
+<div class="section" id="s5" data-search>
+  <div class="section-header">
+    <div class="section-num">§5</div>
+    <div class="section-title">
+      <h2>After the Session <span class="badge-scope badge-scope-inperson">In-Person</span></h2>
+      <div class="section-sub">End Script · Credit Posting · Excused Absences</div>
+    </div>
+    <svg class="section-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+  </div>
+  <div class="section-body">
+
+    <!-- End Script -->
+    <div class="card" data-search>
+      <div class="card-head">
+        <span class="ch-icon">🏁</span> Checklist: End-of-Session Procedure
+        <svg class="ch-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="card-body">
+        <div class="callout callout-ra">
+          <span class="label">RA — 5 Minutes Before the Hour</span>
+          If participants are still working, stop them individually. Go over and tell them they've completed all the studies you needed.
+        </div>
+        <div class="callout callout-say">
+          <span class="label">🔵 If They Ask About Other Studies</span>
+          "We are only running a subset of the studies in the folder."
+        </div>
+        <div class="script-block">
+          <div class="speaker">RA — Dismiss</div>
+          <p>Thank everybody for their participation and for helping with the research. Credit will be assigned by the end of the day.</p>
+        </div>
+        <p><strong>Then:</strong></p>
+        <ul class="checklist">
+          <li>Return phones from wall pockets</li>
+          <li>Dismiss participants</li>
+          <li>Close all open study content, browser tabs, and survey windows on every station — screens clear for next group</li>
+          <li>Collect Post-its from stations and phones</li>
+          <li>Log out of SimpleTexting</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Credit Posting -->
+    <div class="card" data-search>
+      <div class="card-head">
+        <span class="ch-icon">✅</span> Credit Posting & Follow-Up
+        <svg class="ch-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="card-body">
+        <div class="callout callout-hard">
+          <span class="label">⬛ Hard Rule</span>
+          ALL credits must be posted by end of each day — do not defer to end of week.
+        </div>
+        <div class="callout callout-phd">
+          <span class="label">PhD Supervisor Tasks</span>
+          Post credits same day. Walk-ins: enroll & credit OR send name + USC email to Brian Huh (<a href="/cdn-cgi/l/email-protection#bed6cbd6dcfed3dfcccdd6dfd2d290cbcddd90dbdacb"><span class="__cf_email__" data-cfemail="3c5449545e7c515d4e4f545d505012494f5f12595849">[email&#160;protected]</span></a>). Temp IDs: update Google Spreadsheet with actual ID. No-shows: <strong>excused absence only</strong> (never unexcused). RAs do not need to know who is absent or why.
+        </div>
+        <div class="callout callout-info">
+          <span class="label">Privacy Note — Absences</span>
+          If somebody contacts the PhD Supervisor that they will not be there, you can assure them they will be marked excused. RAs do not need to know who will not show up or who did not show up for whatever reason.
+        </div>
+        <p>Discrepancies, unclear participation status, or situations where you're unsure what happened → email Brian Huh (<a href="/cdn-cgi/l/email-protection#d3bba6bbb193beb2a1a0bbb2bfbffda6a0b0fdb6b7a6"><span class="__cf_email__" data-cfemail="f69e839e94b69b9784859e979a9ad8838595d8939283">[email&#160;protected]</span></a>) with session date, time, participant SONA ID, and a description of the issue.</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════ -->
+<!-- §6 SCENARIOS & EMERGENCIES -->
+<!-- ══════════════════════════════════════ -->
+<div class="section" id="s6" data-search>
+  <div class="section-header">
+    <div class="section-num">§6</div>
+    <div class="section-title">
+      <h2>Scenarios & Emergencies <span class="badge-scope badge-scope-inperson">In-Person</span></h2>
+      <div class="section-sub">Walk-Ins · Doorbell · Aggression · Emergencies</div>
+    </div>
+    <svg class="section-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+  </div>
+  <div class="section-body">
+
+    <!-- Doorbell -->
+    <div class="card" data-search>
+      <div class="card-head">
+        <span class="ch-icon">🔔</span> Video Doorbell / Knock at Door
+        <svg class="ch-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="card-body">
+        <p>The lab is equipped with a <strong>2-way video doorbell system</strong>. When someone rings, the monitor on the Proctor/RA Desk displays a live video feed of the person at the door.</p>
+        <div class="steps">
+          <div class="step"><div class="step-content">Press the <strong>pre-recorded message button</strong>: "Please wait, someone will be with you shortly."</div></div>
+          <div class="step"><div class="step-content">Check the <strong>video feed</strong> to assess the situation.</div></div>
+          <div class="step"><div class="step-content"><strong>RA #1</strong> stays with participants. <strong>RA #2</strong> steps outside quietly, closes door.</div></div>
+          <div class="step"><div class="step-content">Handle accordingly: late arrival (explain can't enter, direct to future session), delivery/wrong room (redirect), or other.</div></div>
+        </div>
+        <p>The doorbell rings silently inside the lab so as not to disturb the session. Never ignore it — they'll just keep ringing or knock. A sign should be placed outside the door directing visitors to use the video doorbell instead of knocking.</p>
+      </div>
+    </div>
+
+    <!-- Late Arrivals -->
+    <div class="card" data-search>
+      <div class="card-head">
+        <span class="ch-icon">⏰</span> Late Arrivals
+        <svg class="ch-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="card-body">
+        <p>After the session has started, late participants should ring the video doorbell. Use the pre-recorded message, then the RA monitoring the feed steps outside.</p>
+        <div class="callout callout-say">
+          <span class="label">🔵 Say This</span>
+          "The session has started and unfortunately you cannot participate at this point. You can come to a different session."
+        </div>
+        <div class="callout callout-hard">
+          <span class="label">⬛ Hard Rule</span>
+          Do not let people in after the door is closed — no exceptions.
+        </div>
+      </div>
+    </div>
+
+    <!-- Aggressive Behavior -->
+    <div class="card" data-search>
+      <div class="card-head">
+        <span class="ch-icon">⚠️</span> Aggressive or Threatening Behavior
+        <svg class="ch-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="card-body">
+        <div class="steps">
+          <div class="step"><div class="step-content"><strong>Guide them away from the door</strong> (protect the session).</div></div>
+          <div class="step"><div class="step-content"><strong>Talk calmly.</strong></div></div>
+          <div class="step"><div class="step-content">If unresolved: send to <strong>Brian Huh</strong> (lower level). If they won't go, walk over and get Brian.</div></div>
+          <div class="step"><div class="step-content">Brian has Professor Cascio Rizzo's business cards for further escalation.</div></div>
+        </div>
+        <div class="callout callout-emergency">
+          <span class="label">If You Feel Unsafe</span>
+          Call DPS using VOIP phone at Proctor/RA Desk: <strong><a href="tel:2137404321" style="color:inherit;text-decoration:underline dotted;text-underline-offset:2px;">213-740-4321</a></strong>
+        </div>
+      </div>
+    </div>
+
+    <!-- Emergencies -->
+    <div class="card" data-search>
+      <div class="card-head">
+        <span class="ch-icon">🚨</span> Emergency Protocols
+        <svg class="ch-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="card-body">
+        <div class="callout callout-emergency">
+          <span class="label">🔥 Fire</span>
+          Alert participants. Stop session IMMEDIATELY. EVACUATE. Leave materials. Use nearest exit. Move away from building. Account for everyone.
+        </div>
+        <div class="callout callout-emergency">
+          <span class="label">🌍 Earthquake</span>
+          DROP, COVER, HOLD ON. Get under desks, away from windows. Wait for shaking to stop. After: check damage. If unsafe → evacuate. If safe → PhD decides whether to continue.
+        </div>
+        <div class="callout callout-emergency">
+          <span class="label">🚨 Active Threat</span>
+          <strong>RUN</strong> if safe path exists → <strong>HIDE</strong> if you can't run (lock door, lights off, stay silent) → <strong>FIGHT</strong> (last resort only). Call 911 when safe.
+        </div>
+        <div class="callout callout-emergency">
+          <span class="label">🏥 Medical Emergency</span>
+          <strong>Life-threatening →</strong> Call 911. Location: VPD LL102, 635 Downey Way, LA 90089.<br>
+          <strong>Serious but stable →</strong> Call Brian (<a href="tel:2138219746" style="color:inherit;text-decoration:underline dotted;text-underline-offset:2px;">213-821-9746</a>) + DPS (<a href="tel:2137404321" style="color:inherit;text-decoration:underline dotted;text-underline-offset:2px;">213-740-4321</a>).
+        </div>
+        <div class="callout callout-emergency">
+          <span class="label">🏢 Facilities Issues</span>
+          <strong>Dangerous</strong> (flood/electrical/gas): EVACUATE. Contact Brian & Ian McCully (<a href="tel:2138210707" style="color:inherit;text-decoration:underline dotted;text-underline-offset:2px;">213-821-0707</a>).<br>
+          <strong>Non-dangerous</strong> (HVAC/power): Contact PhD. Decide to continue or end. Contact Ian McCully.
+        </div>
+        <p><strong>Emergency Exits — Know Before Every Session:</strong><br>Exit 1: Emergency staircase on the side of LL102 (computer lab)<br>Exit 2: Lab suites side exit (LL110/112)<br>Follow the VPD Emergency Protocol sheet. Choose the nearest <strong>SAFE</strong> exit based on the emergency location.</p>
+        <div class="callout callout-hard">
+          <span class="label">⬛ Safety Emergencies</span>
+          Contact BOTH PhD Supervisor + Brian simultaneously. Participant safety is #1. Leave research data behind if necessary. The Proctor/RA Desk has a wired VOIP phone for emergency calls and emergency contacts posted nearby. Check <a href="https://emergency.usc.edu" target="_blank" style="color:inherit;font-weight:600;">emergency.usc.edu</a> for announcements.
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════ -->
+<!-- ONLINE STUDY GUIDES -->
+<!-- ══════════════════════════════════════ -->
+<div class="section" id="onlineGuides" data-search style="scroll-margin-top:150px;">
+  <div class="section-header" style="border-left:3px solid #1976D2;">
+    <div class="section-num" style="background:#1976D2;font-size:13px;">💻</div>
+    <div class="section-title">
+      <h2>Online Study Guides <span style="font-size:11px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;padding:2px 8px;border-radius:4px;background:#E3F2FD;color:#1565C0;border:1px solid #B8D4F0;vertical-align:middle;margin-left:8px;position:relative;top:-1px;">Coming Soon</span></h2>
+      <div class="section-sub">Procedures · Setup · Management for Online Studies</div>
+    </div>
+    <svg class="section-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+  </div>
+  <div class="section-body">
+    <div class="card always-open" data-search>
+      <div class="card-body" style="text-align:center;padding:40px 24px 48px;">
+        <div style="font-size:56px;margin-bottom:16px;">🚧</div>
+        <h3 style="font-size:19px;font-weight:700;color:var(--text);margin-bottom:10px;">Under Construction</h3>
+        <p style="font-size:14px;color:var(--text-muted);max-width:440px;margin:0 auto 24px;line-height:1.6;">Comprehensive guides for online study operations — including setup procedures, researcher workflows, participant management, and troubleshooting — are currently being developed.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-bottom:24px;">
+          <div style="padding:8px 14px;background:var(--surface-alt);border:1px solid var(--border-light);border-radius:8px;font-size:12.5px;color:var(--text-muted);">📋 Study Setup &amp; Configuration</div>
+          <div style="padding:8px 14px;background:var(--surface-alt);border:1px solid var(--border-light);border-radius:8px;font-size:12.5px;color:var(--text-muted);">👥 Participant Management</div>
+          <div style="padding:8px 14px;background:var(--surface-alt);border:1px solid var(--border-light);border-radius:8px;font-size:12.5px;color:var(--text-muted);">📊 Credit &amp; Data Tracking</div>
+          <div style="padding:8px 14px;background:var(--surface-alt);border:1px solid var(--border-light);border-radius:8px;font-size:12.5px;color:var(--text-muted);">🔧 Troubleshooting</div>
+        </div>
+        <p style="font-size:13px;color:var(--text-muted);">In the meantime, check the <a href="#onlineSchedule" style="color:#1976D2;font-weight:600;">Online Studies Schedule</a> for upcoming release dates.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════ -->
+<!-- APPENDICES -->
+<!-- ══════════════════════════════════════ -->
+<div class="section" id="sA" data-search>
+  <div class="section-header">
+    <div class="section-num" style="font-size:11px;">A–F</div>
+    <div class="section-title">
+      <h2>Appendices</h2>
+      <div class="section-sub">Flowcharts · Protocols · Study Folder Setup</div>
+    </div>
+    <svg class="section-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+  </div>
+  <div class="section-body">
+
+    <!-- Appendix A -->
+    <div class="card" data-search>
+      <div class="card-head">
+        <span class="ch-icon">🅰</span> Appendix A: Check-In Flowchart
+        <svg class="ch-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="card-body">
+        <p><strong>Participant Arrives — What time is it?</strong></p>
+        <table class="ref-table">
+          <tr><th>Timing</th><th>Action</th></tr>
+          <tr><td>Before hour</td><td>Ask to wait outside. "Please have your 5-/6-digit SONA ID ready."</td></tr>
+          <tr><td>At or after hour</td><td>Proceed to eligibility check.</td></tr>
+          <tr><td>After doors closed</td><td>Use video doorbell protocol. Cannot enter.</td></tr>
+        </table>
+
+        <p style="margin-top:12px;"><strong>Are they on the sign-up list?</strong></p>
+        <table class="ref-table">
+          <tr><th>Status</th><th>Action</th></tr>
+          <tr><td><strong>YES — On list</strong></td><td>Check in immediately. Follow check-in procedure.</td></tr>
+          <tr><td><strong>NO — Not on list</strong></td><td>
+            Ask to show sign-up email. May be last-minute or wrong timeslot.<br>
+            → Have they done ANY in-person session? <strong>YES:</strong> Cannot participate (one total).<br>
+            → <strong>NO:</strong> Wait for 5-min mark. Space available after all registered checked in.
+          </td></tr>
+        </table>
+
+        <p style="margin-top:12px;"><strong>Check-In Procedure (in order):</strong></p>
+        <div class="steps">
+          <div class="step"><div class="step-content">Ask for 5- or 6-digit SONA ID</div></div>
+          <div class="step"><div class="step-content">Check off list</div></div>
+          <div class="step"><div class="step-content">Collect phone (completely off) → stick SONA ID Post-it on phone → wall pocket</div></div>
+          <div class="step"><div class="step-content">Give second Post-it with ID number for their station</div></div>
+          <div class="step"><div class="step-content">Backpacks along back wall (water OK, no other food/drinks)</div></div>
+          <div class="step"><div class="step-content">Assign random seat (separate friends)</div></div>
+          <div class="step"><div class="step-content">"Don't touch computer — everyone starts together"</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Appendix B -->
+    <div class="card" data-search>
+      <div class="card-head">
+        <span class="ch-icon">🅱</span> Appendix B: Video Doorbell Protocol
+        <svg class="ch-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="card-body">
+        <div class="steps">
+          <div class="step"><div class="step-content">Press pre-recorded message: "Please wait, someone will be with you shortly."</div></div>
+          <div class="step"><div class="step-content">Check video feed to assess situation.</div></div>
+          <div class="step"><div class="step-content">RA #1 stays inside. RA #2 steps outside quietly.</div></div>
+        </div>
+        <table class="ref-table" style="margin-top:10px;">
+          <tr><th>Scenario</th><th>Action</th></tr>
+          <tr><td>Late participant</td><td>Calmly explain session started, cannot enter. Direct to future session.</td></tr>
+          <tr><td>Delivery / Wrong room</td><td>Handle quickly. Redirect away from lab.</td></tr>
+          <tr><td>Emergency</td><td>Contact PhD Supervisor immediately.</td></tr>
+          <tr><td>Threatening behavior</td><td>Stay calm. Guide away from door. Get Brian or call Security.</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- Appendix C -->
+    <div class="card" data-search>
+      <div class="card-head">
+        <span class="ch-icon">🅲</span> Appendix C: Technical Issue Resolution
+        <svg class="ch-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="card-body">
+        <table class="ref-table">
+          <tr><th>Issue</th><th>Resolution</th></tr>
+          <tr><td>Survey shows previous data (no meaningful input)</td><td>Advance page → Close & reopen</td></tr>
+          <tr><td>Survey shows previous data (answers needed)</td><td>DO NOT ENTER DATA. Close → Clear cache → Reopen</td></tr>
+          <tr><td>Won't load / Audio issue</td><td>Check connections → Check settings → Try clearing cache</td></tr>
+        </table>
+        <div class="callout callout-info" style="margin-top:10px;">
+          <span class="label">Escalation if Not Resolved</span>
+          1. On-site admin RA (LL110/LL112) → 2. Brian Huh (<a href="tel:2138219746" style="color:inherit;text-decoration:underline dotted;text-underline-offset:2px;">213-821-9746</a>) → 3. PhD Supervisor<br>
+          <strong>NEVER enter participant data.</strong> Close and clear cache instead.
+        </div>
+      </div>
+    </div>
+
+    <!-- Appendix D -->
+    <div class="card" data-search>
+      <div class="card-head">
+        <span class="ch-icon">🅳</span> Appendix D: Escalation Protocol
+        <svg class="ch-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="card-body">
+        <div class="callout callout-emergency">
+          <span class="label">Safety / Security Emergency — Parallel Contact</span>
+          Contact BOTH PhD Supervisor + Brian Huh (<a href="tel:2138219746" style="color:inherit;text-decoration:underline dotted;text-underline-offset:2px;">213-821-9746</a>) AT THE SAME TIME.<br>
+          Immediate danger? → Call DPS: <a href="tel:2137404321" style="color:inherit;text-decoration:underline dotted;text-underline-offset:2px;">213-740-4321</a> (VOIP phone at Proctor Desk)
+        </div>
+        <div class="callout callout-info">
+          <span class="label">Normal Issue — Sequential Escalation</span>
+          1. On-Site Admin RA (LL110/LL112) → 2. Brian Huh (<a href="tel:2138219746" style="color:inherit;text-decoration:underline dotted;text-underline-offset:2px;">213-821-9746</a>, Teams/Text/Call) → 3. PhD Supervisor
+        </div>
+      </div>
+    </div>
+
+    <!-- Appendix E -->
+    <div class="card" data-search>
+      <div class="card-head">
+        <span class="ch-icon">🅴</span> Appendix E: Building Emergency Protocol
+        <svg class="ch-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="card-body">
+        <table class="ref-table">
+          <tr><th>Emergency</th><th>Protocol</th></tr>
+          <tr><td>🔥 Fire</td><td>Stop session. EVACUATE immediately. Leave materials. Nearest exit. Account for all.</td></tr>
+          <tr><td>🌍 Earthquake</td><td>DROP, COVER, HOLD ON. Under desks. After: check damage. Unsafe = evacuate. Safe = PhD decides.</td></tr>
+          <tr><td>🚨 Active Threat</td><td>RUN → HIDE (lock, lights off, silent) → FIGHT (last resort). Call 911 when safe.</td></tr>
+          <tr><td>🏥 Medical</td><td>Life-threatening = 911. Location: VPD LL102, 635 Downey Way. Stable = Brian + DPS.</td></tr>
+          <tr><td>🏢 Facilities (dangerous)</td><td>EVACUATE. Contact Brian & Ian McCully (<a href="tel:2138210707" style="color:inherit;text-decoration:underline dotted;text-underline-offset:2px;">213-821-0707</a>).</td></tr>
+          <tr><td>🏢 Facilities (non-dangerous)</td><td>Contact PhD. Decide continue/end. Contact Ian McCully.</td></tr>
+        </table>
+        <p style="margin-top:10px;"><strong>Participant safety is #1.</strong> Leave research data behind if necessary. Follow VPD Emergency Protocol sheet for detailed procedures.</p>
+      </div>
+    </div>
+
+    <!-- Appendix F -->
+    <div class="card" data-search>
+      <div class="card-head">
+        <span class="ch-icon">🅵</span> Appendix F: Study Folder Setup
+        <svg class="ch-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="card-body">
+        <p>Maintained as a separate document. Covers creating study folders on the Proctor/RA Desk, browser-specific URL shortcuts (Chrome, Firefox, Edge), using School View to mirror folders to all 16 machines, verification procedures, and weekly maintenance.</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════ -->
+<!-- CONTACTS -->
+<!-- ══════════════════════════════════════ -->
+<div class="section" id="sC" data-search>
+  <div class="section-header">
+    <div class="section-num" style="font-size:14px;">☎</div>
+    <div class="section-title">
+      <h2>Contact Directory</h2>
+      <div class="section-sub">Primary Contacts · Team Directory · IT · Facilities · Emergency</div>
+    </div>
+    <svg class="section-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+  </div>
+  <div class="section-body">
+
+    <div class="card always-open" data-search>
+      <div class="card-head"><span class="ch-icon">📇</span> Essential Contacts</div>
+      <div class="card-body">
+        <table class="ref-table">
+          <tr><th>Person</th><th>Role</th><th>Contact</th></tr>
+          <tr>
+            <td><strong>Brian Huh</strong> <span class="badge badge-ra" style="font-size:10px;padding:1px 6px;vertical-align:middle;">STAFF</span></td>
+            <td>Lab Manager, Marshall Behavioral Research Lab<br><em style="font-size:12px;color:var(--text-muted);">Contact for: Lab access issues, session support, credit issues, general lab operations</em></td>
+            <td><a href="/cdn-cgi/l/email-protection#69011c010b2904081b1a01080505471c1a0a470c0d1c"><span class="__cf_email__" data-cfemail="3e564b565c7e535f4c4d565f5252104b4d5d105b5a4b">[email&#160;protected]</span></a><br><a href="tel:2138219746">213-821-9746</a><br>Office: Main lab suite, lower level (below lobby level)</td>
+          </tr>
+          <tr>
+            <td><strong>Prof. Luca Cascio Rizzo</strong></td>
+            <td>Faculty Director (Interim), Marketing Dept.<br><em style="font-size:12px;color:var(--text-muted);">Contact for: Policy questions, accommodation requests, escalated participant issues</em></td>
+            <td><a href="/cdn-cgi/l/email-protection#32515341515b5d405b725f5340415a535e5e1c4741511c575647"><span class="__cf_email__" data-cfemail="f3909280909a9c819ab39e9281809b929f9fdd868090dd969786">[email&#160;protected]</span></a><br>Office: HOH 331, 701 Exposition Blvd., LA 90089</td>
+          </tr>
+          <tr>
+            <td><strong>Peter Bonavita</strong></td>
+            <td>Asst. Director IT, USC Marshall<br><em style="font-size:12px;color:var(--text-muted);">Contact for: Computer issues, printer problems, SONA technical issues, software/hardware support</em></td>
+            <td><a href="/cdn-cgi/l/email-protection#4232202d2c23342b36022f2330312a232e2e6c3731216c272637"><span class="__cf_email__" data-cfemail="9feffdf0f1fee9f6ebdff2feedecf7fef3f3b1eaecfcb1fafbea">[email&#160;protected]</span></a><br><a href="tel:2138214615">213-821-4615</a><br>Office: Fertitta Hall (JFF), Room 305</td>
+          </tr>
+          <tr>
+            <td><strong>Ian McCully</strong></td>
+            <td>Facilities Manager, Provost (Interim)<br><em style="font-size:12px;color:var(--text-muted);">Contact for: Building access, HVAC, facilities maintenance, room issues</em></td>
+            <td><a href="/cdn-cgi/l/email-protection#eb8688889e878792ab9e9888c58e8f9e"><span class="__cf_email__" data-cfemail="432e2020362f2f3a033630206d262736">[email&#160;protected]</span></a><br><a href="tel:2138210707">213-821-0707</a> (direct) · <a href="tel:6616182697">661-618-2697</a> (cell)<br>Office: 837 Downey Way, STO 309, MC 1146, LA 90089-0751</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="card" data-search>
+      <div class="card-head">
+        <span class="ch-icon">👥</span> Team Directory — PhDs & Research Assistants
+        <svg class="ch-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+      <div class="card-body">
+        <p style="font-size:13px;color:var(--text-muted);margin-bottom:10px;">Spring 2026 · MKT Research Participation for BUAD 307</p>
+
+        <p style="font-weight:600;margin-bottom:6px;color:var(--phd-text);">PhD Research Supervisors</p>
+        <table class="ref-table">
+          <tr><th>Name</th><th>Email</th></tr>
+          <tr><td><strong>Ryan Bruno</strong></td><td><a href="/cdn-cgi/l/email-protection#94e6edf5fabaf6e6e1fafbd4f7fcfdf7f5f3fbf6fbfbe0fcbaf1f0e1"><span class="__cf_email__" data-cfemail="05777c646b2b6777706b6a45666d6c6664626a676a6a716d2b606170">[email&#160;protected]</span></a></td></tr>
+          <tr><td><strong>Steve Carney</strong></td><td><a href="/cdn-cgi/l/email-protection#f0a384958098919edeb391829e9589b09d91828398919c9cde858393de959485"><span class="__cf_email__" data-cfemail="1b486f7e6b737a7535587a69757e625b767a6968737a7777356e6878357e7f6e">[email&#160;protected]</span></a></td></tr>
+          <tr><td><strong>Maansi Dalmia</strong></td><td><a href="/cdn-cgi/l/email-protection#b7fad6d6d9c4de99f3d6dbdaded6f7dad6c5c4dfd6dbdb99c2c4d499d2d3c2"><span class="__cf_email__" data-cfemail="79341818170a10573d18151410183914180b0a11181515570c0a1a571c1d0c">[email&#160;protected]</span></a></td></tr>
+          <tr><td><strong>Minjeong Ko</strong></td><td><a href="/cdn-cgi/l/email-protection#105d797e7a757f7e773e5b7f507d71626378717c7c3e6563733e757465"><span class="__cf_email__" data-cfemail="84c9edeaeee1ebeae3aacfebc4e9e5f6f7ece5e8e8aaf1f7e7aae1e0f1">[email&#160;protected]</span></a></td></tr>
+          <tr><td><strong>Iva Mihajlovic</strong></td><td><a href="/cdn-cgi/l/email-protection#87cef1e6a9caeeefe6edebe8f1eee4c7eae6f5f4efe6ebeba9f2f4e4a9e2e3f2"><span class="__cf_email__" data-cfemail="521b24337c1f3b3a33383e3d243b31123f3320213a333e3e7c2721317c373627">[email&#160;protected]</span></a></td></tr>
+          <tr><td><strong>Zen Nguyen</strong></td><td><a href="/cdn-cgi/l/email-protection#f0aa959edebe978589959eb09d91828398919c9cde858393de959485"><span class="__cf_email__" data-cfemail="7c26191252321b090519123c111d0e0f141d101052090f1f52191809">[email&#160;protected]</span></a></td></tr>
+          <tr><td><strong>Swaroop Poudel</strong></td><td><a href="/cdn-cgi/l/email-protection#2a795d4b5845455a047a455f4e4f466a474b5859424b4646045f5949044f4e5f"><span class="__cf_email__" data-cfemail="cd9ebaacbfa2a2bde39da2b8a9a8a18da0acbfbea5aca1a1e3b8beaee3a8a9b8">[email&#160;protected]</span></a></td></tr>
+          <tr><td><strong>Reyna Wang</strong></td><td><a href="/cdn-cgi/l/email-protection#81d0e8f4f3f4efafd6e0efe6c1ece0f3f2e9e0ededaff4f2e2afe4e5f4"><span class="__cf_email__" data-cfemail="a0f1c9d5d2d5ce8ef7c1cec7e0cdc1d2d3c8c1cccc8ed5d3c38ec5c4d5">[email&#160;protected]</span></a></td></tr>
+        </table>
+
+        <p style="font-weight:600;margin:16px 0 6px;color:var(--ra-text);">Research Assistants</p>
+        <button class="btn-toggle-phones" id="btnTogglePhones" onclick="var t=document.getElementById('raPhoneTable');t.classList.toggle('phone-col-hidden');this.textContent=t.classList.contains('phone-col-hidden')?'🔒 Show Phone Numbers':'🔓 Hide Phone Numbers';">🔒 Show Phone Numbers</button>
+        <table class="ref-table phone-col-hidden" id="raPhoneTable" style="font-size:13px;">
+          <tr><th>Name</th><th>Email</th><th class="phone-col">Phone</th></tr>
+          <tr><td>Alexander Alonzo</td><td><a href="/cdn-cgi/l/email-protection#2f4e494e43404155406f5a5c4c014a4b5a"><span class="__cf_email__" data-cfemail="d0b1b6b1bcbfbeaabf90a5a3b3feb5b4a5">[email&#160;protected]</span></a></td><td class="phone-col"><a href="tel:8183149003">818-314-9003</a></td></tr>
+          <tr><td>Lissa Fredrickson</td><td><a href="/cdn-cgi/l/email-protection#ec858a9e89889e858fac999f8fc2898899"><span class="__cf_email__" data-cfemail="422b24302726302b21023731216c272637">[email&#160;protected]</span></a></td><td class="phone-col"><a href="tel:2063278306">206-327-8306</a></td></tr>
+          <tr><td>Atvika Gaur</td><td><a href="/cdn-cgi/l/email-protection#adccd9dbc4c6cccaccedd8dece83c8c9d8"><span class="__cf_email__" data-cfemail="bddcc9cbd4d6dcdadcfdc8cede93d8d9c8">[email&#160;protected]</span></a></td><td class="phone-col"><a href="tel:2139945172">213-994-5172</a></td></tr>
+          <tr><td>Saumya Ketan Jhaveri</td><td><a href="/cdn-cgi/l/email-protection#a4d7c5d1c9ddc5cfc1e4d1d7c78ac1c0d1"><span class="__cf_email__" data-cfemail="85f6e4f0e8fce4eee0c5f0f6e6abe0e1f0">[email&#160;protected]</span></a></td><td class="phone-col"><a href="tel:5108154346">510-815-4346</a></td></tr>
+          <tr><td>Agustin Montes-Tacuba</td><td><a href="/cdn-cgi/l/email-protection#5a3735342e3f292e3b1a2f2939743f3e2f"><span class="__cf_email__" data-cfemail="395456574d5c4a4d58794c4a5a175c5d4c">[email&#160;protected]</span></a></td><td class="phone-col"><a href="tel:9712807752">971-280-7752</a></td></tr>
+          <tr><td>Chanelle Scheffer <span class="badge badge-ra" style="font-size:10px;padding:1px 6px;vertical-align:middle;">STAFF</span></td><td><a href="/cdn-cgi/l/email-protection#7300101b1615151601331e1201001b121f1f5d0600105d161706"><span class="__cf_email__" data-cfemail="7f0c1c171a19191a0d3f121e0d0c171e1313510a0c1c511a1b0a">[email&#160;protected]</span></a></td><td class="phone-col">—</td></tr>
+          <tr><td>Joseph Solomon</td><td><a href="/cdn-cgi/l/email-protection#bef4d1cddbced690edd1d2d1d3d1d0fecbcddd90dbdacb"><span class="__cf_email__" data-cfemail="89c3e6faecf9e1a7dae6e5e6e4e6e7c9fcfaeaa7ecedfc">[email&#160;protected]</span></a></td><td class="phone-col"><a href="tel:9094199079">909-419-9079</a></td></tr>
+          <tr><td>Bri Tran <span class="badge badge-ra" style="font-size:10px;padding:1px 6px;vertical-align:middle;">STAFF</span></td><td><a href="/cdn-cgi/l/email-protection#dbb9b5af9baea8b8f5bebfae"><span class="__cf_email__" data-cfemail="d8bab6ac98adabbbf6bdbcad">[email&#160;protected]</span></a></td><td class="phone-col"><a href="tel:8183004657">818-300-4657</a></td></tr>
+          <tr><td>Derek Wang <span class="badge badge-ra" style="font-size:10px;padding:1px 6px;vertical-align:middle;">STAFF</span></td><td><a href="/cdn-cgi/l/email-protection#0a7d6b646d6e6f786f4a7f7969246f6e7f"><span class="__cf_email__" data-cfemail="7601171811121304133603051558131203">[email&#160;protected]</span></a></td><td class="phone-col"><a href="tel:2133351346">213-335-1346</a></td></tr>
+          <tr><td>Leia Yen</td><td><a href="/cdn-cgi/l/email-protection#a0ccc5c9c18ed9c5cee0d5d3c38ec5c4d5"><span class="__cf_email__" data-cfemail="2e424b474f00574b406e5b5d4d004b4a5b">[email&#160;protected]</span></a></td><td class="phone-col"><a href="tel:4242417922">424-241-7922</a></td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="card always-open" data-search>
+      <div class="card-head"><span class="ch-icon">🚨</span> Emergency Numbers</div>
+      <div class="card-body">
+        <table class="ref-table">
+          <tr><th>Service</th><th>Number</th></tr>
+          <tr><td><strong>911</strong> — Life-threatening emergencies</td><td><a href="tel:911">911</a></td></tr>
+          <tr><td><strong>DPS</strong> — USC Dept. of Public Safety</td><td><a href="tel:2137404321">213-740-4321</a></td></tr>
+          <tr><td><strong>Brian Huh</strong> — Lab Manager (non-emergency)</td><td><a href="tel:2138219746">213-821-9746</a></td></tr>
+          <tr><td><strong>Ian McCully</strong> — Facilities (direct)</td><td><a href="tel:2138210707">213-821-0707</a></td></tr>
+          <tr><td><strong>emergency.usc.edu</strong> — USC Emergency Info</td><td><a href="https://emergency.usc.edu" target="_blank">emergency.usc.edu</a></td></tr>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</main>
+
+<footer class="site-footer">
+  <strong>Marshall Behavioral Research Lab</strong> · USC Marshall School of Business<br>
+  MKT Subject Pool · BUAD 307 Research Participation Program · Spring 2026 · Rev. v1.3<br>
+  Questions? Contact <a href="/cdn-cgi/l/email-protection#85edf0ede7c5e8e4f7f6ede4e9e9abf0f6e6abe0e1f0" style="color:var(--cardinal);"><span class="__cf_email__" data-cfemail="e8809d808aa885899a9b80898484c69d9b8bc68d8c9d">[email&#160;protected]</span></a> · <a href="tel:2138219746" style="color:var(--cardinal);">213-821-9746</a>
+</footer>
+
+<!-- ═══ BACK TO TOP ═══ -->
+<button class="btn-top" id="btnTop" aria-label="Back to top">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 15l-6-6-6 6"/></svg>
+</button>
+
+<!-- ═══ EMERGENCY PANEL ═══ -->
+<div class="overlay" id="overlay"></div>
+<div class="emergency-panel" id="emergencyPanel">
+  <div class="emergency-panel-header">
+    <h3>⚠ Emergency Contacts & Protocols</h3>
+    <button class="emergency-close">✕</button>
+  </div>
+  <div class="emergency-panel-body">
+    <div class="e-contact">
+      <div class="e-icon blue">🛡</div>
+      <div class="e-info"><div class="e-name">USC DPS</div><div class="e-role">Dept. of Public Safety</div></div>
+      <div class="e-action"><a href="tel:2137404321">📞 Call</a></div>
+    </div>
+    <div class="e-contact">
+      <div class="e-icon green">👤</div>
+      <div class="e-info"><div class="e-name">Brian Huh</div><div class="e-role">Lab Manager · <a href="tel:2138219746" style="color:inherit;text-decoration:underline dotted;text-underline-offset:2px;">213-821-9746</a></div></div>
+      <div class="e-action"><a href="tel:2138219746">📞 Call</a></div>
+    </div>
+    <div class="e-contact">
+      <div class="e-icon teal">🏢</div>
+      <div class="e-info"><div class="e-name">Ian McCully</div><div class="e-role">Facilities · <a href="tel:2138210707" style="color:inherit;text-decoration:underline dotted;text-underline-offset:2px;">213-821-0707</a></div></div>
+      <div class="e-action"><a href="tel:2138210707">📞 Call</a></div>
+    </div>
+    <div class="e-contact">
+      <div class="e-icon" style="background:#5E35B1;">🖥</div>
+      <div class="e-info"><div class="e-name">Peter Bonavita</div><div class="e-role">Marshall IT · <a href="tel:2138214615" style="color:inherit;text-decoration:underline dotted;text-underline-offset:2px;">213-821-4615</a></div></div>
+      <div class="e-action"><a href="tel:2138214615">📞 Call</a></div>
+    </div>
+    <div class="e-contact">
+      <div class="e-icon amber">🌐</div>
+      <div class="e-info"><div class="e-name">emergency.usc.edu</div><div class="e-role">USC Emergency Information</div></div>
+      <div class="e-action"><a href="https://emergency.usc.edu" target="_blank">🔗 Open</a></div>
+    </div>
+
+    <div class="e-protocol">
+      <h4>Quick Protocols</h4>
+      <div class="e-protocol-item">
+        <div class="e-label">🔥 Fire</div>
+        <p>Stop session. EVACUATE immediately. Leave materials. Nearest exit.</p>
+      </div>
+      <div class="e-protocol-item">
+        <div class="e-label">🌍 Earthquake</div>
+        <p>DROP, COVER, HOLD ON. Under desks. After: check damage, then decide.</p>
+      </div>
+      <div class="e-protocol-item">
+        <div class="e-label">🚨 Active Threat</div>
+        <p>RUN → HIDE (lock, lights off, silent) → FIGHT (last resort). Call 911 when safe.</p>
+      </div>
+      <div class="e-protocol-item">
+        <div class="e-label">🏥 Medical</div>
+        <p>Life-threatening = 911. Location: VPD LL102, 635 Downey Way, LA 90089. Stable = Brian + DPS.</p>
+      </div>
+      <div class="e-protocol-item">
+        <div class="e-label">⚡ Safety Escalation</div>
+        <p>Contact BOTH PhD Supervisor + Brian simultaneously. Don't wait for sequential response.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ CHECKLISTS PANEL ═══ -->
+<div class="cl-panel" id="clPanel">
+  <div class="cl-panel-bar">
+    <h2>✅ Checklists</h2>
+    <button class="cl-panel-close" id="clClose">✕ Close</button>
+  </div>
+  <div class="cl-panel-content">
+
+    <!-- Scope Tabs -->
+    <div class="cl-tabs">
+      <button class="cl-tab active" data-cl-tab="inperson"><span class="cl-tab-icon">🏢</span> In-Person Sessions</button>
+      <button class="cl-tab" data-cl-tab="online"><span class="cl-tab-icon">💻</span> Online Studies</button>
+    </div>
+
+    <!-- ═══ IN-PERSON TAB ═══ -->
+    <div class="cl-tab-content active" id="clTabInperson">
+    <div class="cl-intro">
+      <p>Tap items to check them off · Resets on page reload</p>
+    </div>
+    <div class="cl-progress">
+      <div class="cl-progress-track"><div class="cl-progress-fill" id="clProgressFill"></div></div>
+      <div class="cl-progress-text" id="clProgressText">0 / 21</div>
+    </div>
+
+    <div class="cl-section">
+      <div class="cl-section-head">
+        <span class="cl-badge before">§2</span>
+        <h3>🖥 Lab & Computer Setup</h3>
+        <span class="cl-when">30 min early</span>
+      </div>
+      <div class="cl-section-body">
+        <ul class="checklist" id="cl2-setup">
+          <li>Review Google Spreadsheet for this session's study order</li>
+          <li>Confirm you have PhD Supervisor's email + phone number</li>
+          <li>Power on all 16 computers individually</li>
+          <li>Log in via Cross Tech School View at Proctor/RA Desk</li>
+          <li>Log into SimpleTexting — keep Inbox tab open</li>
+          <li>Open study folders: VPD folder → Temp → [current week's folder]</li>
+          <li>Hide webcams if study doesn't use them</li>
+          <li>Print sign-up sheet Brian emailed to setup RA — verify it matches Google Spreadsheet</li>
+          <li>Write SONA IDs on Post-its — 2 per person (one for phone, one for station)</li>
+          <li>Stage materials for 16 stations — hide food/supplies under tables</li>
+        </ul>
+        <div class="cl-group-label hard">⬛ Verify Before Session</div>
+        <ul class="checklist" id="cl2-verify">
+          <li>VOIP phone working</li>
+          <li>Video doorbell active</li>
+          <li>Both emergency exits located</li>
+          <li>Card access works</li>
+          <li>SimpleTexting Inbox open</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="cl-section">
+      <div class="cl-section-head">
+        <span class="cl-badge checkin">§3</span>
+        <h3>🚪 Check-In</h3>
+        <span class="cl-when">5 min before hour</span>
+      </div>
+      <div class="cl-section-body">
+        <ul class="checklist" id="cl3-checkin">
+          <li>Go outside 5 min before the hour to greet arrivals</li>
+          <li>Confirm participants are here for MARKETING (not management)</li>
+          <li>Ask participants to find their 5- or 6-digit SONA ID from their reminder email</li>
+          <li>Remind participants to turn phones completely off</li>
+        </ul>
+        <div class="cl-group-label start">✔ At the Hour — For Each Participant</div>
+        <ul class="checklist" id="cl3-each">
+          <li>Ask for SONA ID → check them off the sign-up sheet</li>
+          <li>Collect phone — verify completely off → stick Post-it with ID on phone → wall pocket</li>
+          <li>Give second Post-it with ID for their station</li>
+          <li>Backpacks along back wall (water OK, no other food/drinks)</li>
+          <li>Assign random seat — separate friends</li>
+          <li>Tell them: "Don't touch the computer — everybody starts together"</li>
+        </ul>
+        <div class="cl-group-label hard">⬛ Door Close</div>
+        <ul class="checklist" id="cl3-close">
+          <li>Close door 5 min after the hour (or when done checking) — no one enters after</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="cl-section">
+      <div class="cl-section-head">
+        <span class="cl-badge session">§4</span>
+        <h3>📝 Session Start</h3>
+        <span class="cl-when">after script</span>
+      </div>
+      <div class="cl-section-body">
+        <div class="cl-group-label start">✔ Before first study begins</div>
+        <ul class="checklist" id="cl4-start">
+          <li>All participants have their 6-digit ID on Post-it</li>
+          <li>Headphones distributed (if applicable)</li>
+          <li>Participants ready to begin</li>
+          <li>Both RAs positioned and ready</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="cl-section">
+      <div class="cl-section-head">
+        <span class="cl-badge after">§5</span>
+        <h3>🏁 End-of-Session</h3>
+        <span class="cl-when">5 min before hour</span>
+      </div>
+      <div class="cl-section-body">
+        <ul class="checklist" id="cl5-end">
+          <li>Return phones from wall pockets</li>
+          <li>Dismiss participants</li>
+          <li>Close all study content, tabs, and surveys on every station</li>
+          <li>Collect Post-its from stations and phones</li>
+          <li>Complete all documentation in Google Spreadsheet before leaving</li>
+          <li>Clear cache on stations where participants didn't finish</li>
+          <li>Log out of SimpleTexting</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="cl-section">
+      <div class="cl-section-head">
+        <span class="cl-badge between">↻</span>
+        <h3>🔄 Between Sessions</h3>
+        <span class="cl-when">back-to-back shifts</span>
+      </div>
+      <div class="cl-section-body">
+        <ul class="checklist" id="cl-between">
+          <li>Restock materials / check supplies for next group</li>
+          <li>Reprint or update sign-up sheet if participant list changed</li>
+          <li>Re-open study folders if closed during cleanup</li>
+          <li>Write new Post-its with SONA IDs for next session's participants</li>
+          <li>Verify all stations are clear (no leftover tabs or data)</li>
+        </ul>
+      </div>
+    </div>
+
+    <button class="cl-reset" id="clReset">↻ Reset All Checklists</button>
+    </div><!-- /clTabInperson -->
+
+    <!-- ═══ ONLINE TAB ═══ -->
+    <div class="cl-tab-content" id="clTabOnline">
+      <div style="text-align:center;padding:48px 24px 56px;">
+        <div style="font-size:48px;margin-bottom:16px;">🚧</div>
+        <h3 style="font-size:18px;font-weight:700;color:var(--text);margin-bottom:8px;">Online Study Checklists</h3>
+        <p style="font-size:14px;color:var(--text-muted);max-width:340px;margin:0 auto 20px;">Procedures and checklists for online studies are currently being developed and will be added here once finalized.</p>
+        <div style="display:inline-flex;align-items:center;gap:8px;padding:8px 16px;background:#E3F2FD;border:1px solid #B8D4F0;border-radius:8px;font-size:13px;color:#1565C0;font-weight:600;">
+          <span>💻</span> Coming Soon
+        </div>
+      </div>
+    </div><!-- /clTabOnline -->
+
+  </div>
+</div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+(function() {
+
+  // ── EVENT DELEGATION ──
+  document.addEventListener('click', function(e) {
+    // Section headers (but not expand-all button)
+    var header = e.target.closest('.section-header');
+    if (header && !e.target.closest('.btn-expand-all')) {
+      header.closest('.section').classList.toggle('open');
+      return;
+    }
+
+    // Expand all / Collapse all
+    var expandBtn = e.target.closest('.btn-expand-all');
+    if (expandBtn) {
+      var section = expandBtn.closest('.section');
+      var cards = section.querySelectorAll('.card:not(.always-open)');
+      var allOpen = true;
+      for (var i = 0; i < cards.length; i++) {
+        if (!cards[i].classList.contains('open')) { allOpen = false; break; }
+      }
+      for (var j = 0; j < cards.length; j++) {
+        if (allOpen) cards[j].classList.remove('open');
+        else cards[j].classList.add('open');
+      }
+      expandBtn.textContent = allOpen ? '▸ Expand all' : '▾ Collapse all';
+      return;
+    }
+
+    // Card heads
+    var cardHead = e.target.closest('.card-head');
+    if (cardHead) {
+      var card = cardHead.closest('.card');
+      if (!card.classList.contains('always-open')) {
+        card.classList.toggle('open');
+      }
+      return;
+    }
+
+    // Help button
+    if (e.target.closest('.btn-emergency')) { openHelp(); return; }
+
+    // Help close
+    if (e.target.closest('.emergency-close')) { closeHelp(); return; }
+
+    // Overlay
+    if (e.target.id === 'overlay') { closeHelp(); return; }
+
+    // Search clear
+    if (e.target.closest('#searchClear')) { clearSearch(); return; }
+
+    // Back to top
+    if (e.target.closest('#btnTop')) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+
+    // Nav pills
+    var pill = e.target.closest('.nav-pill');
+    if (pill) {
+      e.preventDefault();
+      var href = pill.getAttribute('href');
+      var target = document.querySelector(href);
+      if (target) {
+        // If target is a card inside a section, open both
+        var parentSection = target.closest('.section');
+        if (parentSection) parentSection.classList.add('open');
+        if (target.classList.contains('card')) target.classList.add('open');
+        else target.classList.add('open');
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+      return;
+    }
+  });
+
+  // ── HELP PANEL ──
+  function openHelp() {
+    document.getElementById('emergencyPanel').classList.add('open');
+    document.getElementById('overlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeHelp() {
+    document.getElementById('emergencyPanel').classList.remove('open');
+    document.getElementById('overlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  // ── BACK TO TOP VISIBILITY + SEARCH BAR AUTO-HIDE ──
+  var btnTop = document.getElementById('btnTop');
+  var searchBar = document.querySelector('.search-bar');
+  var navPillsEl = document.getElementById('navPills');
+  var lastScrollY = 0;
+  var searchHidden = false;
+
+  window.addEventListener('scroll', function() {
+    var y = window.scrollY;
+
+    // Back to top
+    if (y > 400) btnTop.classList.add('visible');
+    else btnTop.classList.remove('visible');
+
+    // Auto-hide search on scroll down, show on scroll up
+    // Don't hide if user is actively searching or on desktop (sidebar nav)
+    var isDesktop = window.innerWidth >= 1100;
+    if (isDesktop || searchInput.value.trim().length > 0) {
+      if (searchHidden) {
+        searchBar.classList.remove('hidden');
+        if (!isDesktop) navPillsEl.style.top = '';
+        searchHidden = false;
+      }
+    } else if (y > 200 && y > lastScrollY + 5) {
+      // Scrolling down
+      if (!searchHidden) {
+        searchBar.classList.add('hidden');
+        if (!isDesktop) navPillsEl.style.top = '56px';
+        searchHidden = true;
+      }
+    } else if (y < lastScrollY - 5) {
+      // Scrolling up
+      if (searchHidden) {
+        searchBar.classList.remove('hidden');
+        if (!isDesktop) navPillsEl.style.top = '';
+        searchHidden = false;
+      }
+    }
+
+    lastScrollY = y;
+  }, { passive: true });
+
+  // ── NAV PILLS — active state + auto-scroll into view ──
+  var pills = document.querySelectorAll('.nav-pill');
+  var sectionEls = document.querySelectorAll('.section');
+  var scriptCard = document.getElementById('script');
+  var scheduleCard = document.getElementById('schedule');
+  var onlineSchedCard = document.getElementById('onlineSchedule');
+  var navBar = document.getElementById('navPills');
+  var lastActivePill = null;
+
+  function updateActivePill() {
+    var current = '';
+    var scriptActive = false;
+    var scheduleActive = false;
+    var onlineActive = false;
+    
+    // Check if schedule card is in view (it's above all sections)
+    if (scheduleCard) {
+      var scr = scheduleCard.getBoundingClientRect();
+      if (scr.top <= 220 && scr.bottom > 180) scheduleActive = true;
+    }
+
+    // Check if online schedule card is in view
+    if (onlineSchedCard) {
+      var olr = onlineSchedCard.getBoundingClientRect();
+      if (olr.top <= 220 && olr.bottom > 180) onlineActive = true;
+    }
+
+    // Check if script card is in view
+    if (scriptCard) {
+      var sr = scriptCard.getBoundingClientRect();
+      if (sr.top <= 220 && sr.bottom > 180) scriptActive = true;
+    }
+    
+    for (var i = 0; i < sectionEls.length; i++) {
+      var rect = sectionEls[i].getBoundingClientRect();
+      if (rect.top <= 180) current = sectionEls[i].id;
+    }
+    for (var j = 0; j < pills.length; j++) {
+      var href = pills[j].getAttribute('href');
+      var isActive;
+      if (href === '#schedule') {
+        isActive = scheduleActive && !onlineActive && !scriptActive;
+      } else if (href === '#onlineSchedule') {
+        isActive = onlineActive && !scheduleActive && !scriptActive;
+      } else if (href === '#script') {
+        isActive = scriptActive && !scheduleActive && !onlineActive;
+      } else {
+        isActive = href === '#' + current && !scriptActive && !scheduleActive && !onlineActive;
+      }
+      if (isActive) {
+        pills[j].classList.add('active');
+        if (pills[j] !== lastActivePill) {
+          lastActivePill = pills[j];
+          var pillRect = pills[j].getBoundingClientRect();
+          var navRect = navBar.getBoundingClientRect();
+          if (window.innerWidth >= 1100) {
+            // Sidebar mode: scroll vertically within sidebar
+            if (pillRect.top < navRect.top || pillRect.bottom > navRect.bottom) {
+              pills[j].scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+          } else if (pillRect.left < navRect.left || pillRect.right > navRect.right) {
+            pills[j].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+          }
+        }
+      } else {
+        pills[j].classList.remove('active');
+      }
+    }
+  }
+  window.addEventListener('scroll', updateActivePill, { passive: true });
+
+  // ── INJECT EXPAND-ALL BUTTONS + CARD COUNTS ──
+  var allSections = document.querySelectorAll('.section');
+  for (var s = 0; s < allSections.length; s++) {
+    var sec = allSections[s];
+    var toggleCards = sec.querySelectorAll('.card:not(.always-open)');
+    if (toggleCards.length > 1) {
+      // Expand all button — insert before chevron in header
+      var chevron = sec.querySelector('.section-chevron');
+      if (chevron) {
+        var btn = document.createElement('button');
+        btn.className = 'btn-expand-all';
+        btn.textContent = '▸ Expand all';
+        chevron.parentNode.insertBefore(btn, chevron);
+      }
+    }
+    // Card count badge
+    var allCards = sec.querySelectorAll('.card');
+    if (allCards.length > 0) {
+      var titleEl = sec.querySelector('.section-title h2');
+      if (titleEl) {
+        var badge = document.createElement('span');
+        badge.className = 'section-count';
+        badge.textContent = allCards.length;
+        titleEl.appendChild(badge);
+      }
+    }
+  }
+
+  // ── SEARCH ──
+  var searchInput = document.getElementById('searchInput');
+  var searchClear = document.getElementById('searchClear');
+  var mainContent = document.getElementById('mainContent');
+  var noResults = document.getElementById('noResults');
+  var searchCount = document.getElementById('searchCount');
+
+  // FIX: Track pre-search open states
+  var savedOpenState = null;
+  function saveOpenState() {
+    if (savedOpenState) return;
+    savedOpenState = { sections: [], cards: [] };
+    var ss = mainContent.querySelectorAll('.section');
+    for (var si = 0; si < ss.length; si++) savedOpenState.sections.push(ss[si].classList.contains('open'));
+    var cc = mainContent.querySelectorAll('.card:not(.always-open)');
+    for (var ci = 0; ci < cc.length; ci++) savedOpenState.cards.push(cc[ci].classList.contains('open'));
+  }
+  function restoreOpenState() {
+    if (!savedOpenState) return;
+    var ss = mainContent.querySelectorAll('.section');
+    for (var si = 0; si < ss.length; si++) { if (savedOpenState.sections[si]) ss[si].classList.add('open'); else ss[si].classList.remove('open'); }
+    var cc = mainContent.querySelectorAll('.card:not(.always-open)');
+    for (var ci = 0; ci < cc.length; ci++) { if (savedOpenState.cards[ci]) cc[ci].classList.add('open'); else cc[ci].classList.remove('open'); }
+    savedOpenState = null;
+  }
+
+  searchInput.addEventListener('input', function() {
+    var query = this.value.trim().toLowerCase();
+    if (query.length > 0) {
+      searchClear.classList.add('visible');
+    } else {
+      searchClear.classList.remove('visible');
+    }
+
+    if (query.length < 2) {
+      resetSearch();
+      return;
+    }
+    saveOpenState();
+
+    var anyVisible = false;
+    var matchCount = 0;
+    var sections = mainContent.querySelectorAll('.section');
+
+    // Handle standalone cards (e.g. #schedule) not inside a .section
+    var standaloneCards = mainContent.querySelectorAll(':scope > .card[data-search]');
+    for (var sc = 0; sc < standaloneCards.length; sc++) {
+      var sCard = standaloneCards[sc];
+      var sText = sCard.textContent.toLowerCase();
+      if (sText.indexOf(query) !== -1) {
+        sCard.style.display = '';
+        sCard.classList.add('open');
+        anyVisible = true;
+        matchCount++;
+      } else {
+        sCard.style.display = 'none';
+      }
+    }
+
+    for (var i = 0; i < sections.length; i++) {
+      var section = sections[i];
+      var cards = section.querySelectorAll('.card');
+      var sectionHasMatch = false;
+
+      for (var j = 0; j < cards.length; j++) {
+        var card = cards[j];
+        var text = card.textContent.toLowerCase();
+        if (text.indexOf(query) !== -1) {
+          card.style.display = '';
+          card.classList.add('open');
+          sectionHasMatch = true;
+          matchCount++;
+        } else {
+          card.style.display = 'none';
+        }
+      }
+
+      var headerText = section.querySelector('.section-header').textContent.toLowerCase();
+      if (headerText.indexOf(query) !== -1) sectionHasMatch = true;
+
+      if (sectionHasMatch) {
+        section.style.display = '';
+        section.classList.add('open');
+        anyVisible = true;
+      } else {
+        section.style.display = 'none';
+      }
+    }
+
+    noResults.style.display = anyVisible ? 'none' : 'block';
+    mainContent.style.display = anyVisible ? '' : 'none';
+
+    // Show search count
+    if (anyVisible) {
+      searchCount.textContent = matchCount + ' card' + (matchCount === 1 ? '' : 's') + ' found';
+      searchCount.classList.add('visible');
+    } else {
+      searchCount.classList.remove('visible');
+    }
+  });
+
+  function resetSearch() {
+    var sections = mainContent.querySelectorAll('.section');
+    for (var ri = 0; ri < sections.length; ri++) sections[ri].style.display = '';
+    var cards = mainContent.querySelectorAll('.card');
+    for (var rj = 0; rj < cards.length; rj++) cards[rj].style.display = '';
+    noResults.style.display = 'none';
+    mainContent.style.display = '';
+    searchCount.classList.remove('visible');
+    restoreOpenState();
+  }
+
+  function clearSearch() {
+    searchInput.value = '';
+    searchClear.classList.remove('visible');
+    resetSearch();
+    searchInput.focus();
+  }
+
+  // ── SESSION CLOCK ──
+  var clockEl = document.getElementById('sessionClock');
+  function updateClock() {
+    var now = new Date();
+    var h = now.getHours();
+    var m = now.getMinutes();
+    var ampm = h >= 12 ? 'PM' : 'AM';
+    h = h % 12 || 12;
+    clockEl.textContent = h + ':' + (m < 10 ? '0' : '') + m + ' ' + ampm;
+  }
+  updateClock();
+  setInterval(updateClock, 15000);
+
+  // ── INTERACTIVE CHECKLISTS ──
+  document.addEventListener('click', function(e) {
+    var li = e.target.closest('.checklist li');
+    if (li && !li.closest('.cl-panel')) {
+      li.classList.toggle('checked');
+      return;
+    }
+  });
+
+  // ── SCHEDULE: DUAL VIEW (BY LAB + MY SCHEDULE) ──
+  (function() {
+    var tabs = document.querySelectorAll('.lab-tab');
+    var panels = document.querySelectorAll('.lab-tab-panel');
+    var select = document.getElementById('raFilter');
+    var countEl = document.getElementById('raFilterCount');
+    var schedByLab = document.getElementById('schedByLab');
+    var schedMy = document.getElementById('schedMy');
+    var viewBtns = document.querySelectorAll('.sched-view-btn');
+    if (!select || !tabs.length) return;
+
+    // Lab metadata
+    var labMeta = {
+      1: { name: 'Lab 1', phd: 'Steve Carney', color: '#E03131' },
+      2: { name: 'Lab 2', phd: 'Maansi Dalmia', color: '#E8590C' },
+      3: { name: 'Lab 3', phd: 'Swaroop Poudel', color: '#2F9E44' },
+      4: { name: 'Lab 4', phd: 'Reyna Wang', color: '#7048E8' },
+      5: { name: 'Lab 5', phd: 'Minjeong Ko', color: '#0C8599' }
+    };
+
+    // Day name helper
+    var dayNames = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+    var monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    function fmtDate(d) {
+      return dayNames[d.getDay()] + ', ' + monthNames[d.getMonth()] + ' ' + d.getDate();
+    }
+
+    // ── Collect ALL shifts from DOM into a flat array ──
+    var allShifts = [];
+    for (var lab = 1; lab <= 5; lab++) {
+      var panel = document.getElementById('labPanel' + lab);
+      if (!panel) continue;
+      var rows = panel.querySelectorAll('tr[data-ra]');
+      for (var r = 0; r < rows.length; r++) {
+        var row = rows[r];
+        var tds = row.querySelectorAll('td');
+        var num = tds[0] ? tds[0].textContent.trim() : '';
+        var time = tds[1] ? tds[1].textContent.trim() : '';
+        var raStr = row.getAttribute('data-ra') || '';
+        var dateStr = row.getAttribute('data-date') || '';
+        var isSetup = num === 'SETUP';
+        allShifts.push({
+          lab: lab,
+          num: num,
+          time: time,
+          ras: raStr.split(',').map(function(s){return s.trim();}),
+          raStr: raStr,
+          date: dateStr,
+          dateObj: dateStr ? new Date(dateStr + 'T12:00:00') : null,
+          isSetup: isSetup
+        });
+      }
+    }
+
+    // Sort by date then time
+    allShifts.sort(function(a, b) {
+      if (a.date !== b.date) return a.date < b.date ? -1 : 1;
+      return a.time < b.time ? -1 : a.time > b.time ? 1 : 0;
+    });
+
+    // ── View toggle ──
+    var currentView = 'bylab';
+    for (var v = 0; v < viewBtns.length; v++) {
+      viewBtns[v].addEventListener('click', function() {
+        var view = this.getAttribute('data-view');
+        currentView = view;
+        for (var k = 0; k < viewBtns.length; k++) viewBtns[k].classList.remove('active');
+        this.classList.add('active');
+        if (view === 'bylab') {
+          schedByLab.classList.add('active');
+          schedMy.classList.remove('active');
+          var anyTabActive = document.querySelector('.lab-tab.active');
+          if (!anyTabActive && bylabPrompt) bylabPrompt.style.display = '';
+        } else {
+          schedByLab.classList.remove('active');
+          schedMy.classList.add('active');
+          // FIX: Removed auto-select — prompt stays if no RA chosen
+        }
+        applyFilter();
+      });
+    }
+
+    // ── Auto-switch: selecting an RA flips to My Schedule ──
+    select.addEventListener('change', function() {
+      if (select.value !== '' && currentView === 'bylab') {
+        // Auto-switch to My Schedule
+        currentView = 'my';
+        for (var k = 0; k < viewBtns.length; k++) viewBtns[k].classList.remove('active');
+        document.querySelector('.sched-view-btn[data-view="my"]').classList.add('active');
+        schedByLab.classList.remove('active');
+        schedMy.classList.add('active');
+      }
+      if (select.value === '' && currentView === 'my') {
+        // Switch back to By Lab
+        currentView = 'bylab';
+        for (var k = 0; k < viewBtns.length; k++) viewBtns[k].classList.remove('active');
+        document.querySelector('.sched-view-btn[data-view="bylab"]').classList.add('active');
+        schedByLab.classList.add('active');
+        schedMy.classList.remove('active');
+        // Show prompt if no lab tab is active
+        var anyTabActive = document.querySelector('.lab-tab.active');
+        if (!anyTabActive && bylabPrompt) bylabPrompt.style.display = '';
+      }
+      applyFilter();
+    });
+
+    // ── Tab switching ──
+    var bylabPrompt = document.getElementById('bylabPrompt');
+    for (var i = 0; i < tabs.length; i++) {
+      tabs[i].addEventListener('click', function() {
+        if (this.disabled) return;
+        for (var tj = 0; tj < tabs.length; tj++) tabs[tj].classList.remove('active');
+        for (var tp = 0; tp < panels.length; tp++) panels[tp].classList.remove('active');
+        this.classList.add('active');
+        var panel = document.getElementById('labPanel' + this.getAttribute('data-lab'));
+        if (panel) panel.classList.add('active');
+        if (bylabPrompt) bylabPrompt.style.display = 'none';
+        applyByLabFilter();
+      });
+    }
+
+    // ── Apply By Lab filter (existing behavior, cleaned up) ──
+    function applyByLabFilter() {
+      var name = select.value;
+      var activePanel = document.querySelector('.lab-tab-panel.active');
+      if (!activePanel) return;
+      var tables = activePanel.querySelectorAll('.schedule-table');
+      var dayLabels = activePanel.querySelectorAll('.schedule-day');
+
+      for (var t = 0; t < tables.length; t++) {
+        var rows = tables[t].querySelectorAll('tr[data-ra]');
+        var dayVisible = false;
+        for (var r = 0; r < rows.length; r++) {
+          var row = rows[r];
+          var ras = row.getAttribute('data-ra').split(',');
+          row.classList.remove('schedule-row-hidden', 'schedule-row-highlight');
+          if (name === '') {
+            dayVisible = true;
+          } else {
+            var match = false;
+            for (var a = 0; a < ras.length; a++) {
+              if (ras[a].trim() === name) { match = true; break; }
+            }
+            if (match) {
+              row.classList.add('schedule-row-highlight');
+              dayVisible = true;
+            } else {
+              row.classList.add('schedule-row-hidden');
+            }
+          }
+        }
+        if (dayLabels[t]) {
+          dayLabels[t].style.display = dayVisible || name === '' ? '' : 'none';
+        }
+      }
+    }
+
+    // ── Build My Schedule view ──
+    function buildMySchedule() {
+      var name = select.value;
+      if (!name) {
+        schedMy.innerHTML = '<div class="sched-empty"><div class="sched-empty-icon">👤</div><p>Select your name from the dropdown above<br>to see all your shifts across every lab.</p></div>';
+        countEl.textContent = '';
+        return;
+      }
+
+      // Filter shifts for this RA
+      var mine = allShifts.filter(function(s) {
+        return s.ras.indexOf(name) !== -1;
+      });
+
+      if (mine.length === 0) {
+        schedMy.innerHTML = '<div class="sched-empty"><div class="sched-empty-icon">📭</div><p><strong>' + name + '</strong> has no scheduled shifts.</p></div>';
+        countEl.textContent = 'No shifts';
+        return;
+      }
+
+      var today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      // Count stats
+      var sessionCount = 0, setupCount = 0, daySet = {};
+      for (var i = 0; i < mine.length; i++) {
+        if (mine[i].isSetup) setupCount++;
+        else sessionCount++;
+        if (mine[i].date) daySet[mine[i].date] = true;
+      }
+      var dayCount = Object.keys(daySet).length;
+      var labSet = {};
+      for (var i = 0; i < mine.length; i++) labSet[mine[i].lab] = true;
+      var labCount = Object.keys(labSet).length;
+
+      // Build HTML
+      var html = '';
+
+      // Summary bar
+      html += '<div class="sched-summary">';
+      html += '<div class="sched-stat"><strong>' + sessionCount + '</strong>sessions</div>';
+      html += '<div class="sched-stat"><strong>' + setupCount + '</strong>setups</div>';
+      html += '<div class="sched-stat"><strong>' + dayCount + '</strong>days</div>';
+      html += '<div class="sched-stat"><strong>' + labCount + '</strong>labs</div>';
+      html += '</div>';
+
+      // Group by date
+      var grouped = {};
+      var dateOrder = [];
+      for (var i = 0; i < mine.length; i++) {
+        var d = mine[i].date;
+        if (!grouped[d]) { grouped[d] = []; dateOrder.push(d); }
+        grouped[d].push(mine[i]);
+      }
+
+      var foundNext = false;
+      for (var di = 0; di < dateOrder.length; di++) {
+        var dateKey = dateOrder[di];
+        var shifts = grouped[dateKey];
+        var dateObj = shifts[0].dateObj;
+        var isPast = dateObj && dateObj < today;
+        var isNext = !isPast && !foundNext;
+        if (isNext) foundNext = true;
+
+        // Get lab for this date
+        var labNum = shifts[0].lab;
+        var meta = labMeta[labNum];
+
+        html += '<div class="sched-date-header"' + (isPast ? ' style="opacity:0.45;"' : '') + '>';
+        html += fmtDate(dateObj);
+        if (isNext) html += '<span class="sched-next-badge">NEXT</span>';
+        html += '<span class="sched-date-lab" style="background:' + meta.color + ';">' + meta.name + '</span>';
+        html += '</div>';
+
+        for (var si = 0; si < shifts.length; si++) {
+          var s = shifts[si];
+          var partner = s.ras.filter(function(r){return r !== name;}).join(', ');
+
+          html += '<div class="sched-shift' + (s.isSetup ? ' is-setup' : '') + '"' + (isPast ? ' style="opacity:0.45;"' : '') + '>';
+          html += '<span class="sched-shift-time">' + s.time + '</span>';
+          html += '<span class="sched-lab-badge lab-' + s.lab + '">' + (s.isSetup ? 'SETUP' : 'L' + s.lab + ' #' + s.num) + '</span>';
+          if (partner) {
+            html += '<span class="sched-shift-partner">w/ <strong>' + partner + '</strong></span>';
+          } else if (!s.isSetup) {
+            html += '<span class="sched-shift-partner" style="color:var(--text-muted);font-style:italic;">solo</span>';
+          }
+          html += '</div>';
+        }
+      }
+
+      schedMy.innerHTML = html;
+
+      // Update count
+      var parts = [];
+      if (sessionCount > 0) parts.push(sessionCount + ' session' + (sessionCount === 1 ? '' : 's'));
+      if (setupCount > 0) parts.push(setupCount + ' setup' + (setupCount === 1 ? '' : 's'));
+      parts.push(dayCount + ' day' + (dayCount === 1 ? '' : 's'));
+      countEl.textContent = parts.join(' · ');
+    }
+
+    // ── Master filter ──
+    function applyFilter() {
+      if (currentView === 'bylab') {
+        applyByLabFilter();
+        // Update count for by-lab view
+        var name = select.value;
+        if (!name) { countEl.textContent = ''; return; }
+        var activePanel = document.querySelector('.lab-tab-panel.active');
+        if (!activePanel) return;
+        var rows = activePanel.querySelectorAll('tr[data-ra]');
+        var ts = 0, ss = 0;
+        for (var r = 0; r < rows.length; r++) {
+          var ras = rows[r].getAttribute('data-ra').split(',');
+          var match = false;
+          for (var a = 0; a < ras.length; a++) { if (ras[a].trim() === name) { match = true; break; } }
+          if (match) {
+            if (rows[r].querySelector('td') && rows[r].querySelector('td').textContent === 'SETUP') ss++;
+            else ts++;
+          }
+        }
+        var p = [];
+        if (ts > 0) p.push(ts + ' session' + (ts===1?'':'s'));
+        if (ss > 0) p.push(ss + ' setup');
+        countEl.textContent = p.length > 0 ? p.join(' + ') : 'No shifts this lab';
+      } else {
+        buildMySchedule();
+      }
+    }
+
+    applyFilter();
+
+    // ── Summary table highlighting (past/next lab) ──
+    (function() {
+      var dates = [
+        new Date(2026, 1, 23),
+        new Date(2026, 2, 2),
+        new Date(2026, 3, 6),
+        new Date(2026, 3, 13),
+        new Date(2026, 3, 27)
+      ];
+      var table = document.querySelector('#schedule > .card-body > .ref-table');
+      if (!table) return;
+      var rows = table.querySelectorAll('tr');
+      var today = new Date();
+      today.setHours(0, 0, 0, 0);
+      var foundNext = false;
+      for (var i = 1; i < rows.length; i++) {
+        var sessionDate = dates[i - 1];
+        if (sessionDate < today) {
+          rows[i].classList.add('schedule-past');
+        } else if (!foundNext) {
+          rows[i].classList.add('schedule-next');
+          foundNext = true;
+        }
+      }
+    })();
+
+    // ── Online studies highlighting (past/next wave) ──
+    (function() {
+      var onlineTable = document.getElementById('onlineTable');
+      if (!onlineTable) return;
+      var rows = onlineTable.querySelectorAll('tr[data-online-date]');
+      var today = new Date();
+      today.setHours(0, 0, 0, 0);
+      var foundNext = false;
+      for (var i = 0; i < rows.length; i++) {
+        var dateStr = rows[i].getAttribute('data-online-date');
+        var d = new Date(dateStr + 'T12:00:00');
+        if (d < today) {
+          rows[i].classList.add('schedule-past');
+        } else if (!foundNext) {
+          rows[i].classList.add('schedule-next');
+          foundNext = true;
+        }
+      }
+    })();
+
+  })();
+
+  // ── CHECKLISTS PANEL ──
+  var clPanel = document.getElementById('clPanel');
+  var btnChecklists = document.getElementById('btnChecklists');
+  var clClose = document.getElementById('clClose');
+  var clProgressFill = document.getElementById('clProgressFill');
+  var clProgressText = document.getElementById('clProgressText');
+  var clReset = document.getElementById('clReset');
+  var clTabInperson = document.getElementById('clTabInperson');
+
+  function updateClProgress() {
+    var total = clTabInperson.querySelectorAll('.checklist li').length;
+    var checked = clTabInperson.querySelectorAll('.checklist li.checked').length;
+    var pct = Math.round((checked / total) * 100);
+    clProgressFill.style.width = pct + '%';
+    if (checked === total) {
+      clProgressText.textContent = '✓ All done!';
+      clProgressFill.style.background = 'linear-gradient(90deg, #1B6B3A, #2F9E44)';
+    } else {
+      clProgressText.textContent = checked + ' / ' + total;
+      clProgressFill.style.background = '';
+    }
+  }
+
+  // Checklist tab switching
+  var clTabs = clPanel.querySelectorAll('.cl-tab');
+  var clTabContents = clPanel.querySelectorAll('.cl-tab-content');
+  for (var ct = 0; ct < clTabs.length; ct++) {
+    clTabs[ct].addEventListener('click', function() {
+      var target = this.getAttribute('data-cl-tab');
+      for (var ci = 0; ci < clTabs.length; ci++) clTabs[ci].classList.remove('active');
+      for (var cj = 0; cj < clTabContents.length; cj++) clTabContents[cj].classList.remove('active');
+      this.classList.add('active');
+      var targetEl = document.getElementById('clTab' + target.charAt(0).toUpperCase() + target.slice(1));
+      if (targetEl) targetEl.classList.add('active');
+    });
+  }
+
+  btnChecklists.addEventListener('click', function() {
+    clPanel.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  });
+
+  clClose.addEventListener('click', function() {
+    clPanel.classList.remove('open');
+    document.body.style.overflow = '';
+  });
+
+  clPanel.addEventListener('click', function(e) {
+    var li = e.target.closest('.checklist li');
+    if (li && clPanel.contains(li)) {
+      li.classList.toggle('checked');
+      updateClProgress();
+    }
+  });
+
+  clReset.addEventListener('click', function() {
+    var items = clPanel.querySelectorAll('.checklist li.checked');
+    for (var i = 0; i < items.length; i++) {
+      items[i].classList.remove('checked');
+    }
+    updateClProgress();
+  });
+
+  // Escape closes panel
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && clPanel.classList.contains('open')) {
+      clPanel.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+  });
+
+  updateClProgress();
+
+  // ── DEEP LINK SUPPORT ──
+  function handleHash() {
+    var hash = window.location.hash;
+    if (hash && hash.length > 1) {
+      var target = document.querySelector(hash);
+      if (target) {
+        var parentSection = target.closest('.section');
+        if (parentSection) parentSection.classList.add('open');
+        if (target.classList.contains('card')) target.classList.add('open');
+        else if (target.classList.contains('section')) target.classList.add('open');
+        setTimeout(function() {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 100);
+      }
+    }
+  }
+  handleHash();
+  window.addEventListener('hashchange', handleHash);
+
+  // ── KEYBOARD SHORTCUTS ──
+  document.addEventListener('keydown', function(e) {
+    // Escape closes help panel
+    if (e.key === 'Escape') {
+      var panel = document.getElementById('emergencyPanel');
+      if (panel.classList.contains('open')) {
+        closeHelp();
+        return;
+      }
+      // Escape also clears search if focused
+      if (document.activeElement === searchInput && searchInput.value) {
+        clearSearch();
+        searchInput.blur();
+        return;
+      }
+    }
+    // "/" focuses search (when not already in an input)
+    if (e.key === '/' && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
+      e.preventDefault();
+      // Reveal search bar if hidden
+      if (searchHidden) {
+        searchBar.classList.remove('hidden');
+        if (window.innerWidth < 1100) navPillsEl.style.top = '';
+        searchHidden = false;
+      }
+      searchInput.focus();
+    }
+  });
+
+})();
+</script>
+
+</div><!-- /app-content -->
+
+<script>
+// ── PASSWORD GATE ──
+(function() {
+  var gate = document.getElementById('pwGate');
+  var app = document.getElementById('appContent');
+  var input = document.getElementById('pwInput');
+  var btn = document.getElementById('pwSubmit');
+  var hint = document.getElementById('pwHint');
+  var KEY = 'buad307_auth';
+
+  function unlock() {
+    gate.classList.add('unlocked');
+    app.classList.add('unlocked');
+    try { sessionStorage.setItem(KEY, '1'); } catch(e) {}
+  }
+
+  function attempt() {
+    if (input.value === 'Fighton!') {
+      unlock();
+    } else {
+      input.classList.add('pw-error');
+      hint.textContent = 'Incorrect password';
+      setTimeout(function() { input.classList.remove('pw-error'); }, 400);
+      input.select();
+    }
+  }
+
+  // Check if already authenticated this session
+  try {
+    if (sessionStorage.getItem(KEY) === '1') { unlock(); return; }
+  } catch(e) {}
+
+  btn.addEventListener('click', attempt);
+  input.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') attempt();
+    hint.textContent = '';
+  });
+  input.focus();
+})();
+</script>
+</body>
+</html>
