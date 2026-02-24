@@ -13,7 +13,7 @@
   position: fixed;
   inset: 0;
   z-index: 9999;
-  background: #990000;
+  background: var(--cardinal);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -33,14 +33,14 @@
   font-family: 'DM Sans', sans-serif;
   font-size: 18px;
   font-weight: 700;
-  color: #1A1714;
+  color: var(--text);
   margin-bottom: 6px;
   line-height: 1.3;
 }
 .pw-box .pw-sub {
   font-family: 'DM Sans', sans-serif;
   font-size: 13px;
-  color: #8A8379;
+  color: var(--text-muted);
   margin-bottom: 24px;
 }
 .pw-box input {
@@ -48,13 +48,13 @@
   font-family: 'DM Sans', sans-serif;
   font-size: 16px;
   padding: 12px 16px;
-  border: 2px solid #E2DFD8;
-  border-radius: 8px;
+  border: 2px solid var(--border);
+  border-radius: var(--radius-sm);
   outline: none;
   text-align: center;
   transition: border-color 0.15s;
 }
-.pw-box input:focus { border-color: #990000; }
+.pw-box input:focus { border-color: var(--cardinal); }
 .pw-box input.pw-error {
   border-color: #E03131;
   animation: pwShake 0.4s ease;
@@ -67,17 +67,17 @@
 .pw-box button {
   width: 100%;
   font-family: 'DM Sans', sans-serif;
-  font-size: 15px;
-  font-weight: 600;
+  font-size: 14px;
+  font-weight: 700;
   padding: 12px;
   margin-top: 12px;
-  background: #990000;
+  background: var(--cardinal);
   color: white;
-  border: none;
-  border-radius: 8px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
   cursor: pointer;
 }
-.pw-box button:active { background: #7a0000; }
+.pw-box button:active { background: var(--cardinal-dark); }
 .pw-box .pw-hint {
   font-size: 12px;
   color: #E03131;
@@ -174,7 +174,7 @@ body {
   font-size: 11px;
   font-weight: 500;
   opacity: 0.75;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.5px;
   text-transform: uppercase;
 }
 
@@ -186,10 +186,10 @@ body {
   font-family: 'DM Sans', sans-serif;
   font-size: 12px;
   font-weight: 700;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.5px;
   text-transform: uppercase;
   padding: 8px 14px;
-  border-radius: 6px;
+  border-radius: var(--radius-sm);
   cursor: pointer;
   white-space: nowrap;
   text-decoration: none;
@@ -202,10 +202,10 @@ body {
 
 .btn-checklist {
   font-family: 'DM Sans', sans-serif;
-  font-size: 12.5px;
-  font-weight: 600;
-  padding: 8px 12px;
-  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 8px 14px;
+  border-radius: var(--radius-sm);
   text-decoration: none;
   color: white;
   background: rgba(255,255,255,0.15);
@@ -246,7 +246,7 @@ body {
   color: white;
   background: rgba(255,255,255,0.15);
   border: 1px solid rgba(255,255,255,0.3);
-  border-radius: 6px;
+  border-radius: var(--radius-sm);
   padding: 5px 12px;
   cursor: pointer;
 }
@@ -375,7 +375,7 @@ body {
   color: var(--text-secondary);
   background: var(--surface);
   border: 1.5px solid var(--border);
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   cursor: pointer;
 }
 .cl-reset:active { background: var(--surface-alt); }
@@ -404,21 +404,24 @@ body {
 .search-input {
   width: 100%;
   padding: 10px 14px 10px 38px;
-  border: 1.5px solid var(--border);
-  border-radius: 8px;
+  border: none;
+  border-radius: var(--radius-sm);
   font-family: 'DM Sans', sans-serif;
   font-size: 15px;
-  background: var(--surface);
+  background: transparent;
   color: var(--text);
   outline: none;
-  transition: border-color 0.2s;
 }
-.search-input:focus { border-color: var(--cardinal); }
 .search-input::placeholder { color: var(--text-muted); }
 
 .search-wrap {
   position: relative;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  transition: border-color 0.2s;
 }
+.search-wrap:focus-within { border-color: var(--cardinal); }
 .search-wrap svg {
   position: absolute;
   left: 12px;
@@ -574,7 +577,7 @@ body {
   flex-shrink: 0;
   width: 36px;
   height: 36px;
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   background: var(--cardinal);
   color: white;
   font-family: 'JetBrains Mono', monospace;
@@ -630,7 +633,7 @@ body {
 
 .section-body {
   display: none;
-  padding: 4px 0 0;
+  padding: 6px 0 0;
   margin-left: 18px;
   padding-left: 14px;
   border-left: 2px solid var(--border-light);
@@ -696,7 +699,7 @@ body {
   gap: 4px;
   font-size: 11px;
   font-weight: 700;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.5px;
   text-transform: uppercase;
   padding: 3px 8px;
   border-radius: 4px;
@@ -753,7 +756,7 @@ body {
   font-weight: 700;
   font-size: 11px;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.5px;
   display: block;
   margin-bottom: 4px;
 }
@@ -771,7 +774,7 @@ body {
   font-weight: 700;
   font-size: 12px;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.5px;
   color: var(--cardinal);
   margin-bottom: 4px;
 }
@@ -821,7 +824,7 @@ body {
   font-size: 11px;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.5px;
   color: var(--text-muted);
   padding: 8px 10px;
   border-bottom: 2px solid var(--border);
@@ -842,7 +845,7 @@ body {
   color: rgba(255,255,255,0.85);
   background: rgba(255,255,255,0.12);
   padding: 4px 10px;
-  border-radius: 5px;
+  border-radius: 4px;
   white-space: nowrap;
   flex-shrink: 0;
   letter-spacing: 0.5px;
@@ -868,7 +871,7 @@ body {
   width: 20px;
   height: 20px;
   border: 2px solid var(--border);
-  border-radius: 5px;
+  border-radius: 4px;
   background: var(--surface);
   transition: all 0.15s;
 }
@@ -918,13 +921,132 @@ body {
 .btn-reveal { font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 4px; border: 1px solid var(--border); background: var(--surface-alt); color: var(--text-secondary); cursor: pointer; }
 .btn-reveal:hover { background: var(--border-light); }
 .phone-col-hidden .phone-col { display: none; }
-.btn-toggle-phones { font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 600; padding: 5px 12px; border-radius: 6px; border: 1px solid var(--border); background: var(--surface-alt); color: var(--text-secondary); cursor: pointer; margin-bottom: 10px; display: inline-flex; align-items: center; gap: 5px; }
+.btn-toggle-phones { font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 600; padding: 5px 12px; border-radius: var(--radius-sm); border: 1px solid var(--border); background: var(--surface-alt); color: var(--text-secondary); cursor: pointer; margin-bottom: 10px; display: inline-flex; align-items: center; gap: 5px; }
 .btn-toggle-phones:hover { background: var(--border-light); }
 
 /* ── PRINT STYLES ── */
+/* ── LIVE SESSION INDICATOR ── */
+.live-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  background: #E8F5E9;
+  border: 1px solid #A5D6A7;
+  border-radius: var(--radius-sm);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: #2E7D32;
+  white-space: nowrap;
+}
+.live-dot {
+  width: 8px;
+  height: 8px;
+  background: #2E7D32;
+  border-radius: 50%;
+  animation: livePulse 1.5s ease-in-out infinite;
+}
+@keyframes livePulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.8); }
+}
+.schedule-table tr.session-live td {
+  background: #E8F5E9 !important;
+  font-weight: 600;
+  position: relative;
+}
+.schedule-table tr.session-live td:first-child::before {
+  content: '● ';
+  color: #2E7D32;
+  font-size: 10px;
+}
+
+/* ── COPY LINK BUTTON ── */
+.btn-copy-link {
+  display: none;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  background: var(--surface);
+  border: 1px solid var(--border-light);
+  border-radius: 4px;
+  cursor: pointer;
+  white-space: nowrap;
+  margin-left: auto;
+  flex-shrink: 0;
+  transition: color 0.15s, border-color 0.15s;
+}
+.btn-copy-link:hover { color: var(--cardinal); border-color: var(--cardinal); }
+.btn-copy-link.copied { color: #2E7D32; border-color: #A5D6A7; }
+.card-head:hover .btn-copy-link,
+.section-header:hover .btn-copy-link { display: inline-flex; }
+@media (max-width: 600px) {
+  .btn-copy-link { display: none !important; } /* too small on mobile */
+
+  /* 1. Hide overview table on mobile — accordion headers have the same info */
+  #labOverviewTable,
+  #labOverviewTable + p { display: none !important; }
+
+  /* 2. Sticky RA filter on mobile */
+  #schedule > .card-body { overflow-x: visible; overflow: visible; } /* Allow sticky inside */
+  #schedule .schedule-table { display: block; overflow-x: auto; } /* Tables still scroll horizontally */
+  .schedule-filter {
+    position: sticky;
+    top: 56px; /* right below top-bar; search bar pushes it down when visible */
+    z-index: 50;
+    background: var(--surface);
+    margin: 0 -16px !important;
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--border-light);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+  }
+  .schedule-filter label { font-size: 12px; }
+  .schedule-filter select { max-width: none; font-size: 15px; padding: 10px 34px 10px 12px; }
+
+  /* 3. Stack accordion headers — 2 rows */
+  .lab-acc-head {
+    flex-wrap: wrap;
+    padding: 10px 14px;
+    gap: 4px 10px;
+  }
+  .lab-acc-label { font-size: 15px; }
+  .lab-acc-meta {
+    width: 100%;
+    order: 3;
+    font-size: 11.5px;
+    margin-top: -2px;
+  }
+  .lab-acc-badge { font-size: 9px; }
+  .lab-acc-chevron { position: absolute; right: 14px; top: 14px; }
+  .lab-acc-head { position: relative; padding-right: 38px; }
+
+  /* Slightly tighter accordion body on mobile */
+  .lab-acc-body { padding: 0 12px 12px; }
+  .lab-accordion { margin-top: 8px; }
+}
+
+/* ── LAST UPDATED BANNER ── */
+.last-updated-banner { animation: fadeSlideIn 0.4s ease; }
+@keyframes fadeSlideIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── GLOBAL EXPAND/COLLAPSE ── */
+.btn-expand-all-global:hover { background: var(--surface-alt); border-color: var(--text-muted); }
+.btn-expand-all-global:active { transform: scale(0.97); }
+
 @media print {
   .top-bar, .search-bar, .nav-pills, .btn-top, .btn-emergency,
-  .btn-expand-all, .section-chevron, .ch-chevron, .overlay, .emergency-panel { display: none !important; }
+  .btn-expand-all, .btn-expand-all-global, .btn-copy-link,
+  .section-chevron, .ch-chevron, .overlay, .emergency-panel,
+  .btn-checklist, .cl-panel, .last-updated-banner,
+  .live-indicator, .live-dot, #sessionClock { display: none !important; }
   body { padding: 0; background: white; font-size: 12px; }
   html { scroll-padding-top: 0; }
   .section, .section-body, .card, .card-body { display: block !important; }
@@ -935,11 +1057,32 @@ body {
   .callout { break-inside: avoid; }
   .lab-frame { break-inside: avoid; }
   .site-footer { padding-top: 20px; border-top: 1px solid #ccc; }
+  /* Print header */
+  .content::before {
+    content: 'MKT Subject Pool — Operations Hub · Spring 2026 · Printed ' attr(data-print-date);
+    display: block;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 12px 0;
+    border-bottom: 2px solid #990000;
+    margin-bottom: 12px;
+    color: #990000;
+  }
   a[href^="tel:"]::after { content: " (" attr(href) ")"; font-size: 10px; color: #666; }
   .sensitive-mask .real-value { display: inline !important; }
   .sensitive-mask .masked-value { display: none !important; }
   .btn-reveal, .btn-toggle-phones { display: none !important; }
   .phone-col-hidden .phone-col { display: table-cell !important; }
+  .schedule-table tr.session-live td { background: none !important; font-weight: normal; }
+  .schedule-table tr.session-live td:first-child::before { content: none; }
+  /* Page breaks */
+  .section { page-break-before: auto; }
+  .section-header { page-break-after: avoid; }
+  .card { page-break-inside: avoid; }
+  .ref-table { page-break-inside: avoid; }
+  /* Context banner stays but simplified */
+  .badge-scope { border: 1px solid #999; }
 }
 
 /* ── LAB LAYOUT ── */
@@ -979,7 +1122,7 @@ body {
   display: inline-block;
   padding: 2px 14px;
   background: var(--surface);
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   font-family: 'JetBrains Mono', monospace;
   font-size: 10px;
 }
@@ -1028,7 +1171,7 @@ body {
 .lab-cubicle {
   background: var(--surface);
   border: 1.5px solid var(--border);
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   padding: 10px 6px;
   text-align: center;
   transition: all 0.15s;
@@ -1062,7 +1205,7 @@ body {
   background: var(--cardinal);
   color: white;
   padding: 8px 28px;
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.3px;
@@ -1165,7 +1308,7 @@ body {
 .e-icon {
   width: 44px;
   height: 44px;
-  border-radius: 10px;
+  border-radius: var(--radius);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1191,7 +1334,7 @@ body {
   font-weight: 700;
   font-size: 13px;
   padding: 8px 14px;
-  border-radius: 6px;
+  border-radius: var(--radius-sm);
   text-decoration: none;
 }
 
@@ -1205,12 +1348,12 @@ body {
   font-weight: 700;
   margin-bottom: 10px;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.5px;
   opacity: 0.7;
 }
 .e-protocol-item {
   background: rgba(255,255,255,0.07);
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   padding: 12px 14px;
   margin-bottom: 8px;
 }
@@ -1279,7 +1422,7 @@ body {
   .content { padding: 0 24px; }
 
   .section-header { padding: 18px 22px; gap: 16px; }
-  .section-num { width: 40px; height: 40px; font-size: 15px; border-radius: 10px; }
+  .section-num { width: 40px; height: 40px; font-size: 15px; border-radius: var(--radius); }
   .section-title h2 { font-size: 20px; }
   .section-body { margin-left: 24px; padding-left: 18px; }
 
@@ -1291,9 +1434,6 @@ body {
   .ref-table th { padding: 10px 14px; }
   .ref-table td { padding: 12px 14px; }
 
-  /* Schedule — tabs don't need to wrap */
-  .lab-tabs { gap: 0; }
-  .lab-tab { padding: 10px 18px; font-size: 13.5px; }
 
   /* Lab layout scales up */
   .lab-cubicle { padding: 12px 8px; }
@@ -1303,40 +1443,67 @@ body {
 }
 
 @media (min-width: 1100px) {
-  /* ── SIDEBAR NAV LAYOUT ── */
+  /* ── TOP BAR: full-width, spans above sidebar ── */
+  .top-bar {
+    padding: 0;
+    box-shadow: none;
+    border-bottom: 3px solid var(--gold);
+    z-index: 102;
+  }
+  .top-bar-inner {
+    max-width: none;
+    margin-left: 200px;
+    padding: 18px 36px;
+  }
+  .top-bar h1 {
+    font-size: 20px;
+    letter-spacing: 0.02em;
+  }
+  .top-bar h1 small {
+    font-size: 11.5px;
+    margin-top: 3px;
+    opacity: 0.8;
+    letter-spacing: 0.06em;
+  }
+
+  /* ── SIDEBAR NAV: below top bar ── */
   .nav-pills {
     position: fixed;
-    top: 56px; /* below top-bar */
+    top: 0;
     left: 0;
     bottom: 0;
     width: 200px;
-    z-index: 98;
+    z-index: 101;
     overflow-x: hidden;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: thin;
+    scroll-behavior: smooth;
     border-bottom: none;
     border-right: 1px solid var(--border);
-    padding: 16px 12px;
+    padding: 0;
     white-space: normal;
     background: var(--surface);
     transition: none;
   }
   .nav-pills.hidden-by-search { transform: none; opacity: 1; pointer-events: auto; }
+
   .nav-pills-inner {
     flex-direction: column;
     align-items: stretch;
-    gap: 3px;
+    gap: 2px;
     max-width: none;
+    padding: 84px 10px 20px;
   }
   .nav-pill {
-    border-radius: 8px;
+    border-radius: var(--radius-sm);
     padding: 8px 12px;
     font-size: 13px;
     justify-content: flex-start;
     white-space: normal;
     border: 1px solid transparent;
     background: transparent;
+    transition: all 0.15s;
   }
   .nav-pill:hover {
     background: var(--surface-alt);
@@ -1348,6 +1515,48 @@ body {
     border-color: var(--border);
     color: var(--text);
     position: relative;
+  }
+  /* Override base filled-pill styles — sidebar uses accent bar, not fill */
+  .nav-pill[href="#schedule"].active,
+  .nav-pill[href="#schedule"]:hover,
+  .nav-pill[href="#onlineSchedule"].active,
+  .nav-pill[href="#onlineSchedule"]:hover,
+  .nav-pill[href="#onlineGuides"].active,
+  .nav-pill[href="#onlineGuides"]:hover,
+  .nav-pill[href="#s1"].active,
+  .nav-pill[href="#s1"]:hover,
+  .nav-pill[href="#s2"].active,
+  .nav-pill[href="#s2"]:hover,
+  .nav-pill[href="#s3"].active,
+  .nav-pill[href="#s3"]:hover,
+  .nav-pill[href="#s4"].active,
+  .nav-pill[href="#s4"]:hover,
+  .nav-pill[href="#script"].active,
+  .nav-pill[href="#script"]:hover,
+  .nav-pill[href="#s5"].active,
+  .nav-pill[href="#s5"]:hover,
+  .nav-pill[href="#s6"].active,
+  .nav-pill[href="#s6"]:hover,
+  .nav-pill[href="#sA"].active,
+  .nav-pill[href="#sA"]:hover,
+  .nav-pill[href="#sC"].active,
+  .nav-pill[href="#sC"]:hover {
+    background: var(--surface-alt);
+    border-color: transparent;
+  }
+  .nav-pill[href="#schedule"].active,
+  .nav-pill[href="#onlineSchedule"].active,
+  .nav-pill[href="#onlineGuides"].active,
+  .nav-pill[href="#s1"].active,
+  .nav-pill[href="#s2"].active,
+  .nav-pill[href="#s3"].active,
+  .nav-pill[href="#s4"].active,
+  .nav-pill[href="#script"].active,
+  .nav-pill[href="#s5"].active,
+  .nav-pill[href="#s6"].active,
+  .nav-pill[href="#sA"].active,
+  .nav-pill[href="#sC"].active {
+    border-color: var(--border);
   }
   .nav-pill.active::before {
     content: '';
@@ -1382,7 +1591,7 @@ body {
   .nav-pill[href="#sC"].active { color: #990033; }
   .nav-pill[href="#sC"].active::before { background: #990033; }
 
-  /* Hover colors still fill on hover */
+  /* Hover colors */
   .nav-pill[href="#schedule"]:hover { color: #C49A10; }
   .nav-pill[href="#onlineSchedule"]:hover { color: #1976D2; }
   .nav-pill[href="#onlineGuides"].active { color: #1976D2; }
@@ -1419,34 +1628,62 @@ body {
   }
   .nav-group-label:first-child { padding-top: 0; margin-top: 0; }
 
-  /* ── Push content right of sidebar ── */
-  .search-bar { margin-left: 200px; }
-  .content { margin-left: 200px; max-width: 860px; padding: 0 28px; }
-  #noResults { margin-left: 200px; }
-  .site-footer { margin-left: 200px; }
-
-  /* Remove the max-width centering — now left-aligned next to sidebar */
+  /* ── CONTENT AREA: wider, more spacious ── */
+  .search-bar { margin-left: 200px; padding: 10px 36px; background: white; border-bottom: 1px solid var(--border-light); top: 80px; }
   .search-bar-inner { max-width: none; }
+  .content {
+    margin-left: 200px;
+    max-width: 920px;
+    padding: 0 40px 60px;
+    background: white;
+    min-height: calc(100vh - 80px);
+    border-right: 1px solid var(--border-light);
+  }
+  #noResults { margin-left: 200px; max-width: 920px; padding: 40px; }
+  .site-footer { margin-left: 200px; }
   .top-bar-inner { max-width: none; }
 
-  /* ── Spacing & typography ── */
-  body { font-size: 15.5px; }
-  .top-bar h1 { font-size: 19px; }
-  .top-bar h1 small { font-size: 12px; }
-  .section-title h2 { font-size: 21px; }
+  /* ── TYPOGRAPHY: more website-like scale ── */
+  body { font-size: 15.5px; line-height: 1.65; background: #F5F4F2; }
+  .top-bar h1 { font-size: 20px; }
+  .top-bar h1 small { font-size: 11.5px; }
+  .section-title h2 { font-size: 22px; letter-spacing: 0.01em; }
   .card-head { font-size: 15.5px; }
 
+  /* ── SECTIONS: more breathing room, refined separators ── */
+  .section { margin-top: 32px; }
+  .section:first-child { margin-top: 20px; }
+  .section-header {
+    padding: 18px 22px;
+    border-radius: var(--radius);
+    transition: box-shadow 0.2s, transform 0.2s;
+  }
   .section-header:hover { box-shadow: var(--shadow-lg); transform: translateY(-1px); }
-  .section-header { transition: box-shadow 0.2s, transform 0.2s; }
-  .card { transition: box-shadow 0.2s; }
-  .card:hover { box-shadow: var(--shadow-md); }
+  .section-body { padding: 6px 0 0; }
+  .section-num { width: 40px; height: 40px; border-radius: var(--radius); font-size: 15px; }
 
-  .search-input { font-size: 15.5px; padding: 11px 16px 11px 40px; }
+  /* ── CARDS: more polish ── */
+  .card {
+    border-radius: var(--radius);
+    transition: box-shadow 0.2s, transform 0.15s;
+    margin-top: 12px;
+  }
+  .card:hover { box-shadow: var(--shadow-md); transform: translateY(-1px); }
+  .card-head { padding: 16px 22px; border-radius: var(--radius); }
+  .card-body { padding: 20px 26px; }
+
+  /* ── SEARCH: wider feel ── */
+  .search-input { font-size: 15.5px; padding: 12px 16px 12px 42px; border-radius: var(--radius); }
+  .search-wrap { border-radius: var(--radius); }
+
+  /* ── SCHEDULE: refined filter ── */
   .schedule-filter select { max-width: 260px; }
-  .sched-view-btn { padding: 10px 16px; font-size: 13.5px; }
-  .step { padding: 12px 0; gap: 14px; }
 
-  /* Emergency panel as centered modal */
+  /* ── STEPS: more generous layout ── */
+  .step { padding: 14px 0; gap: 16px; }
+  .step-num { width: 32px; height: 32px; font-size: 13px; }
+
+  /* ── EMERGENCY & CHECKLIST PANELS ── */
   .emergency-panel {
     left: 50%;
     right: auto;
@@ -1456,8 +1693,6 @@ body {
     max-height: 80vh;
   }
   .emergency-panel.open { transform: translate(-50%, 0); }
-
-  /* Checklists panel as right drawer */
   .cl-panel {
     left: auto;
     right: 0;
@@ -1466,28 +1701,67 @@ body {
     border-left: 1px solid var(--border);
   }
 
-  .pw-box { max-width: 400px; padding: 48px 40px; }
+  /* ── FOOTER: substantial, site-like ── */
+  .site-footer {
+    margin-left: 200px;
+    margin-top: 0;
+    padding: 32px 40px 20px;
+    border-top: 2px solid var(--border);
+    text-align: left;
+    font-size: 12px;
+    line-height: 1.8;
+    background: white;
+    max-width: 920px;
+    border-right: 1px solid var(--border-light);
+  }
 
-  /* Scroll offset: only top-bar + search-bar on desktop (no nav strip) */
-  html { scroll-padding-top: 115px; }
-  .card { scroll-margin-top: 115px; }
-  #schedule, #onlineSchedule { scroll-margin-top: 115px; }
+  /* ── PASSWORD GATE ── */
+  .pw-box { max-width: 420px; padding: 52px 44px; border-radius: 20px; }
+
+  /* Scroll offset: top-bar (80px) + search-bar (~46px) on desktop */
+  html { scroll-padding-top: 140px; }
+  .card, .section, .lab-accordion { scroll-margin-top: 140px; }
+  #schedule, #onlineSchedule, #onlineGuides { scroll-margin-top: 140px !important; }
+
+  /* ── CONTEXT LEGEND: inline at desktop width ── */
+  .last-updated-banner { border-radius: var(--radius-sm); }
+
+  /* ── ACCORDIONS: refined desktop feel ── */
+  .lab-accordion { border-radius: var(--radius); }
+  .lab-acc-head { padding: 14px 20px; }
+  .lab-acc-body { padding: 0 20px 20px; }
+
+  /* ── CONTACT CHIPS: desktop grid ── */
+  .contact-chip { max-width: 320px; }
+  .lab-contacts-strip { gap: 10px; padding: 14px; border-radius: var(--radius); }
+
+  /* ── CALLOUTS: refined ── */
+  .callout { border-radius: var(--radius); }
+
+  /* ── REF TABLES: refined ── */
+  .ref-table { border-radius: var(--radius-sm); overflow: hidden; }
 }
 
 @media (min-width: 1400px) {
-  .nav-pills { width: 230px; padding: 18px 14px; }
+  .nav-pills { width: 240px; padding: 0; }
+  .nav-pills-inner { padding: 88px 12px 20px; }
   .nav-pill { padding: 9px 14px; font-size: 13.5px; }
 
-  .search-bar { margin-left: 230px; }
-  .content { margin-left: 230px; max-width: 960px; padding: 0 36px; }
-  #noResults { margin-left: 230px; }
-  .site-footer { margin-left: 230px; }
+  .top-bar-inner { margin-left: 240px; padding: 20px 48px; }
+  .top-bar h1 { font-size: 22px; }
 
-  .top-bar { padding: 16px 32px; }
-  .search-bar { padding: 12px 32px; }
+  .search-bar { margin-left: 240px; padding: 12px 48px; }
+  .content { margin-left: 240px; max-width: 1000px; padding: 0 48px 80px; border-right: 1px solid var(--border-light); }
+  #noResults { margin-left: 240px; max-width: 1000px; }
+  .site-footer { margin-left: 240px; padding: 36px 48px 24px; max-width: 1000px; }
 
-  .section-header { padding: 20px 24px; }
-  .card-body { padding: 20px 28px; }
+  .section { margin-top: 36px; }
+  .section-header { padding: 20px 26px; }
+  .card-body { padding: 22px 30px; }
+  .card-head { padding: 18px 26px; }
+
+  body { font-size: 16px; }
+  .section-title h2 { font-size: 23px; }
 
   .cl-panel { width: 560px; }
 }
@@ -1567,225 +1841,219 @@ body {
   color: var(--text-muted);
   background: var(--surface-alt);
   border: 1px solid var(--border-light);
-  border-radius: 10px;
+  border-radius: 4px;
   padding: 1px 7px;
   margin-left: 6px;
   flex-shrink: 0;
 }
 
-/* ── SCHEDULE VIEW TOGGLE ── */
-.sched-views {
-  display: flex;
-  gap: 0;
-  margin-bottom: 16px;
+/* (Schedule view toggle removed — using accordion layout) */
+
+/* (My Schedule view removed — using RA highlight instead) */
+
+/* ── LAB ACCORDIONS ── */
+.lab-accordion {
   border: 1.5px solid var(--border);
-  border-radius: 8px;
+  border-radius: var(--radius);
+  margin-top: 12px;
   overflow: hidden;
-  background: var(--surface-alt);
+  transition: box-shadow 0.2s;
+  scroll-margin-top: 150px;
 }
-.sched-view-btn {
-  flex: 1;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 13px;
-  font-weight: 600;
-  padding: 9px 12px;
-  border: none;
-  background: none;
-  color: var(--text-muted);
-  cursor: pointer;
-  transition: all 0.15s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-}
-.sched-view-btn:first-child { border-right: 1.5px solid var(--border); }
-.sched-view-btn.active {
-  background: var(--cardinal);
-  color: white;
-}
-.sched-view-btn:not(.active):hover {
-  background: var(--border-light);
-  color: var(--text);
-}
-
-/* ── MY SCHEDULE VIEW ── */
-.sched-my { display: none; }
-.sched-my.active { display: block; }
-.sched-bylab { display: none; }
-.sched-bylab.active { display: block; }
-
-.sched-summary {
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-  margin-bottom: 16px;
-  padding: 12px 14px;
-  background: var(--surface-alt);
-  border: 1px solid var(--border-light);
-  border-radius: var(--radius-sm);
-}
-.sched-stat {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text-secondary);
-}
-.sched-stat strong {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 18px;
-  font-weight: 700;
-  color: var(--cardinal);
-  display: block;
-  line-height: 1.1;
-}
-
-.sched-date-header {
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--text-secondary);
-  padding: 14px 0 6px;
-  border-bottom: 1.5px solid var(--border);
-  margin-bottom: 8px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.sched-date-header:first-child { padding-top: 0; }
-.sched-date-header .sched-date-lab {
-  font-size: 11px;
-  font-weight: 700;
-  padding: 2px 8px;
-  border-radius: 4px;
-  color: white;
-  margin-left: auto;
-}
-.sched-date-count {
-  font-size: 11px;
-  font-weight: 500;
-  color: var(--text-muted);
-  margin-left: auto;
-}
-
-.sched-shift {
+.lab-accordion:hover { box-shadow: var(--shadow-sm); }
+.lab-accordion.lab-current { border-color: var(--cardinal); border-width: 2px; }
+.lab-accordion.lab-past { opacity: 0.55; }
+.lab-accordion.lab-past:hover { opacity: 0.8; }
+.lab-acc-head {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 8px 10px;
-  margin-bottom: 4px;
-  border-radius: var(--radius-sm);
-  background: var(--surface);
-  border: 1px solid var(--border-light);
-  transition: border-color 0.15s;
-}
-.sched-shift:hover { border-color: var(--border); }
-.sched-shift.is-setup {
-  background: var(--surface-alt);
-  border-style: dashed;
-  opacity: 0.7;
-}
-
-.sched-shift-time {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 12px;
-  font-weight: 500;
-  color: var(--text-secondary);
-  min-width: 120px;
-  flex-shrink: 0;
-}
-@media (max-width: 420px) {
-  .sched-shift-time { min-width: 95px; font-size: 11px; }
-}
-
-.sched-lab-badge {
-  font-size: 10px;
-  font-weight: 700;
-  padding: 2px 7px;
-  border-radius: 4px;
-  color: white;
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-.sched-lab-badge.lab-1 { background: #E03131; }
-.sched-lab-badge.lab-2 { background: #E8590C; }
-.sched-lab-badge.lab-3 { background: #2F9E44; }
-.sched-lab-badge.lab-4 { background: #7048E8; }
-.sched-lab-badge.lab-5 { background: #0C8599; }
-
-.sched-shift-num {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--text-muted);
-  min-width: 18px;
-}
-
-.sched-shift-partner {
-  font-size: 12.5px;
-  color: var(--text-secondary);
-  flex: 1;
-  text-align: right;
-}
-.sched-shift-partner strong { font-weight: 600; color: var(--text); }
-
-.sched-empty {
-  text-align: center;
-  padding: 32px 20px;
-  color: var(--text-muted);
-}
-.sched-empty .sched-empty-icon {
-  font-size: 32px;
-  margin-bottom: 8px;
-  opacity: 0.4;
-}
-.sched-empty p { font-size: 14px; }
-.sched-empty p strong { color: var(--text-secondary); }
-
-.sched-next-badge {
-  font-size: 10px;
-  font-weight: 700;
-  padding: 1px 6px;
-  border-radius: 3px;
-  background: #FFF3CD;
-  color: #856404;
-  border: 1px solid #FFE69C;
-  margin-left: 6px;
-}
-
-/* ── LAB TABS ── */
-.lab-tabs {
-  display: flex;
-  gap: 0;
-  margin-top: 18px;
-  border-bottom: 2px solid var(--border);
-}
-.lab-tab {
-  font-family: 'DM Sans', sans-serif;
-  font-size: 13px;
-  font-weight: 600;
-  padding: 8px 14px;
-  background: none;
-  border: none;
-  border-bottom: 2.5px solid transparent;
-  color: var(--text-muted);
+  padding: 12px 16px;
   cursor: pointer;
-  margin-bottom: -2px;
-  transition: color 0.15s, border-color 0.15s;
+  background: var(--surface);
+  transition: background 0.15s;
+  user-select: none;
+}
+.lab-acc-head:hover { background: var(--surface-alt); }
+.lab-accordion.lab-current > .lab-acc-head {
+  background: linear-gradient(135deg, #FFF8E1, #FFFDF5);
+}
+.lab-acc-label {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+}
+.lab-acc-meta {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+.lab-acc-badge {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: 4px;
   white-space: nowrap;
 }
-.lab-tab:hover { color: var(--text-secondary); }
-.lab-tab.active {
-  color: var(--cardinal);
-  border-bottom-color: var(--cardinal);
-}
-.lab-tab .tab-date {
-  font-size: 11px;
-  font-weight: 400;
+.lab-acc-badge.this-week { background: #E8F5E9; color: #2E7D32; border: 1px solid #A5D6A7; }
+.lab-acc-badge.next-up { background: #E3F2FD; color: #1565C0; border: 1px solid #90CAF9; }
+.lab-acc-badge.completed { background: var(--surface-alt); color: var(--text-muted); border: 1px solid var(--border-light); }
+.lab-acc-chevron {
+  margin-left: auto;
+  width: 20px;
+  height: 20px;
   color: var(--text-muted);
-  margin-left: 4px;
+  transition: transform 0.2s;
+  flex-shrink: 0;
 }
-.lab-tab.active .tab-date { color: var(--cardinal); opacity: 0.7; }
-.lab-tab-panel { display: none; padding-top: 12px; }
-.lab-tab-panel.active { display: block; }
+.lab-accordion.open > .lab-acc-head > .lab-acc-chevron { transform: rotate(180deg); }
+.lab-acc-body {
+  display: none;
+  padding: 0 16px 16px;
+  border-top: 1px solid var(--border-light);
+}
+.lab-accordion.open > .lab-acc-body { display: block; }
+/* RA highlight */
+/* ── Quick Contact Strip ── */
+.lab-contacts-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 7px 14px;
+  margin: 12px 0 8px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  color: white;
+  background: var(--cardinal);
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.lab-contacts-toggle:hover { background: var(--cardinal-dark); }
+.lab-contacts-toggle:active { transform: scale(0.97); }
+.lab-contacts-strip {
+  display: none;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 12px;
+  margin-bottom: 12px;
+  background: #F5F5F5;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+}
+.lab-contacts-strip.open { display: flex; }
+.contact-chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  background: white;
+  border: 1.5px solid #D0D0D0;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  flex: 1;
+  min-width: 180px;
+  max-width: 280px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+}
+.contact-chip-name {
+  font-weight: 700;
+  color: #1A1A1A;
+  white-space: nowrap;
+  font-size: 13px;
+}
+.contact-chip-role {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 2px 6px;
+  border-radius: 3px;
+  white-space: nowrap;
+}
+.contact-chip-role.phd { background: #1565C0; color: white; }
+.contact-chip-role.ra { background: #6A1B9A; color: white; }
+.contact-chip-links {
+  margin-left: auto;
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+}
+.contact-chip-links a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: var(--radius-sm);
+  font-size: 15px;
+  text-decoration: none;
+  transition: all 0.15s;
+  border: 1.5px solid transparent;
+}
+.contact-chip-links a.chip-phone { background: #2E7D32; color: white; }
+.contact-chip-links a.chip-phone:hover { background: #1B5E20; }
+.contact-chip-links a.chip-email { background: #1565C0; color: white; }
+.contact-chip-links a.chip-email:hover { background: #0D47A1; }
+
+.schedule-table tr.ra-highlight td {
+  background: #FFF3C4 !important;
+  font-weight: 700;
+  color: var(--text) !important;
+  font-style: normal !important;
+}
+.schedule-table tr.ra-highlight td:first-child {
+  box-shadow: inset 3px 0 0 #E6A817;
+}
+/* Dim non-matching rows when filter is active */
+.schedule-table.ra-filtering tr[data-ra]:not(.ra-highlight) td {
+  opacity: 0.35;
+}
+.schedule-table.ra-filtering tr[data-ra]:not(.ra-highlight) td:first-child {
+  box-shadow: none;
+}
+/* Shift count badge next to filter */
+.ra-filter-count-active {
+  background: #FFF3C4;
+  border: 1px solid #E6A817;
+  border-radius: 4px;
+  padding: 2px 8px;
+  font-weight: 700;
+  color: #8B6914;
+}
+/* Clickable overview rows */
+#labOverviewTable tr[data-jump-lab]:hover td {
+  background: var(--surface-alt);
+  color: var(--cardinal);
+  transition: background 0.15s, color 0.15s;
+}
+#labOverviewTable tr[data-jump-lab] td:first-child strong {
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  transition: text-decoration-color 0.15s;
+}
+#labOverviewTable tr[data-jump-lab]:hover td:first-child strong {
+  text-decoration-color: var(--cardinal);
+}
+/* Overview table badges */
+.lab-overview-badge {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+#labOverviewTable th:last-child, #labOverviewTable td:last-child {
+  text-align: right;
+  width: 90px;
+}
 
 /* ── SCHEDULE FILTER ── */
 .schedule-filter {
@@ -1806,7 +2074,7 @@ body {
   font-size: 14px;
   padding: 6px 30px 6px 10px;
   border: 1.5px solid var(--border);
-  border-radius: 6px;
+  border-radius: var(--radius-sm);
   background: var(--surface);
   color: var(--text);
   cursor: pointer;
@@ -1824,21 +2092,6 @@ body {
   font-size: 12px;
   color: var(--text-muted);
   font-weight: 500;
-}
-.schedule-row-hidden { display: none; }
-.schedule-row-highlight td { background: #FFF8E1 !important; font-weight: 600; }
-.ref-table tr.schedule-next {
-  background: #FFF8E1;
-  font-weight: 600;
-}
-.ref-table tr.schedule-next td:first-child::before {
-  content: '▶ ';
-  color: #C49A10;
-  font-size: 11px;
-}
-.ref-table tr.schedule-past td {
-  opacity: 0.45;
-  text-decoration: line-through;
 }
 .table-wrap {
   overflow-x: auto;
@@ -1860,6 +2113,9 @@ body {
   line-height: 1.6;
 }
 .site-footer strong { font-weight: 600; color: var(--text-secondary); }
+.footer-inner { display: flex; flex-direction: column; gap: 4px; }
+.footer-brand { font-weight: 500; }
+.footer-meta { font-size: 11px; }
 </style>
 </head>
 <body>
@@ -1936,16 +2192,21 @@ body {
 <!-- ═══ MAIN CONTENT ═══ -->
 <main class="content" id="mainContent">
 
-<!-- ═══ CONTEXT BANNER ═══ -->
-<div style="display:flex;gap:12px;flex-wrap:wrap;margin:16px 0 8px;font-size:13px;" data-search>
-  <div style="flex:1;min-width:220px;padding:12px 16px;background:linear-gradient(135deg,#FFF8E1,#FFFDF5);border:1px solid #F0E4B8;border-radius:var(--radius);display:flex;align-items:center;gap:10px;">
-    <span style="font-size:18px;">🏢</span>
-    <div><strong style="color:#7A6400;">In-Person Sessions</strong><br><span style="color:var(--text-muted);font-size:12px;">Schedules, procedures, guides &amp; policies (§1–§6)</span></div>
+<!-- ═══ LAST UPDATED + GLOBAL CONTROLS ═══ -->
+<div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin:12px 0 4px;font-size:12px;">
+  <div class="last-updated-banner" id="lastUpdated" style="display:inline-flex;align-items:center;gap:6px;padding:5px 12px;background:#FFF3E0;border:1px solid #FFCC80;border-radius:6px;color:#E65100;font-weight:600;">
+    <span>🔄</span> Updated Feb 23 — Lab 1 Tue schedule changed (Joseph → Bri & Atvika)
   </div>
-  <div style="flex:1;min-width:220px;padding:12px 16px;background:linear-gradient(135deg,#E3F2FD,#F5FAFF);border:1px solid #B8D4F0;border-radius:var(--radius);display:flex;align-items:center;gap:10px;">
-    <span style="font-size:18px;">💻</span>
-    <div><strong style="color:#1565C0;">Online Studies</strong><br><span style="color:var(--text-muted);font-size:12px;">Release schedule only — procedures coming soon</span></div>
-  </div>
+  <button class="btn-expand-all-global" id="btnExpandAllGlobal" style="padding:5px 12px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;color:var(--text-secondary);background:var(--surface);border:1.5px solid var(--border);border-radius:6px;cursor:pointer;white-space:nowrap;">
+    ↕ Expand All
+  </button>
+</div>
+
+<!-- ═══ CONTEXT LEGEND ═══ -->
+<div style="margin:12px 0 8px;padding:6px 12px;font-size:12px;color:var(--text-muted);display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
+  <span style="display:inline-flex;align-items:center;gap:4px;"><span style="width:10px;height:10px;background:#C49A10;border-radius:2px;display:inline-block;"></span> <strong style="color:var(--text-secondary);">In-Person</strong> — schedules, procedures &amp; guides (§1–§6)</span>
+  <span style="color:var(--border);">|</span>
+  <span style="display:inline-flex;align-items:center;gap:4px;"><span style="width:10px;height:10px;background:#1976D2;border-radius:2px;display:inline-block;"></span> <strong style="color:var(--text-secondary);">Online</strong> — schedule only, procedures coming soon</span>
 </div>
 
 <!-- ══════════════════════════════════════ -->
@@ -1957,218 +2218,230 @@ body {
     <svg class="ch-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
   </div>
   <div class="card-body">
-    <table class="ref-table">
-      <tr><th>Session</th><th>Date</th><th>PhD Supervisor</th></tr>
-      <tr><td><strong>Lab 1</strong></td><td>Week of Feb 23</td><td>Steve Carney</td></tr>
-      <tr><td><strong>Lab 2</strong></td><td>Week of Mar 2</td><td>Maansi Dalmia</td></tr>
-      <tr><td><strong>Lab 3</strong></td><td>Week of Apr 6</td><td>Swaroop Poudel</td></tr>
-      <tr><td><strong>Lab 4</strong></td><td>Week of Apr 13</td><td>Reyna Wang</td></tr>
-      <tr><td><strong>Lab 5</strong></td><td>Week of Apr 27</td><td>Minjeong Ko</td></tr>
+    <table class="ref-table" id="labOverviewTable">
+      <tr><th>Session</th><th>Date</th><th>PhD Supervisor</th><th></th></tr>
+      <tr data-jump-lab="1" style="cursor:pointer;"><td><strong>Lab 1</strong></td><td>Week of Feb 23</td><td>Steve Carney</td><td><span class="lab-overview-badge" data-badge-lab="1"></span></td></tr>
+      <tr data-jump-lab="2" style="cursor:pointer;"><td><strong>Lab 2</strong></td><td>Week of Mar 2</td><td>Maansi Dalmia</td><td><span class="lab-overview-badge" data-badge-lab="2"></span></td></tr>
+      <tr data-jump-lab="3" style="cursor:pointer;"><td><strong>Lab 3</strong></td><td>Week of Apr 6</td><td>Swaroop Poudel</td><td><span class="lab-overview-badge" data-badge-lab="3"></span></td></tr>
+      <tr data-jump-lab="4" style="cursor:pointer;"><td><strong>Lab 4</strong></td><td>Week of Apr 13</td><td>Reyna Wang</td><td><span class="lab-overview-badge" data-badge-lab="4"></span></td></tr>
+      <tr data-jump-lab="5" style="cursor:pointer;"><td><strong>Lab 5</strong></td><td>Week of Apr 27</td><td>Minjeong Ko</td><td><span class="lab-overview-badge" data-badge-lab="5"></span></td></tr>
     </table>
     <p style="font-size:12.5px;color:var(--text-muted);margin-top:8px;">The PhD Supervisor listed is your point of contact for that session's study prep, order, and credits.</p>
 
-    <!-- View Toggle + RA Filter Row -->
-    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:16px;">
-      <div class="sched-views" style="flex:none;width:auto;">
-        <button class="sched-view-btn active" data-view="bylab">📋 By Lab</button>
-        <button class="sched-view-btn" data-view="my">👤 My Schedule</button>
-      </div>
-      <div class="schedule-filter" style="margin:0;flex:1;min-width:180px;">
-        <label for="raFilter">RA:</label>
-        <select id="raFilter">
-          <option value="">Everyone</option>
-          <option value="Agustin">Agustin</option>
-          <option value="Alex">Alex</option>
-          <option value="Atvika">Atvika</option>
-          <option value="Joseph">Joseph</option>
-          <option value="Leia">Leia</option>
-          <option value="Lissa">Lissa</option>
-          <option value="Saumya">Saumya</option>
-        </select>
-        <span class="filter-count" id="raFilterCount"></span>
-      </div>
+    <!-- RA Filter -->
+    <div class="schedule-filter" style="margin-top:16px;">
+      <label for="raFilter">👤 Find my shifts:</label>
+      <select id="raFilter">
+        <option value="">Everyone</option>
+        <option value="Agustin">Agustin</option>
+        <option value="Alex">Alex</option>
+        <option value="Atvika">Atvika</option>
+        <option value="Bri">Bri</option>
+        <option value="Joseph">Joseph</option>
+        <option value="Leia">Leia</option>
+        <option value="Lissa">Lissa</option>
+        <option value="Saumya">Saumya</option>
+      </select>
+      <span class="filter-count" id="raFilterCount"></span>
     </div>
 
-    <!-- ═══ BY LAB VIEW ═══ -->
-    <div class="sched-bylab active" id="schedByLab">
-      <div class="lab-tabs" id="labTabs">
-        <button class="lab-tab" data-lab="1">Lab 1 <span class="tab-date">Wk of Feb 23</span></button>
-        <button class="lab-tab" data-lab="2">Lab 2 <span class="tab-date">Wk of Mar 2</span></button>
-        <button class="lab-tab" data-lab="3">Lab 3 <span class="tab-date">Wk of Apr 6</span></button>
-        <button class="lab-tab" data-lab="4">Lab 4 <span class="tab-date">Wk of Apr 13</span></button>
-        <button class="lab-tab" data-lab="5">Lab 5 <span class="tab-date">Wk of Apr 27</span></button>
-      </div>
-
-      <div class="sched-empty" id="bylabPrompt" style="padding:24px 20px;">
-        <div class="sched-empty-icon">📋</div>
-        <p>Select a lab above to view its session schedule.</p>
-      </div>
+    <!-- ═══ LAB ACCORDIONS ═══ -->
+    <div id="labAccordions">
 
       <!-- Lab 1 -->
-      <div class="lab-tab-panel" id="labPanel1">
-        <p style="font-weight:700;font-size:14px;margin-bottom:8px;">Steve Carney · 14 sessions · 2 days</p>
-        <p style="font-weight:600;font-size:13px;color:var(--text-secondary);margin-bottom:6px;" class="schedule-day">Tuesday, Feb 24</p>
-        <table class="ref-table schedule-table" style="font-size:13px;">
-          <tr><th>#</th><th>Time</th><th>RAs</th></tr>
-          <tr data-ra="Saumya" data-date="2026-02-24" style="background:var(--surface-alt);font-style:italic;color:var(--text-secondary);"><td>SETUP</td><td>8:30 – 9:00 AM</td><td>Saumya</td></tr>
-          <tr data-ra="Saumya,Joseph" data-date="2026-02-24"><td>1</td><td>9:00 – 10:00 AM</td><td>Saumya, Joseph</td></tr>
-          <tr data-ra="Saumya,Joseph" data-date="2026-02-24"><td>2</td><td>10:00 – 11:00 AM</td><td>Saumya, Joseph</td></tr>
-          <tr data-ra="Saumya,Joseph" data-date="2026-02-24"><td>3</td><td>11:00 – 12:00 PM</td><td>Saumya, Joseph</td></tr>
-          <tr data-ra="Saumya,Joseph" data-date="2026-02-24"><td>4</td><td>12:00 – 1:00 PM</td><td>Saumya, Joseph</td></tr>
-          <tr data-ra="Joseph" data-date="2026-02-24" style="background:var(--surface-alt);font-style:italic;color:var(--text-secondary);"><td>SETUP</td><td>1:30 – 2:00 PM</td><td>Joseph</td></tr>
-          <tr data-ra="Joseph,Atvika" data-date="2026-02-24"><td>5</td><td>2:00 – 3:00 PM</td><td>Joseph, Atvika</td></tr>
-          <tr data-ra="Joseph,Atvika" data-date="2026-02-24"><td>6</td><td>3:00 – 4:00 PM</td><td>Joseph, Atvika</td></tr>
-          <tr data-ra="Joseph,Atvika" data-date="2026-02-24"><td>7</td><td>4:00 – 5:00 PM</td><td>Joseph, Atvika</td></tr>
-        </table>
-        <p style="font-weight:600;font-size:13px;color:var(--text-secondary);margin:14px 0 6px;" class="schedule-day">Friday, Feb 27</p>
-        <table class="ref-table schedule-table" style="font-size:13px;">
-          <tr><th>#</th><th>Time</th><th>RAs</th></tr>
-          <tr data-ra="Agustin" data-date="2026-02-27" style="background:var(--surface-alt);font-style:italic;color:var(--text-secondary);"><td>SETUP</td><td>8:30 – 9:00 AM</td><td>Agustin</td></tr>
-          <tr data-ra="Agustin,Leia" data-date="2026-02-27"><td>8</td><td>9:00 – 10:00 AM</td><td>Agustin, Leia</td></tr>
-          <tr data-ra="Agustin,Leia" data-date="2026-02-27"><td>9</td><td>10:00 – 11:00 AM</td><td>Agustin, Leia</td></tr>
-          <tr data-ra="Agustin,Leia" data-date="2026-02-27"><td>10</td><td>11:00 – 12:00 PM</td><td>Agustin, Leia</td></tr>
-          <tr data-ra="Agustin,Leia" data-date="2026-02-27"><td>11</td><td>12:00 – 1:00 PM</td><td>Agustin, Leia</td></tr>
-          <tr data-ra="Agustin,Alex" data-date="2026-02-27"><td>12</td><td>1:00 – 2:00 PM</td><td>Agustin, Alex</td></tr>
-          <tr data-ra="Agustin,Alex" data-date="2026-02-27"><td>13</td><td>2:00 – 3:00 PM</td><td>Agustin, Alex</td></tr>
-          <tr data-ra="Agustin,Alex" data-date="2026-02-27"><td>14</td><td>3:00 – 4:00 PM</td><td>Agustin, Alex</td></tr>
-        </table>
+      <div class="lab-accordion lab-current open" data-lab="1" data-week-start="2026-02-23" data-week-end="2026-02-28">
+        <div class="lab-acc-head">
+          <span class="lab-acc-label">Lab 1</span>
+          <span class="lab-acc-meta">Wk of Feb 23 · Steve Carney · 14 sessions</span>
+          <span class="lab-acc-badge this-week" id="lab1Badge">This Week</span>
+          <svg class="lab-acc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+        <div class="lab-acc-body">
+          <p style="font-weight:600;font-size:13px;color:var(--text-secondary);margin:12px 0 6px;">Tuesday, Feb 24 <span style="font-size:11px;font-weight:700;padding:1px 6px;border-radius:4px;background:#FFF3E0;color:#E65100;border:1px solid #FFCC80;vertical-align:middle;margin-left:4px;">UPDATED</span></p>
+          <table class="ref-table schedule-table" style="font-size:13px;">
+            <tr><th>#</th><th>Time</th><th>RAs</th></tr>
+            <tr data-ra="Bri" data-date="2026-02-24" style="background:var(--surface-alt);font-style:italic;color:var(--text-secondary);"><td>SETUP</td><td>8:30 – 9:00 AM</td><td>Bri</td></tr>
+            <tr data-ra="Saumya,Bri" data-date="2026-02-24"><td>1</td><td>9:00 – 10:00 AM</td><td>Saumya, Bri</td></tr>
+            <tr data-ra="Saumya,Bri" data-date="2026-02-24"><td>2</td><td>10:00 – 11:00 AM</td><td>Saumya, Bri</td></tr>
+            <tr data-ra="Saumya,Atvika" data-date="2026-02-24"><td>3</td><td>11:00 – 12:00 PM</td><td>Saumya, Atvika</td></tr>
+            <tr data-ra="Saumya,Atvika" data-date="2026-02-24"><td>4</td><td>12:00 – 1:00 PM</td><td>Saumya, Atvika</td></tr>
+            <tr data-ra="Saumya,Atvika" data-date="2026-02-24"><td>5</td><td>1:00 – 2:00 PM</td><td>Saumya, Atvika</td></tr>
+            <tr data-ra="Saumya,Atvika" data-date="2026-02-24"><td>6</td><td>2:00 – 3:00 PM</td><td>Saumya, Atvika</td></tr>
+            <tr data-ra="Saumya,Atvika" data-date="2026-02-24"><td>7</td><td>3:00 – 4:00 PM</td><td>Saumya, Atvika</td></tr>
+          </table>
+          <p style="font-weight:600;font-size:13px;color:var(--text-secondary);margin:14px 0 6px;">Friday, Feb 27</p>
+          <table class="ref-table schedule-table" style="font-size:13px;">
+            <tr><th>#</th><th>Time</th><th>RAs</th></tr>
+            <tr data-ra="Agustin" data-date="2026-02-27" style="background:var(--surface-alt);font-style:italic;color:var(--text-secondary);"><td>SETUP</td><td>8:30 – 9:00 AM</td><td>Agustin</td></tr>
+            <tr data-ra="Agustin,Leia" data-date="2026-02-27"><td>8</td><td>9:00 – 10:00 AM</td><td>Agustin, Leia</td></tr>
+            <tr data-ra="Agustin,Leia" data-date="2026-02-27"><td>9</td><td>10:00 – 11:00 AM</td><td>Agustin, Leia</td></tr>
+            <tr data-ra="Agustin,Leia" data-date="2026-02-27"><td>10</td><td>11:00 – 12:00 PM</td><td>Agustin, Leia</td></tr>
+            <tr data-ra="Agustin,Leia" data-date="2026-02-27"><td>11</td><td>12:00 – 1:00 PM</td><td>Agustin, Leia</td></tr>
+            <tr data-ra="Agustin,Alex" data-date="2026-02-27"><td>12</td><td>1:00 – 2:00 PM</td><td>Agustin, Alex</td></tr>
+            <tr data-ra="Agustin,Alex" data-date="2026-02-27"><td>13</td><td>2:00 – 3:00 PM</td><td>Agustin, Alex</td></tr>
+            <tr data-ra="Agustin,Alex" data-date="2026-02-27"><td>14</td><td>3:00 – 4:00 PM</td><td>Agustin, Alex</td></tr>
+          </table>
+        </div>
       </div>
 
       <!-- Lab 2 -->
-      <div class="lab-tab-panel" id="labPanel2">
-        <p style="font-weight:700;font-size:14px;margin-bottom:8px;">Maansi Dalmia · 14 sessions · 3 days</p>
-        <p style="font-weight:600;font-size:13px;color:var(--text-secondary);margin-bottom:6px;" class="schedule-day">Monday, Mar 2</p>
-        <table class="ref-table schedule-table" style="font-size:13px;">
-          <tr><th>#</th><th>Time</th><th>RAs</th></tr>
-          <tr data-ra="Joseph" data-date="2026-03-02" style="background:var(--surface-alt);font-style:italic;color:var(--text-secondary);"><td>SETUP</td><td>10:30 – 11:00 AM</td><td>Joseph</td></tr>
-          <tr data-ra="Joseph,Agustin" data-date="2026-03-02"><td>1</td><td>11:00 – 12:00 PM</td><td>Joseph, Agustin</td></tr>
-          <tr data-ra="Joseph,Agustin" data-date="2026-03-02"><td>2</td><td>12:00 – 1:00 PM</td><td>Joseph, Agustin</td></tr>
-          <tr data-ra="Joseph,Agustin" data-date="2026-03-02"><td>3</td><td>1:00 – 2:00 PM</td><td>Joseph, Agustin</td></tr>
-          <tr data-ra="Joseph,Agustin" data-date="2026-03-02"><td>4</td><td>2:00 – 3:00 PM</td><td>Joseph, Agustin</td></tr>
-          <tr data-ra="Joseph,Agustin" data-date="2026-03-02"><td>5</td><td>3:00 – 4:00 PM</td><td>Joseph, Agustin</td></tr>
-          <tr data-ra="Joseph,Agustin" data-date="2026-03-02"><td>6</td><td>4:00 – 5:00 PM</td><td>Joseph, Agustin</td></tr>
-        </table>
-        <p style="font-weight:600;font-size:13px;color:var(--text-secondary);margin:14px 0 6px;" class="schedule-day">Tuesday, Mar 3</p>
-        <table class="ref-table schedule-table" style="font-size:13px;">
-          <tr><th>#</th><th>Time</th><th>RAs</th></tr>
-          <tr data-ra="Saumya" data-date="2026-03-03" style="background:var(--surface-alt);font-style:italic;color:var(--text-secondary);"><td>SETUP</td><td>11:30 – 12:00 PM</td><td>Saumya</td></tr>
-          <tr data-ra="Saumya,Alex" data-date="2026-03-03"><td>7</td><td>12:00 – 1:00 PM</td><td>Saumya, Alex</td></tr>
-        </table>
-        <p style="font-weight:600;font-size:13px;color:var(--text-secondary);margin:14px 0 6px;" class="schedule-day">Wednesday, Mar 4</p>
-        <table class="ref-table schedule-table" style="font-size:13px;">
-          <tr><th>#</th><th>Time</th><th>RAs</th></tr>
-          <tr data-ra="Agustin" data-date="2026-03-04" style="background:var(--surface-alt);font-style:italic;color:var(--text-secondary);"><td>SETUP</td><td>10:30 – 11:00 AM</td><td>Agustin</td></tr>
-          <tr data-ra="Agustin,Joseph" data-date="2026-03-04"><td>8</td><td>11:00 – 12:00 PM</td><td>Agustin, Joseph</td></tr>
-          <tr data-ra="Agustin,Joseph" data-date="2026-03-04"><td>9</td><td>12:00 – 1:00 PM</td><td>Agustin, Joseph</td></tr>
-          <tr data-ra="Agustin,Joseph" data-date="2026-03-04"><td>10</td><td>1:00 – 2:00 PM</td><td>Agustin, Joseph</td></tr>
-          <tr data-ra="Agustin,Joseph" data-date="2026-03-04"><td>11</td><td>2:00 – 3:00 PM</td><td>Agustin, Joseph</td></tr>
-          <tr data-ra="Agustin,Alex" data-date="2026-03-04"><td>12</td><td>3:00 – 4:00 PM</td><td>Agustin, Alex</td></tr>
-          <tr data-ra="Agustin,Alex" data-date="2026-03-04"><td>13</td><td>4:00 – 5:00 PM</td><td>Agustin, Alex</td></tr>
-          <tr data-ra="Agustin,Alex" data-date="2026-03-04"><td>14</td><td>5:00 – 6:00 PM</td><td>Agustin, Alex</td></tr>
-        </table>
+      <div class="lab-accordion" data-lab="2" data-week-start="2026-03-02" data-week-end="2026-03-07">
+        <div class="lab-acc-head">
+          <span class="lab-acc-label">Lab 2</span>
+          <span class="lab-acc-meta">Wk of Mar 2 · Maansi Dalmia · 14 sessions</span>
+          <span class="lab-acc-badge next-up" id="lab2Badge" style="display:none;">Next Up</span>
+          <svg class="lab-acc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+        <div class="lab-acc-body">
+          <p style="font-weight:600;font-size:13px;color:var(--text-secondary);margin:12px 0 6px;">Monday, Mar 2</p>
+          <table class="ref-table schedule-table" style="font-size:13px;">
+            <tr><th>#</th><th>Time</th><th>RAs</th></tr>
+            <tr data-ra="Joseph" data-date="2026-03-02" style="background:var(--surface-alt);font-style:italic;color:var(--text-secondary);"><td>SETUP</td><td>10:30 – 11:00 AM</td><td>Joseph</td></tr>
+            <tr data-ra="Joseph,Agustin" data-date="2026-03-02"><td>1</td><td>11:00 – 12:00 PM</td><td>Joseph, Agustin</td></tr>
+            <tr data-ra="Joseph,Agustin" data-date="2026-03-02"><td>2</td><td>12:00 – 1:00 PM</td><td>Joseph, Agustin</td></tr>
+            <tr data-ra="Joseph,Agustin" data-date="2026-03-02"><td>3</td><td>1:00 – 2:00 PM</td><td>Joseph, Agustin</td></tr>
+            <tr data-ra="Joseph,Agustin" data-date="2026-03-02"><td>4</td><td>2:00 – 3:00 PM</td><td>Joseph, Agustin</td></tr>
+            <tr data-ra="Joseph,Agustin" data-date="2026-03-02"><td>5</td><td>3:00 – 4:00 PM</td><td>Joseph, Agustin</td></tr>
+            <tr data-ra="Joseph,Agustin" data-date="2026-03-02"><td>6</td><td>4:00 – 5:00 PM</td><td>Joseph, Agustin</td></tr>
+          </table>
+          <p style="font-weight:600;font-size:13px;color:var(--text-secondary);margin:14px 0 6px;">Tuesday, Mar 3</p>
+          <table class="ref-table schedule-table" style="font-size:13px;">
+            <tr><th>#</th><th>Time</th><th>RAs</th></tr>
+            <tr data-ra="Saumya" data-date="2026-03-03" style="background:var(--surface-alt);font-style:italic;color:var(--text-secondary);"><td>SETUP</td><td>11:30 – 12:00 PM</td><td>Saumya</td></tr>
+            <tr data-ra="Saumya,Alex" data-date="2026-03-03"><td>7</td><td>12:00 – 1:00 PM</td><td>Saumya, Alex</td></tr>
+          </table>
+          <p style="font-weight:600;font-size:13px;color:var(--text-secondary);margin:14px 0 6px;">Wednesday, Mar 4</p>
+          <table class="ref-table schedule-table" style="font-size:13px;">
+            <tr><th>#</th><th>Time</th><th>RAs</th></tr>
+            <tr data-ra="Agustin" data-date="2026-03-04" style="background:var(--surface-alt);font-style:italic;color:var(--text-secondary);"><td>SETUP</td><td>10:30 – 11:00 AM</td><td>Agustin</td></tr>
+            <tr data-ra="Agustin,Joseph" data-date="2026-03-04"><td>8</td><td>11:00 – 12:00 PM</td><td>Agustin, Joseph</td></tr>
+            <tr data-ra="Agustin,Joseph" data-date="2026-03-04"><td>9</td><td>12:00 – 1:00 PM</td><td>Agustin, Joseph</td></tr>
+            <tr data-ra="Agustin,Joseph" data-date="2026-03-04"><td>10</td><td>1:00 – 2:00 PM</td><td>Agustin, Joseph</td></tr>
+            <tr data-ra="Agustin,Joseph" data-date="2026-03-04"><td>11</td><td>2:00 – 3:00 PM</td><td>Agustin, Joseph</td></tr>
+            <tr data-ra="Agustin,Alex" data-date="2026-03-04"><td>12</td><td>3:00 – 4:00 PM</td><td>Agustin, Alex</td></tr>
+            <tr data-ra="Agustin,Alex" data-date="2026-03-04"><td>13</td><td>4:00 – 5:00 PM</td><td>Agustin, Alex</td></tr>
+            <tr data-ra="Agustin,Alex" data-date="2026-03-04"><td>14</td><td>5:00 – 6:00 PM</td><td>Agustin, Alex</td></tr>
+          </table>
+        </div>
       </div>
 
       <!-- Lab 3 -->
-      <div class="lab-tab-panel" id="labPanel3">
-        <p style="font-weight:700;font-size:14px;margin-bottom:8px;">Swaroop Poudel · 14 sessions · 3 days</p>
-        <p style="font-weight:600;font-size:13px;color:var(--text-secondary);margin-bottom:6px;" class="schedule-day">Monday, Apr 6</p>
-        <table class="ref-table schedule-table" style="font-size:13px;">
-          <tr><th>#</th><th>Time</th><th>RAs</th></tr>
-          <tr data-ra="Agustin" data-date="2026-04-06" style="background:var(--surface-alt);font-style:italic;color:var(--text-secondary);"><td>SETUP</td><td>11:30 – 12:00 PM</td><td>Agustin</td></tr>
-          <tr data-ra="Joseph,Agustin" data-date="2026-04-06"><td>1</td><td>12:00 – 1:00 PM</td><td>Joseph, Agustin</td></tr>
-          <tr data-ra="Joseph,Agustin" data-date="2026-04-06"><td>2</td><td>1:00 – 2:00 PM</td><td>Joseph, Agustin</td></tr>
-        </table>
-        <p style="font-weight:600;font-size:13px;color:var(--text-secondary);margin:14px 0 6px;" class="schedule-day">Tuesday, Apr 7</p>
-        <table class="ref-table schedule-table" style="font-size:13px;">
-          <tr><th>#</th><th>Time</th><th>RAs</th></tr>
-          <tr data-ra="Saumya" data-date="2026-04-07" style="background:var(--surface-alt);font-style:italic;color:var(--text-secondary);"><td>SETUP</td><td>9:30 – 10:00 AM</td><td>Saumya</td></tr>
-          <tr data-ra="Saumya,Joseph" data-date="2026-04-07"><td>3</td><td>10:00 – 11:00 AM</td><td>Saumya, Joseph</td></tr>
-          <tr data-ra="Saumya,Joseph" data-date="2026-04-07"><td>4</td><td>11:00 – 12:00 PM</td><td>Saumya, Joseph</td></tr>
-          <tr data-ra="Saumya,Joseph" data-date="2026-04-07"><td>5</td><td>12:00 – 1:00 PM</td><td>Saumya, Joseph</td></tr>
-          <tr data-ra="Saumya" data-date="2026-04-07" style="background:var(--surface-alt);font-style:italic;color:var(--text-secondary);"><td>SETUP</td><td>2:30 – 3:00 PM</td><td>Saumya</td></tr>
-          <tr data-ra="Saumya,Atvika" data-date="2026-04-07"><td>6</td><td>3:00 – 4:00 PM</td><td>Saumya, Atvika</td></tr>
-          <tr data-ra="Saumya,Atvika" data-date="2026-04-07"><td>7</td><td>4:00 – 5:00 PM</td><td>Saumya, Atvika</td></tr>
-        </table>
-        <p style="font-weight:600;font-size:13px;color:var(--text-secondary);margin:14px 0 6px;" class="schedule-day">Wednesday, Apr 8</p>
-        <table class="ref-table schedule-table" style="font-size:13px;">
-          <tr><th>#</th><th>Time</th><th>RAs</th></tr>
-          <tr data-ra="Leia" data-date="2026-04-08" style="background:var(--surface-alt);font-style:italic;color:var(--text-secondary);"><td>SETUP</td><td>8:30 – 9:00 AM</td><td>Leia</td></tr>
-          <tr data-ra="Leia,Agustin" data-date="2026-04-08"><td>8</td><td>9:00 – 10:00 AM</td><td>Leia, Agustin</td></tr>
-          <tr data-ra="Leia,Agustin" data-date="2026-04-08"><td>9</td><td>10:00 – 11:00 AM</td><td>Leia, Agustin</td></tr>
-          <tr data-ra="Leia,Agustin" data-date="2026-04-08"><td>10</td><td>11:00 – 12:00 PM</td><td>Leia, Agustin</td></tr>
-          <tr data-ra="Leia,Agustin" data-date="2026-04-08"><td>11</td><td>12:00 – 1:00 PM</td><td>Leia, Agustin</td></tr>
-          <tr data-ra="Agustin,Alex" data-date="2026-04-08"><td>12</td><td>1:00 – 2:00 PM</td><td>Agustin, Alex</td></tr>
-          <tr data-ra="Agustin,Alex" data-date="2026-04-08"><td>13</td><td>2:00 – 3:00 PM</td><td>Agustin, Alex</td></tr>
-          <tr data-ra="Agustin,Alex" data-date="2026-04-08"><td>14</td><td>3:00 – 4:00 PM</td><td>Agustin, Alex</td></tr>
-        </table>
+      <div class="lab-accordion" data-lab="3" data-week-start="2026-04-06" data-week-end="2026-04-11">
+        <div class="lab-acc-head">
+          <span class="lab-acc-label">Lab 3</span>
+          <span class="lab-acc-meta">Wk of Apr 6 · Swaroop Poudel · 14 sessions</span>
+          <svg class="lab-acc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+        <div class="lab-acc-body">
+          <p style="font-weight:600;font-size:13px;color:var(--text-secondary);margin:12px 0 6px;">Monday, Apr 6</p>
+          <table class="ref-table schedule-table" style="font-size:13px;">
+            <tr><th>#</th><th>Time</th><th>RAs</th></tr>
+            <tr data-ra="Agustin" data-date="2026-04-06" style="background:var(--surface-alt);font-style:italic;color:var(--text-secondary);"><td>SETUP</td><td>11:30 – 12:00 PM</td><td>Agustin</td></tr>
+            <tr data-ra="Joseph,Agustin" data-date="2026-04-06"><td>1</td><td>12:00 – 1:00 PM</td><td>Joseph, Agustin</td></tr>
+            <tr data-ra="Joseph,Agustin" data-date="2026-04-06"><td>2</td><td>1:00 – 2:00 PM</td><td>Joseph, Agustin</td></tr>
+          </table>
+          <p style="font-weight:600;font-size:13px;color:var(--text-secondary);margin:14px 0 6px;">Tuesday, Apr 7</p>
+          <table class="ref-table schedule-table" style="font-size:13px;">
+            <tr><th>#</th><th>Time</th><th>RAs</th></tr>
+            <tr data-ra="Saumya" data-date="2026-04-07" style="background:var(--surface-alt);font-style:italic;color:var(--text-secondary);"><td>SETUP</td><td>9:30 – 10:00 AM</td><td>Saumya</td></tr>
+            <tr data-ra="Saumya,Joseph" data-date="2026-04-07"><td>3</td><td>10:00 – 11:00 AM</td><td>Saumya, Joseph</td></tr>
+            <tr data-ra="Saumya,Joseph" data-date="2026-04-07"><td>4</td><td>11:00 – 12:00 PM</td><td>Saumya, Joseph</td></tr>
+            <tr data-ra="Saumya,Joseph" data-date="2026-04-07"><td>5</td><td>12:00 – 1:00 PM</td><td>Saumya, Joseph</td></tr>
+            <tr data-ra="Saumya" data-date="2026-04-07" style="background:var(--surface-alt);font-style:italic;color:var(--text-secondary);"><td>SETUP</td><td>2:30 – 3:00 PM</td><td>Saumya</td></tr>
+            <tr data-ra="Saumya,Atvika" data-date="2026-04-07"><td>6</td><td>3:00 – 4:00 PM</td><td>Saumya, Atvika</td></tr>
+            <tr data-ra="Saumya,Atvika" data-date="2026-04-07"><td>7</td><td>4:00 – 5:00 PM</td><td>Saumya, Atvika</td></tr>
+          </table>
+          <p style="font-weight:600;font-size:13px;color:var(--text-secondary);margin:14px 0 6px;">Wednesday, Apr 8</p>
+          <table class="ref-table schedule-table" style="font-size:13px;">
+            <tr><th>#</th><th>Time</th><th>RAs</th></tr>
+            <tr data-ra="Leia" data-date="2026-04-08" style="background:var(--surface-alt);font-style:italic;color:var(--text-secondary);"><td>SETUP</td><td>8:30 – 9:00 AM</td><td>Leia</td></tr>
+            <tr data-ra="Leia,Agustin" data-date="2026-04-08"><td>8</td><td>9:00 – 10:00 AM</td><td>Leia, Agustin</td></tr>
+            <tr data-ra="Leia,Agustin" data-date="2026-04-08"><td>9</td><td>10:00 – 11:00 AM</td><td>Leia, Agustin</td></tr>
+            <tr data-ra="Leia,Agustin" data-date="2026-04-08"><td>10</td><td>11:00 – 12:00 PM</td><td>Leia, Agustin</td></tr>
+            <tr data-ra="Leia,Agustin" data-date="2026-04-08"><td>11</td><td>12:00 – 1:00 PM</td><td>Leia, Agustin</td></tr>
+            <tr data-ra="Agustin,Alex" data-date="2026-04-08"><td>12</td><td>1:00 – 2:00 PM</td><td>Agustin, Alex</td></tr>
+            <tr data-ra="Agustin,Alex" data-date="2026-04-08"><td>13</td><td>2:00 – 3:00 PM</td><td>Agustin, Alex</td></tr>
+            <tr data-ra="Agustin,Alex" data-date="2026-04-08"><td>14</td><td>3:00 – 4:00 PM</td><td>Agustin, Alex</td></tr>
+          </table>
+        </div>
       </div>
 
       <!-- Lab 4 -->
-      <div class="lab-tab-panel" id="labPanel4">
-        <p style="font-weight:700;font-size:14px;margin-bottom:8px;">Reyna Wang · 14 sessions · 2 days</p>
-        <p style="font-weight:600;font-size:13px;color:var(--text-secondary);margin-bottom:6px;" class="schedule-day">Tuesday, Apr 14</p>
-        <table class="ref-table schedule-table" style="font-size:13px;">
-          <tr><th>#</th><th>Time</th><th>RAs</th></tr>
-          <tr data-ra="Joseph" data-date="2026-04-14" style="background:var(--surface-alt);font-style:italic;color:var(--text-secondary);"><td>SETUP</td><td>8:30 – 9:00 AM</td><td>Joseph</td></tr>
-          <tr data-ra="Joseph,Saumya" data-date="2026-04-14"><td>1</td><td>9:00 – 10:00 AM</td><td>Joseph, Saumya</td></tr>
-          <tr data-ra="Joseph,Saumya" data-date="2026-04-14"><td>2</td><td>10:00 – 11:00 AM</td><td>Joseph, Saumya</td></tr>
-          <tr data-ra="Joseph,Saumya" data-date="2026-04-14"><td>3</td><td>11:00 – 12:00 PM</td><td>Joseph, Saumya</td></tr>
-          <tr data-ra="Joseph,Saumya" data-date="2026-04-14"><td>4</td><td>12:00 – 1:00 PM</td><td>Joseph, Saumya</td></tr>
-          <tr data-ra="Joseph,Saumya" data-date="2026-04-14"><td>5</td><td>1:00 – 2:00 PM</td><td>Joseph, Saumya</td></tr>
-          <tr data-ra="Joseph,Saumya" data-date="2026-04-14"><td>6</td><td>2:00 – 3:00 PM</td><td>Joseph, Saumya</td></tr>
-          <tr data-ra="Joseph,Saumya" data-date="2026-04-14"><td>7</td><td>3:00 – 4:00 PM</td><td>Joseph, Saumya</td></tr>
-        </table>
-        <p style="font-weight:600;font-size:13px;color:var(--text-secondary);margin:14px 0 6px;" class="schedule-day">Wednesday, Apr 15</p>
-        <table class="ref-table schedule-table" style="font-size:13px;">
-          <tr><th>#</th><th>Time</th><th>RAs</th></tr>
-          <tr data-ra="Leia" data-date="2026-04-15" style="background:var(--surface-alt);font-style:italic;color:var(--text-secondary);"><td>SETUP</td><td>8:30 – 9:00 AM</td><td>Leia</td></tr>
-          <tr data-ra="Leia,Agustin" data-date="2026-04-15"><td>8</td><td>9:00 – 10:00 AM</td><td>Leia, Agustin</td></tr>
-          <tr data-ra="Leia,Agustin" data-date="2026-04-15"><td>9</td><td>10:00 – 11:00 AM</td><td>Leia, Agustin</td></tr>
-          <tr data-ra="Leia,Agustin" data-date="2026-04-15"><td>10</td><td>11:00 – 12:00 PM</td><td>Leia, Agustin</td></tr>
-          <tr data-ra="Leia,Agustin" data-date="2026-04-15"><td>11</td><td>12:00 – 1:00 PM</td><td>Leia, Agustin</td></tr>
-          <tr data-ra="Agustin,Saumya" data-date="2026-04-15"><td>12</td><td>1:00 – 2:00 PM</td><td>Agustin, Saumya</td></tr>
-          <tr data-ra="Agustin,Saumya" data-date="2026-04-15"><td>13</td><td>2:00 – 3:00 PM</td><td>Agustin, Saumya</td></tr>
-          <tr data-ra="Agustin,Saumya" data-date="2026-04-15"><td>14</td><td>3:00 – 4:00 PM</td><td>Agustin, Saumya</td></tr>
-        </table>
+      <div class="lab-accordion" data-lab="4" data-week-start="2026-04-13" data-week-end="2026-04-18">
+        <div class="lab-acc-head">
+          <span class="lab-acc-label">Lab 4</span>
+          <span class="lab-acc-meta">Wk of Apr 13 · Reyna Wang · 14 sessions</span>
+          <svg class="lab-acc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+        <div class="lab-acc-body">
+          <p style="font-weight:600;font-size:13px;color:var(--text-secondary);margin:12px 0 6px;">Tuesday, Apr 14</p>
+          <table class="ref-table schedule-table" style="font-size:13px;">
+            <tr><th>#</th><th>Time</th><th>RAs</th></tr>
+            <tr data-ra="Joseph" data-date="2026-04-14" style="background:var(--surface-alt);font-style:italic;color:var(--text-secondary);"><td>SETUP</td><td>8:30 – 9:00 AM</td><td>Joseph</td></tr>
+            <tr data-ra="Joseph,Saumya" data-date="2026-04-14"><td>1</td><td>9:00 – 10:00 AM</td><td>Joseph, Saumya</td></tr>
+            <tr data-ra="Joseph,Saumya" data-date="2026-04-14"><td>2</td><td>10:00 – 11:00 AM</td><td>Joseph, Saumya</td></tr>
+            <tr data-ra="Joseph,Saumya" data-date="2026-04-14"><td>3</td><td>11:00 – 12:00 PM</td><td>Joseph, Saumya</td></tr>
+            <tr data-ra="Joseph,Saumya" data-date="2026-04-14"><td>4</td><td>12:00 – 1:00 PM</td><td>Joseph, Saumya</td></tr>
+            <tr data-ra="Joseph,Saumya" data-date="2026-04-14"><td>5</td><td>1:00 – 2:00 PM</td><td>Joseph, Saumya</td></tr>
+            <tr data-ra="Joseph,Saumya" data-date="2026-04-14"><td>6</td><td>2:00 – 3:00 PM</td><td>Joseph, Saumya</td></tr>
+            <tr data-ra="Joseph,Saumya" data-date="2026-04-14"><td>7</td><td>3:00 – 4:00 PM</td><td>Joseph, Saumya</td></tr>
+          </table>
+          <p style="font-weight:600;font-size:13px;color:var(--text-secondary);margin:14px 0 6px;">Wednesday, Apr 15</p>
+          <table class="ref-table schedule-table" style="font-size:13px;">
+            <tr><th>#</th><th>Time</th><th>RAs</th></tr>
+            <tr data-ra="Leia" data-date="2026-04-15" style="background:var(--surface-alt);font-style:italic;color:var(--text-secondary);"><td>SETUP</td><td>8:30 – 9:00 AM</td><td>Leia</td></tr>
+            <tr data-ra="Leia,Agustin" data-date="2026-04-15"><td>8</td><td>9:00 – 10:00 AM</td><td>Leia, Agustin</td></tr>
+            <tr data-ra="Leia,Agustin" data-date="2026-04-15"><td>9</td><td>10:00 – 11:00 AM</td><td>Leia, Agustin</td></tr>
+            <tr data-ra="Leia,Agustin" data-date="2026-04-15"><td>10</td><td>11:00 – 12:00 PM</td><td>Leia, Agustin</td></tr>
+            <tr data-ra="Leia,Agustin" data-date="2026-04-15"><td>11</td><td>12:00 – 1:00 PM</td><td>Leia, Agustin</td></tr>
+            <tr data-ra="Agustin,Saumya" data-date="2026-04-15"><td>12</td><td>1:00 – 2:00 PM</td><td>Agustin, Saumya</td></tr>
+            <tr data-ra="Agustin,Saumya" data-date="2026-04-15"><td>13</td><td>2:00 – 3:00 PM</td><td>Agustin, Saumya</td></tr>
+            <tr data-ra="Agustin,Saumya" data-date="2026-04-15"><td>14</td><td>3:00 – 4:00 PM</td><td>Agustin, Saumya</td></tr>
+          </table>
+        </div>
       </div>
 
       <!-- Lab 5 -->
-      <div class="lab-tab-panel" id="labPanel5">
-        <p style="font-weight:700;font-size:14px;margin-bottom:8px;">Minjeong Ko · 14 sessions · 3 days</p>
-        <p style="font-weight:600;font-size:13px;color:var(--text-secondary);margin-bottom:6px;" class="schedule-day">Monday, Apr 27</p>
-        <table class="ref-table schedule-table" style="font-size:13px;">
-          <tr><th>#</th><th>Time</th><th>RAs</th></tr>
-          <tr data-ra="Saumya" data-date="2026-04-27" style="background:var(--surface-alt);font-style:italic;color:var(--text-secondary);"><td>SETUP</td><td>2:30 – 3:00 PM</td><td>Saumya</td></tr>
-          <tr data-ra="Saumya,Alex" data-date="2026-04-27"><td>1</td><td>3:00 – 4:00 PM</td><td>Saumya, Alex</td></tr>
-          <tr data-ra="Saumya,Alex" data-date="2026-04-27"><td>2</td><td>4:00 – 5:00 PM</td><td>Saumya, Alex</td></tr>
-          <tr data-ra="Saumya,Alex" data-date="2026-04-27"><td>3</td><td>5:00 – 6:00 PM</td><td>Saumya, Alex</td></tr>
-        </table>
-        <p style="font-weight:600;font-size:13px;color:var(--text-secondary);margin:14px 0 6px;" class="schedule-day">Wednesday, Apr 29</p>
-        <table class="ref-table schedule-table" style="font-size:13px;">
-          <tr><th>#</th><th>Time</th><th>RAs</th></tr>
-          <tr data-ra="Alex" data-date="2026-04-29" style="background:var(--surface-alt);font-style:italic;color:var(--text-secondary);"><td>SETUP</td><td>2:30 – 3:00 PM</td><td>Alex</td></tr>
-          <tr data-ra="Saumya,Alex" data-date="2026-04-29"><td>4</td><td>3:00 – 4:00 PM</td><td>Saumya, Alex</td></tr>
-          <tr data-ra="Saumya,Alex" data-date="2026-04-29"><td>5</td><td>4:00 – 5:00 PM</td><td>Saumya, Alex</td></tr>
-          <tr data-ra="Saumya,Alex" data-date="2026-04-29"><td>6</td><td>5:00 – 6:00 PM</td><td>Saumya, Alex</td></tr>
-          <tr data-ra="Saumya,Alex" data-date="2026-04-29"><td>7</td><td>6:00 – 7:00 PM</td><td>Saumya, Alex</td></tr>
-          <tr data-ra="Saumya,Alex" data-date="2026-04-29"><td>8</td><td>7:00 – 8:00 PM</td><td>Saumya, Alex</td></tr>
-        </table>
-        <p style="font-weight:600;font-size:13px;color:var(--text-secondary);margin:14px 0 6px;" class="schedule-day">Friday, May 1</p>
-        <table class="ref-table schedule-table" style="font-size:13px;">
-          <tr><th>#</th><th>Time</th><th>RAs</th></tr>
-          <tr data-ra="Lissa" data-date="2026-05-01" style="background:var(--surface-alt);font-style:italic;color:var(--text-secondary);"><td>SETUP</td><td>1:30 – 2:00 PM</td><td>Lissa</td></tr>
-          <tr data-ra="Lissa,Joseph" data-date="2026-05-01"><td>9</td><td>2:00 – 3:00 PM</td><td>Lissa, Joseph</td></tr>
-          <tr data-ra="Lissa,Joseph" data-date="2026-05-01"><td>10</td><td>3:00 – 4:00 PM</td><td>Lissa, Joseph</td></tr>
-          <tr data-ra="Lissa,Joseph" data-date="2026-05-01"><td>11</td><td>4:00 – 5:00 PM</td><td>Lissa, Joseph</td></tr>
-          <tr data-ra="Lissa,Agustin" data-date="2026-05-01"><td>12</td><td>5:00 – 6:00 PM</td><td>Lissa, Agustin</td></tr>
-          <tr data-ra="Lissa,Agustin" data-date="2026-05-01"><td>13</td><td>6:00 – 7:00 PM</td><td>Lissa, Agustin</td></tr>
-          <tr data-ra="Lissa,Agustin" data-date="2026-05-01"><td>14</td><td>7:00 – 8:00 PM</td><td>Lissa, Agustin</td></tr>
-        </table>
+      <div class="lab-accordion" data-lab="5" data-week-start="2026-04-27" data-week-end="2026-05-02">
+        <div class="lab-acc-head">
+          <span class="lab-acc-label">Lab 5</span>
+          <span class="lab-acc-meta">Wk of Apr 27 · Minjeong Ko · 14 sessions</span>
+          <svg class="lab-acc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+        <div class="lab-acc-body">
+          <p style="font-weight:600;font-size:13px;color:var(--text-secondary);margin:12px 0 6px;">Monday, Apr 27</p>
+          <table class="ref-table schedule-table" style="font-size:13px;">
+            <tr><th>#</th><th>Time</th><th>RAs</th></tr>
+            <tr data-ra="Saumya" data-date="2026-04-27" style="background:var(--surface-alt);font-style:italic;color:var(--text-secondary);"><td>SETUP</td><td>2:30 – 3:00 PM</td><td>Saumya</td></tr>
+            <tr data-ra="Saumya,Alex" data-date="2026-04-27"><td>1</td><td>3:00 – 4:00 PM</td><td>Saumya, Alex</td></tr>
+            <tr data-ra="Saumya,Alex" data-date="2026-04-27"><td>2</td><td>4:00 – 5:00 PM</td><td>Saumya, Alex</td></tr>
+            <tr data-ra="Saumya,Alex" data-date="2026-04-27"><td>3</td><td>5:00 – 6:00 PM</td><td>Saumya, Alex</td></tr>
+          </table>
+          <p style="font-weight:600;font-size:13px;color:var(--text-secondary);margin:14px 0 6px;">Wednesday, Apr 29</p>
+          <table class="ref-table schedule-table" style="font-size:13px;">
+            <tr><th>#</th><th>Time</th><th>RAs</th></tr>
+            <tr data-ra="Alex" data-date="2026-04-29" style="background:var(--surface-alt);font-style:italic;color:var(--text-secondary);"><td>SETUP</td><td>2:30 – 3:00 PM</td><td>Alex</td></tr>
+            <tr data-ra="Saumya,Alex" data-date="2026-04-29"><td>4</td><td>3:00 – 4:00 PM</td><td>Saumya, Alex</td></tr>
+            <tr data-ra="Saumya,Alex" data-date="2026-04-29"><td>5</td><td>4:00 – 5:00 PM</td><td>Saumya, Alex</td></tr>
+            <tr data-ra="Saumya,Alex" data-date="2026-04-29"><td>6</td><td>5:00 – 6:00 PM</td><td>Saumya, Alex</td></tr>
+            <tr data-ra="Saumya,Alex" data-date="2026-04-29"><td>7</td><td>6:00 – 7:00 PM</td><td>Saumya, Alex</td></tr>
+            <tr data-ra="Saumya,Alex" data-date="2026-04-29"><td>8</td><td>7:00 – 8:00 PM</td><td>Saumya, Alex</td></tr>
+          </table>
+          <p style="font-weight:600;font-size:13px;color:var(--text-secondary);margin:14px 0 6px;">Friday, May 1</p>
+          <table class="ref-table schedule-table" style="font-size:13px;">
+            <tr><th>#</th><th>Time</th><th>RAs</th></tr>
+            <tr data-ra="Lissa" data-date="2026-05-01" style="background:var(--surface-alt);font-style:italic;color:var(--text-secondary);"><td>SETUP</td><td>1:30 – 2:00 PM</td><td>Lissa</td></tr>
+            <tr data-ra="Lissa,Joseph" data-date="2026-05-01"><td>9</td><td>2:00 – 3:00 PM</td><td>Lissa, Joseph</td></tr>
+            <tr data-ra="Lissa,Joseph" data-date="2026-05-01"><td>10</td><td>3:00 – 4:00 PM</td><td>Lissa, Joseph</td></tr>
+            <tr data-ra="Lissa,Joseph" data-date="2026-05-01"><td>11</td><td>4:00 – 5:00 PM</td><td>Lissa, Joseph</td></tr>
+            <tr data-ra="Lissa,Agustin" data-date="2026-05-01"><td>12</td><td>5:00 – 6:00 PM</td><td>Lissa, Agustin</td></tr>
+            <tr data-ra="Lissa,Agustin" data-date="2026-05-01"><td>13</td><td>6:00 – 7:00 PM</td><td>Lissa, Agustin</td></tr>
+            <tr data-ra="Lissa,Agustin" data-date="2026-05-01"><td>14</td><td>7:00 – 8:00 PM</td><td>Lissa, Agustin</td></tr>
+          </table>
+        </div>
       </div>
-    </div>
 
-    <!-- ═══ MY SCHEDULE VIEW ═══ -->
-    <div class="sched-my" id="schedMy"></div>
+    </div><!-- /labAccordions -->
   </div>
 </div>
 
@@ -3038,10 +3311,10 @@ body {
         <h3 style="font-size:19px;font-weight:700;color:var(--text);margin-bottom:10px;">Under Construction</h3>
         <p style="font-size:14px;color:var(--text-muted);max-width:440px;margin:0 auto 24px;line-height:1.6;">Comprehensive guides for online study operations — including setup procedures, researcher workflows, participant management, and troubleshooting — are currently being developed.</p>
         <div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-bottom:24px;">
-          <div style="padding:8px 14px;background:var(--surface-alt);border:1px solid var(--border-light);border-radius:8px;font-size:12.5px;color:var(--text-muted);">📋 Study Setup &amp; Configuration</div>
-          <div style="padding:8px 14px;background:var(--surface-alt);border:1px solid var(--border-light);border-radius:8px;font-size:12.5px;color:var(--text-muted);">👥 Participant Management</div>
-          <div style="padding:8px 14px;background:var(--surface-alt);border:1px solid var(--border-light);border-radius:8px;font-size:12.5px;color:var(--text-muted);">📊 Credit &amp; Data Tracking</div>
-          <div style="padding:8px 14px;background:var(--surface-alt);border:1px solid var(--border-light);border-radius:8px;font-size:12.5px;color:var(--text-muted);">🔧 Troubleshooting</div>
+          <div style="padding:8px 14px;background:var(--surface-alt);border:1px solid var(--border-light);border-radius:6px;font-size:12.5px;color:var(--text-muted);">📋 Study Setup &amp; Configuration</div>
+          <div style="padding:8px 14px;background:var(--surface-alt);border:1px solid var(--border-light);border-radius:6px;font-size:12.5px;color:var(--text-muted);">👥 Participant Management</div>
+          <div style="padding:8px 14px;background:var(--surface-alt);border:1px solid var(--border-light);border-radius:6px;font-size:12.5px;color:var(--text-muted);">📊 Credit &amp; Data Tracking</div>
+          <div style="padding:8px 14px;background:var(--surface-alt);border:1px solid var(--border-light);border-radius:6px;font-size:12.5px;color:var(--text-muted);">🔧 Troubleshooting</div>
         </div>
         <p style="font-size:13px;color:var(--text-muted);">In the meantime, check the <a href="#onlineSchedule" style="color:#1976D2;font-weight:600;">Online Studies Schedule</a> for upcoming release dates.</p>
       </div>
@@ -3300,9 +3573,16 @@ body {
 </main>
 
 <footer class="site-footer">
-  <strong>Marshall Behavioral Research Lab</strong> · USC Marshall School of Business<br>
-  MKT Subject Pool · BUAD 307 Research Participation Program · Spring 2026 · Rev. v1.3<br>
-  Questions? Contact <a href="/cdn-cgi/l/email-protection#85edf0ede7c5e8e4f7f6ede4e9e9abf0f6e6abe0e1f0" style="color:var(--cardinal);"><span class="__cf_email__" data-cfemail="e8809d808aa885899a9b80898484c69d9b8bc68d8c9d">[email&#160;protected]</span></a> · <a href="tel:2138219746" style="color:var(--cardinal);">213-821-9746</a>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <strong>Marshall Behavioral Research Lab</strong><br>
+      USC Marshall School of Business
+    </div>
+    <div class="footer-meta">
+      MKT Subject Pool · BUAD 307 Research Participation Program · Spring 2026<br>
+      Questions? <a href="/cdn-cgi/l/email-protection#85edf0ede7c5e8e4f7f6ede4e9e9abf0f6e6abe0e1f0" style="color:var(--cardinal);"><span class="__cf_email__" data-cfemail="e8809d808aa885899a9b80898484c69d9b8bc68d8c9d">[email&#160;protected]</span></a> · <a href="tel:2138219746" style="color:var(--cardinal);">213-821-9746</a>
+    </div>
+  </div>
 </footer>
 
 <!-- ═══ BACK TO TOP ═══ -->
@@ -3515,7 +3795,7 @@ body {
         <div style="font-size:48px;margin-bottom:16px;">🚧</div>
         <h3 style="font-size:18px;font-weight:700;color:var(--text);margin-bottom:8px;">Online Study Checklists</h3>
         <p style="font-size:14px;color:var(--text-muted);max-width:340px;margin:0 auto 20px;">Procedures and checklists for online studies are currently being developed and will be added here once finalized.</p>
-        <div style="display:inline-flex;align-items:center;gap:8px;padding:8px 16px;background:#E3F2FD;border:1px solid #B8D4F0;border-radius:8px;font-size:13px;color:#1565C0;font-weight:600;">
+        <div style="display:inline-flex;align-items:center;gap:8px;padding:8px 16px;background:#E3F2FD;border:1px solid #B8D4F0;border-radius:6px;font-size:13px;color:#1565C0;font-weight:600;">
           <span>💻</span> Coming Soon
         </div>
       </div>
@@ -3885,6 +4165,7 @@ body {
   setInterval(updateClock, 15000);
 
   // ── INTERACTIVE CHECKLISTS ──
+  // Inline checklists (outside panel)
   document.addEventListener('click', function(e) {
     var li = e.target.closest('.checklist li');
     if (li && !li.closest('.cl-panel')) {
@@ -3893,414 +4174,470 @@ body {
     }
   });
 
-  // ── SCHEDULE: DUAL VIEW (BY LAB + MY SCHEDULE) ──
+  // ── CHECKLIST PANEL ──
   (function() {
-    var tabs = document.querySelectorAll('.lab-tab');
-    var panels = document.querySelectorAll('.lab-tab-panel');
-    var select = document.getElementById('raFilter');
-    var countEl = document.getElementById('raFilterCount');
-    var schedByLab = document.getElementById('schedByLab');
-    var schedMy = document.getElementById('schedMy');
-    var viewBtns = document.querySelectorAll('.sched-view-btn');
-    if (!select || !tabs.length) return;
+    var panel = document.getElementById('clPanel');
+    var btnOpen = document.getElementById('btnChecklists');
+    var btnClose = document.getElementById('clClose');
+    var btnReset = document.getElementById('clReset');
+    var progressFill = document.getElementById('clProgressFill');
+    var progressText = document.getElementById('clProgressText');
+    if (!panel || !btnOpen) return;
 
-    // Lab metadata
-    var labMeta = {
-      1: { name: 'Lab 1', phd: 'Steve Carney', color: '#E03131' },
-      2: { name: 'Lab 2', phd: 'Maansi Dalmia', color: '#E8590C' },
-      3: { name: 'Lab 3', phd: 'Swaroop Poudel', color: '#2F9E44' },
-      4: { name: 'Lab 4', phd: 'Reyna Wang', color: '#7048E8' },
-      5: { name: 'Lab 5', phd: 'Minjeong Ko', color: '#0C8599' }
-    };
-
-    // Day name helper
-    var dayNames = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-    var monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-    function fmtDate(d) {
-      return dayNames[d.getDay()] + ', ' + monthNames[d.getMonth()] + ' ' + d.getDate();
-    }
-
-    // ── Collect ALL shifts from DOM into a flat array ──
-    var allShifts = [];
-    for (var lab = 1; lab <= 5; lab++) {
-      var panel = document.getElementById('labPanel' + lab);
-      if (!panel) continue;
-      var rows = panel.querySelectorAll('tr[data-ra]');
-      for (var r = 0; r < rows.length; r++) {
-        var row = rows[r];
-        var tds = row.querySelectorAll('td');
-        var num = tds[0] ? tds[0].textContent.trim() : '';
-        var time = tds[1] ? tds[1].textContent.trim() : '';
-        var raStr = row.getAttribute('data-ra') || '';
-        var dateStr = row.getAttribute('data-date') || '';
-        var isSetup = num === 'SETUP';
-        allShifts.push({
-          lab: lab,
-          num: num,
-          time: time,
-          ras: raStr.split(',').map(function(s){return s.trim();}),
-          raStr: raStr,
-          date: dateStr,
-          dateObj: dateStr ? new Date(dateStr + 'T12:00:00') : null,
-          isSetup: isSetup
-        });
-      }
-    }
-
-    // Sort by date then time
-    allShifts.sort(function(a, b) {
-      if (a.date !== b.date) return a.date < b.date ? -1 : 1;
-      return a.time < b.time ? -1 : a.time > b.time ? 1 : 0;
+    // Open / close
+    btnOpen.addEventListener('click', function() {
+      panel.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    });
+    btnClose.addEventListener('click', function() {
+      panel.classList.remove('open');
+      document.body.style.overflow = '';
     });
 
-    // ── View toggle ──
-    var currentView = 'bylab';
-    for (var v = 0; v < viewBtns.length; v++) {
-      viewBtns[v].addEventListener('click', function() {
-        var view = this.getAttribute('data-view');
-        currentView = view;
-        for (var k = 0; k < viewBtns.length; k++) viewBtns[k].classList.remove('active');
-        this.classList.add('active');
-        if (view === 'bylab') {
-          schedByLab.classList.add('active');
-          schedMy.classList.remove('active');
-          var anyTabActive = document.querySelector('.lab-tab.active');
-          if (!anyTabActive && bylabPrompt) bylabPrompt.style.display = '';
-        } else {
-          schedByLab.classList.remove('active');
-          schedMy.classList.add('active');
-          // FIX: Removed auto-select — prompt stays if no RA chosen
-        }
-        applyFilter();
-      });
+    // Tab switching
+    var tabs = panel.querySelectorAll('.cl-tab');
+    var tabContents = panel.querySelectorAll('.cl-tab-content');
+    for (var t = 0; t < tabs.length; t++) {
+      tabs[t].addEventListener('click', (function(idx) {
+        return function() {
+          for (var j = 0; j < tabs.length; j++) {
+            tabs[j].classList.remove('active');
+            tabContents[j].classList.remove('active');
+          }
+          tabs[idx].classList.add('active');
+          tabContents[idx].classList.add('active');
+        };
+      })(t));
     }
 
-    // ── Auto-switch: selecting an RA flips to My Schedule ──
-    select.addEventListener('change', function() {
-      if (select.value !== '' && currentView === 'bylab') {
-        // Auto-switch to My Schedule
-        currentView = 'my';
-        for (var k = 0; k < viewBtns.length; k++) viewBtns[k].classList.remove('active');
-        document.querySelector('.sched-view-btn[data-view="my"]').classList.add('active');
-        schedByLab.classList.remove('active');
-        schedMy.classList.add('active');
+    // Progress tracking (in-person tab)
+    var inpersonTab = document.getElementById('clTabInperson');
+    function updateProgress() {
+      if (!inpersonTab || !progressFill || !progressText) return;
+      var all = inpersonTab.querySelectorAll('.checklist li');
+      var checked = inpersonTab.querySelectorAll('.checklist li.checked');
+      var total = all.length;
+      var done = checked.length;
+      var pct = total ? Math.round((done / total) * 100) : 0;
+      progressFill.style.width = pct + '%';
+      progressText.textContent = done + ' / ' + total;
+    }
+
+    // Checklist checking inside panel
+    panel.addEventListener('click', function(e) {
+      var li = e.target.closest('.checklist li');
+      if (li) {
+        li.classList.toggle('checked');
+        updateProgress();
       }
-      if (select.value === '' && currentView === 'my') {
-        // Switch back to By Lab
-        currentView = 'bylab';
-        for (var k = 0; k < viewBtns.length; k++) viewBtns[k].classList.remove('active');
-        document.querySelector('.sched-view-btn[data-view="bylab"]').classList.add('active');
-        schedByLab.classList.add('active');
-        schedMy.classList.remove('active');
-        // Show prompt if no lab tab is active
-        var anyTabActive = document.querySelector('.lab-tab.active');
-        if (!anyTabActive && bylabPrompt) bylabPrompt.style.display = '';
-      }
-      applyFilter();
     });
 
-    // ── Tab switching ──
-    var bylabPrompt = document.getElementById('bylabPrompt');
-    for (var i = 0; i < tabs.length; i++) {
-      tabs[i].addEventListener('click', function() {
-        if (this.disabled) return;
-        for (var tj = 0; tj < tabs.length; tj++) tabs[tj].classList.remove('active');
-        for (var tp = 0; tp < panels.length; tp++) panels[tp].classList.remove('active');
-        this.classList.add('active');
-        var panel = document.getElementById('labPanel' + this.getAttribute('data-lab'));
-        if (panel) panel.classList.add('active');
-        if (bylabPrompt) bylabPrompt.style.display = 'none';
-        applyByLabFilter();
+    // Reset
+    if (btnReset) {
+      btnReset.addEventListener('click', function() {
+        var items = panel.querySelectorAll('.checklist li.checked');
+        for (var r = 0; r < items.length; r++) items[r].classList.remove('checked');
+        updateProgress();
       });
     }
 
-    // ── Apply By Lab filter (existing behavior, cleaned up) ──
-    function applyByLabFilter() {
-      var name = select.value;
-      var activePanel = document.querySelector('.lab-tab-panel.active');
-      if (!activePanel) return;
-      var tables = activePanel.querySelectorAll('.schedule-table');
-      var dayLabels = activePanel.querySelectorAll('.schedule-day');
-
-      for (var t = 0; t < tables.length; t++) {
-        var rows = tables[t].querySelectorAll('tr[data-ra]');
-        var dayVisible = false;
-        for (var r = 0; r < rows.length; r++) {
-          var row = rows[r];
-          var ras = row.getAttribute('data-ra').split(',');
-          row.classList.remove('schedule-row-hidden', 'schedule-row-highlight');
-          if (name === '') {
-            dayVisible = true;
-          } else {
-            var match = false;
-            for (var a = 0; a < ras.length; a++) {
-              if (ras[a].trim() === name) { match = true; break; }
-            }
-            if (match) {
-              row.classList.add('schedule-row-highlight');
-              dayVisible = true;
-            } else {
-              row.classList.add('schedule-row-hidden');
-            }
-          }
-        }
-        if (dayLabels[t]) {
-          dayLabels[t].style.display = dayVisible || name === '' ? '' : 'none';
-        }
-      }
-    }
-
-    // ── Build My Schedule view ──
-    function buildMySchedule() {
-      var name = select.value;
-      if (!name) {
-        schedMy.innerHTML = '<div class="sched-empty"><div class="sched-empty-icon">👤</div><p>Select your name from the dropdown above<br>to see all your shifts across every lab.</p></div>';
-        countEl.textContent = '';
-        return;
-      }
-
-      // Filter shifts for this RA
-      var mine = allShifts.filter(function(s) {
-        return s.ras.indexOf(name) !== -1;
-      });
-
-      if (mine.length === 0) {
-        schedMy.innerHTML = '<div class="sched-empty"><div class="sched-empty-icon">📭</div><p><strong>' + name + '</strong> has no scheduled shifts.</p></div>';
-        countEl.textContent = 'No shifts';
-        return;
-      }
-
-      var today = new Date();
-      today.setHours(0, 0, 0, 0);
-
-      // Count stats
-      var sessionCount = 0, setupCount = 0, daySet = {};
-      for (var i = 0; i < mine.length; i++) {
-        if (mine[i].isSetup) setupCount++;
-        else sessionCount++;
-        if (mine[i].date) daySet[mine[i].date] = true;
-      }
-      var dayCount = Object.keys(daySet).length;
-      var labSet = {};
-      for (var i = 0; i < mine.length; i++) labSet[mine[i].lab] = true;
-      var labCount = Object.keys(labSet).length;
-
-      // Build HTML
-      var html = '';
-
-      // Summary bar
-      html += '<div class="sched-summary">';
-      html += '<div class="sched-stat"><strong>' + sessionCount + '</strong>sessions</div>';
-      html += '<div class="sched-stat"><strong>' + setupCount + '</strong>setups</div>';
-      html += '<div class="sched-stat"><strong>' + dayCount + '</strong>days</div>';
-      html += '<div class="sched-stat"><strong>' + labCount + '</strong>labs</div>';
-      html += '</div>';
-
-      // Group by date
-      var grouped = {};
-      var dateOrder = [];
-      for (var i = 0; i < mine.length; i++) {
-        var d = mine[i].date;
-        if (!grouped[d]) { grouped[d] = []; dateOrder.push(d); }
-        grouped[d].push(mine[i]);
-      }
-
-      var foundNext = false;
-      for (var di = 0; di < dateOrder.length; di++) {
-        var dateKey = dateOrder[di];
-        var shifts = grouped[dateKey];
-        var dateObj = shifts[0].dateObj;
-        var isPast = dateObj && dateObj < today;
-        var isNext = !isPast && !foundNext;
-        if (isNext) foundNext = true;
-
-        // Get lab for this date
-        var labNum = shifts[0].lab;
-        var meta = labMeta[labNum];
-
-        html += '<div class="sched-date-header"' + (isPast ? ' style="opacity:0.45;"' : '') + '>';
-        html += fmtDate(dateObj);
-        if (isNext) html += '<span class="sched-next-badge">NEXT</span>';
-        html += '<span class="sched-date-lab" style="background:' + meta.color + ';">' + meta.name + '</span>';
-        html += '</div>';
-
-        for (var si = 0; si < shifts.length; si++) {
-          var s = shifts[si];
-          var partner = s.ras.filter(function(r){return r !== name;}).join(', ');
-
-          html += '<div class="sched-shift' + (s.isSetup ? ' is-setup' : '') + '"' + (isPast ? ' style="opacity:0.45;"' : '') + '>';
-          html += '<span class="sched-shift-time">' + s.time + '</span>';
-          html += '<span class="sched-lab-badge lab-' + s.lab + '">' + (s.isSetup ? 'SETUP' : 'L' + s.lab + ' #' + s.num) + '</span>';
-          if (partner) {
-            html += '<span class="sched-shift-partner">w/ <strong>' + partner + '</strong></span>';
-          } else if (!s.isSetup) {
-            html += '<span class="sched-shift-partner" style="color:var(--text-muted);font-style:italic;">solo</span>';
-          }
-          html += '</div>';
-        }
-      }
-
-      schedMy.innerHTML = html;
-
-      // Update count
-      var parts = [];
-      if (sessionCount > 0) parts.push(sessionCount + ' session' + (sessionCount === 1 ? '' : 's'));
-      if (setupCount > 0) parts.push(setupCount + ' setup' + (setupCount === 1 ? '' : 's'));
-      parts.push(dayCount + ' day' + (dayCount === 1 ? '' : 's'));
-      countEl.textContent = parts.join(' · ');
-    }
-
-    // ── Master filter ──
-    function applyFilter() {
-      if (currentView === 'bylab') {
-        applyByLabFilter();
-        // Update count for by-lab view
-        var name = select.value;
-        if (!name) { countEl.textContent = ''; return; }
-        var activePanel = document.querySelector('.lab-tab-panel.active');
-        if (!activePanel) return;
-        var rows = activePanel.querySelectorAll('tr[data-ra]');
-        var ts = 0, ss = 0;
-        for (var r = 0; r < rows.length; r++) {
-          var ras = rows[r].getAttribute('data-ra').split(',');
-          var match = false;
-          for (var a = 0; a < ras.length; a++) { if (ras[a].trim() === name) { match = true; break; } }
-          if (match) {
-            if (rows[r].querySelector('td') && rows[r].querySelector('td').textContent === 'SETUP') ss++;
-            else ts++;
-          }
-        }
-        var p = [];
-        if (ts > 0) p.push(ts + ' session' + (ts===1?'':'s'));
-        if (ss > 0) p.push(ss + ' setup');
-        countEl.textContent = p.length > 0 ? p.join(' + ') : 'No shifts this lab';
-      } else {
-        buildMySchedule();
-      }
-    }
-
-    applyFilter();
-
-    // ── Summary table highlighting (past/next lab) ──
-    (function() {
-      var dates = [
-        new Date(2026, 1, 23),
-        new Date(2026, 2, 2),
-        new Date(2026, 3, 6),
-        new Date(2026, 3, 13),
-        new Date(2026, 3, 27)
-      ];
-      var table = document.querySelector('#schedule > .card-body > .ref-table');
-      if (!table) return;
-      var rows = table.querySelectorAll('tr');
-      var today = new Date();
-      today.setHours(0, 0, 0, 0);
-      var foundNext = false;
-      for (var i = 1; i < rows.length; i++) {
-        var sessionDate = dates[i - 1];
-        if (sessionDate < today) {
-          rows[i].classList.add('schedule-past');
-        } else if (!foundNext) {
-          rows[i].classList.add('schedule-next');
-          foundNext = true;
-        }
-      }
-    })();
-
-    // ── Online studies highlighting (past/next wave) ──
-    (function() {
-      var onlineTable = document.getElementById('onlineTable');
-      if (!onlineTable) return;
-      var rows = onlineTable.querySelectorAll('tr[data-online-date]');
-      var today = new Date();
-      today.setHours(0, 0, 0, 0);
-      var foundNext = false;
-      for (var i = 0; i < rows.length; i++) {
-        var dateStr = rows[i].getAttribute('data-online-date');
-        var d = new Date(dateStr + 'T12:00:00');
-        if (d < today) {
-          rows[i].classList.add('schedule-past');
-        } else if (!foundNext) {
-          rows[i].classList.add('schedule-next');
-          foundNext = true;
-        }
-      }
-    })();
-
+    updateProgress();
   })();
 
-  // ── CHECKLISTS PANEL ──
-  var clPanel = document.getElementById('clPanel');
-  var btnChecklists = document.getElementById('btnChecklists');
-  var clClose = document.getElementById('clClose');
-  var clProgressFill = document.getElementById('clProgressFill');
-  var clProgressText = document.getElementById('clProgressText');
-  var clReset = document.getElementById('clReset');
-  var clTabInperson = document.getElementById('clTabInperson');
+      // ── SCHEDULE: Accordion toggle + RA highlight ──
+    (function() {
+      // Helper: close all accordions except one
+      function openExclusive(targetAcc) {
+        var all = document.querySelectorAll('.lab-accordion');
+        for (var x = 0; x < all.length; x++) {
+          if (all[x] === targetAcc) all[x].classList.add('open');
+          else all[x].classList.remove('open');
+        }
+      }
 
-  function updateClProgress() {
-    var total = clTabInperson.querySelectorAll('.checklist li').length;
-    var checked = clTabInperson.querySelectorAll('.checklist li.checked').length;
-    var pct = Math.round((checked / total) * 100);
-    clProgressFill.style.width = pct + '%';
-    if (checked === total) {
-      clProgressText.textContent = '✓ All done!';
-      clProgressFill.style.background = 'linear-gradient(90deg, #1B6B3A, #2F9E44)';
-    } else {
-      clProgressText.textContent = checked + ' / ' + total;
-      clProgressFill.style.background = '';
-    }
-  }
+      // Accordion click — exclusive: clicking one closes the rest
+      var accHeads = document.querySelectorAll('.lab-acc-head');
+      for (var i = 0; i < accHeads.length; i++) {
+        accHeads[i].addEventListener('click', function(e) {
+          if (e.target.closest('.btn-copy-link')) return;
+          var acc = this.parentElement;
+          if (acc.classList.contains('open')) {
+            acc.classList.remove('open');
+          } else {
+            openExclusive(acc);
+          }
+        });
+      }
 
-  // Checklist tab switching
-  var clTabs = clPanel.querySelectorAll('.cl-tab');
-  var clTabContents = clPanel.querySelectorAll('.cl-tab-content');
-  for (var ct = 0; ct < clTabs.length; ct++) {
-    clTabs[ct].addEventListener('click', function() {
-      var target = this.getAttribute('data-cl-tab');
-      for (var ci = 0; ci < clTabs.length; ci++) clTabs[ci].classList.remove('active');
-      for (var cj = 0; cj < clTabContents.length; cj++) clTabContents[cj].classList.remove('active');
-      this.classList.add('active');
-      var targetEl = document.getElementById('clTab' + target.charAt(0).toUpperCase() + target.slice(1));
-      if (targetEl) targetEl.classList.add('active');
+      // Overview table: click row → open exclusively + scroll to accordion
+      var overviewTable = document.getElementById('labOverviewTable');
+      if (overviewTable) {
+        overviewTable.addEventListener('click', function(e) {
+          var row = e.target.closest('tr[data-jump-lab]');
+          if (!row) return;
+          var labNum = row.getAttribute('data-jump-lab');
+          var acc = document.querySelector('.lab-accordion[data-lab="' + labNum + '"]');
+          if (acc) {
+            openExclusive(acc);
+            acc.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        });
+      }
+
+      // Auto-classify: past / current / next + mirror badges to overview table
+      var accs = document.querySelectorAll('.lab-accordion');
+      var today = new Date();
+      today.setHours(0, 0, 0, 0);
+      var foundCurrent = false;
+      var foundNext = false;
+      for (var a = 0; a < accs.length; a++) {
+        var ws = new Date(accs[a].getAttribute('data-week-start') + 'T00:00:00');
+        var we = new Date(accs[a].getAttribute('data-week-end') + 'T23:59:59');
+        var labNum = accs[a].getAttribute('data-lab');
+        var overviewBadge = document.querySelector('.lab-overview-badge[data-badge-lab="' + labNum + '"]');
+
+        if (today >= ws && today <= we) {
+          accs[a].classList.add('lab-current', 'open');
+          var badge = accs[a].querySelector('.lab-acc-badge');
+          if (badge) { badge.className = 'lab-acc-badge this-week'; badge.textContent = 'This Week'; badge.style.display = ''; }
+          if (overviewBadge) { overviewBadge.className = 'lab-overview-badge lab-acc-badge this-week'; overviewBadge.textContent = 'This Week'; }
+          foundCurrent = true;
+        } else if (today > we) {
+          accs[a].classList.add('lab-past');
+          accs[a].classList.remove('open');
+          var pbadge = accs[a].querySelector('.lab-acc-badge');
+          if (pbadge) { pbadge.className = 'lab-acc-badge completed'; pbadge.textContent = 'Completed'; pbadge.style.display = ''; }
+          if (overviewBadge) { overviewBadge.className = 'lab-overview-badge lab-acc-badge completed'; overviewBadge.textContent = 'Completed'; }
+        } else if (!foundNext) {
+          foundNext = true;
+          var nbadge = accs[a].querySelector('.lab-acc-badge');
+          if (nbadge) { nbadge.className = 'lab-acc-badge next-up'; nbadge.textContent = 'Next Up'; nbadge.style.display = ''; }
+          if (overviewBadge) { overviewBadge.className = 'lab-overview-badge lab-acc-badge next-up'; overviewBadge.textContent = 'Next Up'; }
+          // If no current week, open the next one
+          if (!foundCurrent) { accs[a].classList.add('open'); }
+        }
+      }
+
+      // RA highlight filter
+      var select = document.getElementById('raFilter');
+      var countEl = document.getElementById('raFilterCount');
+
+      // ── Quick Contact Strips ──
+      var contactDir = {
+        'Agustin': { full: 'Agustin M-T', phone: '9712807752', phoneFmt: '971-280-7752', email: 'montesta@usc.edu' },
+        'Alex': { full: 'Alexander Alonzo', phone: '8183149003', phoneFmt: '818-314-9003', email: 'afalonzo@usc.edu' },
+        'Atvika': { full: 'Atvika Gaur', phone: '2139945172', phoneFmt: '213-994-5172', email: 'atvikaga@usc.edu' },
+        'Bri': { full: 'Bri Tran', phone: '8183004657', phoneFmt: '818-300-4657', email: 'bnt@usc.edu' },
+        'Joseph': { full: 'Joseph Solomon', phone: '9094199079', phoneFmt: '909-419-9079', email: 'Joseph.Solomon@usc.edu' },
+        'Leia': { full: 'Leia Yen', phone: '4242417922', phoneFmt: '424-241-7922', email: 'leia.yen@usc.edu' },
+        'Lissa': { full: 'Lissa Fredrickson', phone: '2063278306', phoneFmt: '206-327-8306', email: 'ifredric@usc.edu' },
+        'Saumya': { full: 'Saumya K. Jhaveri', phone: '5108154346', phoneFmt: '510-815-4346', email: 'saumyake@usc.edu' }
+      };
+      var phdDir = {
+        '1': { name: 'Steve Carney', email: 'Stephan.Carney@marshall.usc.edu' },
+        '2': { name: 'Maansi Dalmia', email: 'Maansi.Dalmia@marshall.usc.edu' },
+        '3': { name: 'Swaroop Poudel', email: 'Swaroop.Poudel@marshall.usc.edu' },
+        '4': { name: 'Reyna Wang', email: 'Qiurun.Wang@marshall.usc.edu' },
+        '5': { name: 'Minjeong Ko', email: 'Minjeong.Ko@marshall.usc.edu' }
+      };
+
+      var allAccordions = document.querySelectorAll('.lab-accordion');
+      for (var ci = 0; ci < allAccordions.length; ci++) {
+        var acc = allAccordions[ci];
+        var labNum = acc.getAttribute('data-lab');
+        var body = acc.querySelector('.lab-acc-body');
+        if (!body) continue;
+
+        // Collect unique RA names from this accordion
+        var raRows = acc.querySelectorAll('tr[data-ra]');
+        var raSet = {};
+        for (var ri = 0; ri < raRows.length; ri++) {
+          var names = (raRows[ri].getAttribute('data-ra') || '').split(',');
+          for (var ni = 0; ni < names.length; ni++) {
+            var n = names[ni].trim();
+            if (n && contactDir[n]) raSet[n] = true;
+          }
+        }
+
+        // Build toggle button
+        var toggleBtn = document.createElement('button');
+        toggleBtn.className = 'lab-contacts-toggle';
+        toggleBtn.innerHTML = '📞 Team Contacts';
+
+        // Build contact strip
+        var strip = document.createElement('div');
+        strip.className = 'lab-contacts-strip';
+
+        // PhD supervisor chip first
+        var phd = phdDir[labNum];
+        if (phd) {
+          strip.innerHTML += '<div class="contact-chip">' +
+            '<div><span class="contact-chip-name">' + phd.name + '</span> <span class="contact-chip-role phd">PhD</span></div>' +
+            '<div class="contact-chip-links">' +
+            '<a href="mailto:' + phd.email + '" class="chip-email" title="Email">✉</a>' +
+            '</div></div>';
+        }
+
+        // Brian (coordinator) — always shown
+        strip.innerHTML += '<div class="contact-chip">' +
+          '<div><span class="contact-chip-name">Brian Huh</span> <span class="contact-chip-role phd">COORD</span></div>' +
+          '<div class="contact-chip-links">' +
+          '<a href="tel:2138219746" class="chip-phone" title="213-821-9746">📱</a>' +
+          '<a href="mailto:huhb@marshall.usc.edu" class="chip-email" title="Email">✉</a>' +
+          '</div></div>';
+
+        // RA chips
+        var raNames = Object.keys(raSet).sort();
+        for (var rn = 0; rn < raNames.length; rn++) {
+          var c = contactDir[raNames[rn]];
+          strip.innerHTML += '<div class="contact-chip">' +
+            '<div><span class="contact-chip-name">' + c.full + '</span> <span class="contact-chip-role ra">RA</span></div>' +
+            '<div class="contact-chip-links">' +
+            '<a href="tel:' + c.phone + '" class="chip-phone" title="' + c.phoneFmt + '">📱</a>' +
+            '<a href="mailto:' + c.email + '" class="chip-email" title="Email">✉</a>' +
+            '</div></div>';
+        }
+
+        // Insert at top of body
+        body.insertBefore(strip, body.firstChild);
+        body.insertBefore(toggleBtn, body.firstChild);
+
+        // Toggle behavior
+        toggleBtn.addEventListener('click', (function(s, b) {
+          return function() {
+            s.classList.toggle('open');
+            b.innerHTML = s.classList.contains('open') ? '📞 Hide Contacts' : '📞 Team Contacts';
+          };
+        })(strip, toggleBtn));
+      }
+
+      function applyRAHighlight() {
+        var val = select.value;
+        var rows = document.querySelectorAll('.schedule-table tr[data-ra]');
+        var tables = document.querySelectorAll('.schedule-table');
+        var matchCount = 0;
+        var matchedAccordions = {};
+
+        // Toggle filtering class on all schedule tables
+        for (var t = 0; t < tables.length; t++) {
+          if (val) tables[t].classList.add('ra-filtering');
+          else tables[t].classList.remove('ra-filtering');
+        }
+
+        for (var r = 0; r < rows.length; r++) {
+          rows[r].classList.remove('ra-highlight');
+          if (val) {
+            var raStr = rows[r].getAttribute('data-ra') || '';
+            var ras = raStr.split(',');
+            var match = false;
+            for (var k = 0; k < ras.length; k++) {
+              if (ras[k].trim() === val) { match = true; break; }
+            }
+            if (match) {
+              rows[r].classList.add('ra-highlight');
+              matchCount++;
+              // Track which accordion this row belongs to
+              var parentAcc = rows[r].closest('.lab-accordion');
+              if (parentAcc) matchedAccordions[parentAcc.getAttribute('data-lab')] = parentAcc;
+            }
+          }
+        }
+        // Auto-expand accordions with matching shifts, collapse others if filtering
+        var allAccs = document.querySelectorAll('.lab-accordion');
+        if (val) {
+          for (var a = 0; a < allAccs.length; a++) {
+            var labId = allAccs[a].getAttribute('data-lab');
+            if (matchedAccordions[labId]) {
+              allAccs[a].classList.add('open');
+            } else {
+              allAccs[a].classList.remove('open');
+            }
+          }
+        }
+        if (val && countEl) {
+          countEl.textContent = matchCount + ' shift' + (matchCount !== 1 ? 's' : '');
+          countEl.className = 'filter-count ra-filter-count-active';
+        } else if (countEl) {
+          countEl.textContent = '';
+          countEl.className = 'filter-count';
+        }
+        // If cleared, re-apply default: open current/next
+        if (!val) {
+          for (var b = 0; b < allAccs.length; b++) {
+            allAccs[b].classList.remove('open');
+            if (allAccs[b].classList.contains('lab-current')) {
+              allAccs[b].classList.add('open');
+            }
+          }
+          if (!document.querySelector('.lab-current')) {
+            for (var c = 0; c < allAccs.length; c++) {
+              if (!allAccs[c].classList.contains('lab-past')) {
+                allAccs[c].classList.add('open');
+                break;
+              }
+            }
+          }
+        }
+      }
+
+      select.addEventListener('change', applyRAHighlight);
+
+      // Restore saved RA filter
+      try {
+        var saved = sessionStorage.getItem('buad307_ra_filter');
+        if (saved && select.querySelector('option[value="' + saved + '"]')) {
+          select.value = saved;
+          applyRAHighlight();
+        }
+      } catch(e) {}
+      select.addEventListener('change', function() {
+        try { sessionStorage.setItem('buad307_ra_filter', select.value); } catch(e) {}
+      });
+    })();
+
+  // ── 1. GLOBAL EXPAND/COLLAPSE ALL ──
+  var btnExpandGlobal = document.getElementById('btnExpandAllGlobal');
+  if (btnExpandGlobal) {
+    btnExpandGlobal.addEventListener('click', function() {
+      var sections = document.querySelectorAll('.section');
+      var cards = document.querySelectorAll('.card:not(.always-open)');
+      var allOpen = true;
+      for (var i = 0; i < sections.length; i++) {
+        if (!sections[i].classList.contains('open')) { allOpen = false; break; }
+      }
+      if (allOpen) {
+        for (var j = 0; j < cards.length; j++) {
+          if (!cards[j].classList.contains('always-open')) cards[j].classList.remove('open');
+        }
+      }
+      for (var k = 0; k < sections.length; k++) {
+        if (allOpen) sections[k].classList.remove('open');
+        else sections[k].classList.add('open');
+      }
+      btnExpandGlobal.textContent = allOpen ? '↕ Expand All' : '↕ Collapse All';
     });
   }
 
-  btnChecklists.addEventListener('click', function() {
-    clPanel.classList.add('open');
-    document.body.style.overflow = 'hidden';
-  });
+  // ── 2. LIVE SESSION INDICATOR ──
+  function updateLiveSession() {
+    var now = new Date();
+    var rows = document.querySelectorAll('.schedule-table tr[data-date]');
+    var clockEl = document.getElementById('sessionClock');
+    var liveFound = false;
 
-  clClose.addEventListener('click', function() {
-    clPanel.classList.remove('open');
-    document.body.style.overflow = '';
-  });
+    // Clear previous
+    for (var i = 0; i < rows.length; i++) rows[i].classList.remove('session-live');
 
-  clPanel.addEventListener('click', function(e) {
-    var li = e.target.closest('.checklist li');
-    if (li && clPanel.contains(li)) {
-      li.classList.toggle('checked');
-      updateClProgress();
+    for (var j = 0; j < rows.length; j++) {
+      var dateStr = rows[j].getAttribute('data-date');
+      var tds = rows[j].querySelectorAll('td');
+      if (tds.length < 2) continue;
+      var timeText = tds[1].textContent.trim();
+      // Parse time range like "9:00 – 10:00 AM" or "9:00 AM – 10:00 AM"
+      var match = timeText.match(/(\d{1,2}):(\d{2})\s*(AM|PM)?\s*[–\-]\s*(\d{1,2}):(\d{2})\s*(AM|PM)/i);
+      if (!match) continue;
+
+      var endAMPM = match[6].toUpperCase();
+      var startAMPM = match[3] ? match[3].toUpperCase() : endAMPM;
+
+      var sh = parseInt(match[1]), sm = parseInt(match[2]);
+      var eh = parseInt(match[4]), em = parseInt(match[5]);
+      if (startAMPM === 'PM' && sh !== 12) sh += 12;
+      if (startAMPM === 'AM' && sh === 12) sh = 0;
+      if (endAMPM === 'PM' && eh !== 12) eh += 12;
+      if (endAMPM === 'AM' && eh === 12) eh = 0;
+
+      var dp = dateStr.split('-');
+      var start = new Date(parseInt(dp[0]), parseInt(dp[1]) - 1, parseInt(dp[2]), sh, sm);
+      var end = new Date(parseInt(dp[0]), parseInt(dp[1]) - 1, parseInt(dp[2]), eh, em);
+
+      if (now >= start && now < end) {
+        rows[j].classList.add('session-live');
+        liveFound = true;
+      }
     }
-  });
 
-  clReset.addEventListener('click', function() {
-    var items = clPanel.querySelectorAll('.checklist li.checked');
-    for (var i = 0; i < items.length; i++) {
-      items[i].classList.remove('checked');
+    if (clockEl) {
+      if (liveFound) {
+        clockEl.innerHTML = '<span class="live-indicator"><span class="live-dot"></span> LIVE</span>';
+      } else {
+        clockEl.innerHTML = '';
+      }
     }
-    updateClProgress();
-  });
+  }
+  updateLiveSession();
+  setInterval(updateLiveSession, 30000); // Check every 30s
 
-  // Escape closes panel
-  document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape' && clPanel.classList.contains('open')) {
-      clPanel.classList.remove('open');
-      document.body.style.overflow = '';
+  // (RA filter persistence integrated into schedule accordion JS above)
+
+  // ── 4. COPY LINK BUTTONS ──
+  (function() {
+    // Add to sections with IDs
+    var sectionHeaders = document.querySelectorAll('.section[id] > .section-header');
+    for (var i = 0; i < sectionHeaders.length; i++) {
+      var id = sectionHeaders[i].parentElement.id;
+      var btn = document.createElement('button');
+      btn.className = 'btn-copy-link';
+      btn.setAttribute('data-copy-id', id);
+      btn.innerHTML = '🔗 Copy link';
+      // Insert before chevron
+      var chev = sectionHeaders[i].querySelector('.section-chevron');
+      if (chev) sectionHeaders[i].insertBefore(btn, chev);
+      else sectionHeaders[i].appendChild(btn);
     }
-  });
+    // Add to cards with IDs
+    var cardHeads = document.querySelectorAll('.card[id] > .card-head');
+    for (var j = 0; j < cardHeads.length; j++) {
+      var cid = cardHeads[j].parentElement.id;
+      var cbtn = document.createElement('button');
+      cbtn.className = 'btn-copy-link';
+      cbtn.setAttribute('data-copy-id', cid);
+      cbtn.innerHTML = '🔗 Copy link';
+      var cchev = cardHeads[j].querySelector('.ch-chevron');
+      if (cchev) cardHeads[j].insertBefore(cbtn, cchev);
+      else cardHeads[j].appendChild(cbtn);
+    }
+    // Handle clicks
+    document.addEventListener('click', function(e) {
+      var btn = e.target.closest('.btn-copy-link');
+      if (!btn) return;
+      e.stopPropagation(); // Don't toggle card/section
+      var copyId = btn.getAttribute('data-copy-id');
+      var url = window.location.origin + window.location.pathname + '#' + copyId;
+      navigator.clipboard.writeText(url).then(function() {
+        btn.innerHTML = '✓ Copied!';
+        btn.classList.add('copied');
+        setTimeout(function() {
+          btn.innerHTML = '🔗 Copy link';
+          btn.classList.remove('copied');
+        }, 2000);
+      }).catch(function() {
+        // Fallback
+        var inp = document.createElement('input');
+        inp.value = url;
+        document.body.appendChild(inp);
+        inp.select();
+        document.execCommand('copy');
+        document.body.removeChild(inp);
+        btn.innerHTML = '✓ Copied!';
+        btn.classList.add('copied');
+        setTimeout(function() {
+          btn.innerHTML = '🔗 Copy link';
+          btn.classList.remove('copied');
+        }, 2000);
+      });
+    });
+  })();
 
-  updateClProgress();
+  // ── 5. PRINT DATE ATTRIBUTE ──
+  (function() {
+    var main = document.getElementById('mainContent');
+    if (main) {
+      var d = new Date();
+      var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+      main.setAttribute('data-print-date', months[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear());
+    }
+  })();
 
   // ── DEEP LINK SUPPORT ──
   function handleHash() {
