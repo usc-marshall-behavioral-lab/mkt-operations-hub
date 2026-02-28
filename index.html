@@ -6,7 +6,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>MKT Subject Pool — Operations Hub · Spring 2026</title>
-<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 /* ── PASSWORD GATE ── */
 .pw-gate {
@@ -22,12 +22,13 @@
 .pw-gate.unlocked { display: none; }
 .pw-box {
   background: white;
-  border-radius: 16px;
-  padding: 40px 32px;
-  max-width: 360px;
+  border-radius: 20px;
+  padding: 44px 36px;
+  max-width: 380px;
   width: 100%;
   text-align: center;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  box-shadow: 0 24px 80px rgba(0,0,0,0.25), 0 8px 24px rgba(0,0,0,0.12);
+  backdrop-filter: blur(20px);
 }
 .pw-box h1 {
   font-family: 'DM Sans', sans-serif;
@@ -84,21 +85,24 @@
   margin-top: 10px;
   min-height: 18px;
 }
-.app-content { display: none; }
-.app-content.unlocked { display: block; }
+
 
 :root {
   --cardinal: #990000;
   --cardinal-dark: #7a0000;
+  --cardinal-glow: rgba(153,0,0,0.08);
   --gold: #FFCC00;
   --gold-muted: #FFC72C;
-  --bg: #FAF9F7;
+  --gold-soft: rgba(255,204,0,0.12);
+  --bg: #F8F7F5;
   --surface: #FFFFFF;
-  --surface-alt: #F3F1ED;
-  --border: #E2DFD8;
-  --border-light: #EDEBE6;
+  --surface-alt: #F5F3EF;
+  --surface-raised: #FFFFFF;
+  --border: #E0DDD6;
+  --border-light: #ECEAE4;
+  --border-focus: rgba(153,0,0,0.3);
   --text: #1A1714;
-  --text-secondary: #5C564D;
+  --text-secondary: #58524A;
   --text-muted: #8A8379;
   --phd-bg: #F0EAFF;
   --phd-border: #C4B0F0;
@@ -115,11 +119,17 @@
   --emergency-bg: #FFF3E0;
   --emergency-border: #FFB74D;
   --emergency-text: #BF360C;
-  --radius: 10px;
-  --radius-sm: 6px;
-  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
-  --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
-  --shadow-lg: 0 8px 30px rgba(0,0,0,0.1);
+  --radius: 12px;
+  --radius-sm: 8px;
+  --radius-xs: 5px;
+  --shadow-xs: 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.05), 0 1px 2px rgba(0,0,0,0.03);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.04);
+  --shadow-lg: 0 12px 40px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.04);
+  --shadow-xl: 0 20px 60px rgba(0,0,0,0.1), 0 8px 20px rgba(0,0,0,0.05);
+  --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-med: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -131,13 +141,15 @@ html {
 }
 
 body {
-  font-family: 'DM Sans', -apple-system, sans-serif;
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   background: var(--bg);
   color: var(--text);
   font-size: 15px;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   padding-bottom: 100px;
+  text-rendering: optimizeLegibility;
 }
 
 /* ── STICKY HEADER ── */
@@ -145,10 +157,10 @@ body {
   position: sticky;
   top: 0;
   z-index: 100;
-  background: var(--cardinal);
+  background: linear-gradient(135deg, #990000 0%, #7a0000 100%);
   color: white;
   padding: 12px 16px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+  box-shadow: 0 2px 16px rgba(153,0,0,0.25), 0 1px 3px rgba(0,0,0,0.1);
 }
 
 .top-bar-inner {
@@ -224,7 +236,9 @@ body {
   background: var(--bg);
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
+  animation: panelSlideIn 0.35s cubic-bezier(0.32, 0.72, 0, 1);
 }
+@keyframes panelSlideIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
 .cl-panel.open { display: block; }
 .cl-panel-bar {
   position: sticky;
@@ -309,10 +323,11 @@ body {
 }
 .cl-progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, var(--cardinal), #cc3333);
+  background: linear-gradient(90deg, var(--cardinal), #cc3333, #dd4444);
+  background-size: 200% 100%;
   border-radius: 4px;
   width: 0%;
-  transition: width 0.3s ease;
+  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .cl-progress-text {
   font-size: 13px;
@@ -328,7 +343,9 @@ body {
   margin-bottom: 16px;
   overflow: hidden;
   box-shadow: var(--shadow-sm);
+  transition: box-shadow var(--transition-fast);
 }
+.cl-section:hover { box-shadow: var(--shadow-md); }
 .cl-section-head {
   padding: 14px 16px;
   display: flex;
@@ -418,10 +435,10 @@ body {
   position: relative;
   background: var(--surface);
   border: 1.5px solid var(--border);
-  border-radius: var(--radius-sm);
-  transition: border-color 0.2s;
+  border-radius: var(--radius);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
 }
-.search-wrap:focus-within { border-color: var(--cardinal); }
+.search-wrap:focus-within { border-color: var(--cardinal); box-shadow: 0 0 0 3px var(--cardinal-glow); }
 .search-wrap svg {
   position: absolute;
   left: 12px;
@@ -472,7 +489,7 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  padding: 6px 12px;
+  padding: 6px 13px;
   border-radius: 20px;
   font-size: 12.5px;
   font-weight: 600;
@@ -481,7 +498,7 @@ body {
   border: 1px solid var(--border);
   cursor: pointer;
   text-decoration: none;
-  transition: all 0.15s;
+  transition: all var(--transition-fast);
   flex-shrink: 0;
 }
 .nav-pill:hover, .nav-pill.active {
@@ -569,14 +586,14 @@ body {
   align-items: center;
   gap: 14px;
   box-shadow: var(--shadow-sm);
-  transition: box-shadow 0.2s;
+  transition: box-shadow var(--transition-med), transform var(--transition-med), border-color var(--transition-fast);
 }
-.section-header:hover { box-shadow: var(--shadow-md); }
+.section-header:hover { box-shadow: var(--shadow-md); transform: translateY(-1px); border-color: var(--border-light); }
 
 .section-num {
   flex-shrink: 0;
-  width: 36px;
-  height: 36px;
+  width: 38px;
+  height: 38px;
   border-radius: var(--radius-sm);
   background: var(--cardinal);
   color: white;
@@ -586,6 +603,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
 }
 
 /* Section colors matching one-page lifecycle handout */
@@ -636,7 +654,7 @@ body {
   padding: 6px 0 0;
   margin-left: 18px;
   padding-left: 14px;
-  border-left: 2px solid var(--border-light);
+  border-left: 2.5px solid var(--border-light);
 }
 .section.open .section-body { display: block; }
 
@@ -659,7 +677,9 @@ body {
   overflow: hidden;
   box-shadow: var(--shadow-sm);
   scroll-margin-top: 150px;
+  transition: box-shadow var(--transition-med), transform var(--transition-med);
 }
+.card:hover { box-shadow: var(--shadow-md); }
 
 .card-head {
   padding: 12px 16px;
@@ -677,7 +697,7 @@ body {
   margin-left: auto;
   width: 16px; height: 16px;
   color: var(--text-muted);
-  transition: transform 0.2s;
+  transition: transform var(--transition-med);
   flex-shrink: 0;
 }
 .card.open .card-head .ch-chevron { transform: rotate(180deg); }
@@ -712,10 +732,11 @@ body {
 /* ── CALLOUT BOXES ── */
 .callout {
   border-radius: var(--radius-sm);
-  padding: 12px 14px;
+  padding: 13px 16px;
   margin: 10px 0;
   font-size: 14px;
   line-height: 1.55;
+  transition: transform var(--transition-fast);
 }
 .callout:first-child { margin-top: 0; }
 
@@ -769,6 +790,7 @@ body {
   padding: 14px 16px;
   margin: 10px 0;
   font-size: 14px;
+  box-shadow: var(--shadow-xs);
 }
 .script-block .speaker {
   font-weight: 700;
@@ -807,6 +829,7 @@ body {
   align-items: center;
   justify-content: center;
   margin-top: 1px;
+  box-shadow: 0 2px 4px rgba(153,0,0,0.2);
 }
 .step-content { flex: 1; font-size: 14px; }
 
@@ -824,16 +847,20 @@ body {
   font-size: 11px;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.6px;
   color: var(--text-muted);
-  padding: 8px 10px;
+  padding: 10px 12px;
   border-bottom: 2px solid var(--border);
   background: var(--surface-alt);
 }
 .ref-table td {
-  padding: 10px;
+  padding: 10px 12px;
   border-bottom: 1px solid var(--border-light);
   vertical-align: top;
+  transition: background var(--transition-fast);
+}
+.ref-table tbody tr:hover td {
+  background: var(--surface-alt);
 }
 .ref-table tr:last-child td { border-bottom: none; }
 
@@ -871,9 +898,9 @@ body {
   width: 20px;
   height: 20px;
   border: 2px solid var(--border);
-  border-radius: 4px;
+  border-radius: 5px;
   background: var(--surface);
-  transition: all 0.15s;
+  transition: all var(--transition-fast);
 }
 .checklist li.checked { opacity: 0.5; text-decoration: line-through; }
 .checklist li.checked::before {
@@ -987,10 +1014,6 @@ body {
 .section-header:hover .btn-copy-link { display: inline-flex; }
 @media (max-width: 600px) {
   .btn-copy-link { display: none !important; } /* too small on mobile */
-
-  /* 1. Hide overview table on mobile — accordion headers have the same info */
-  #labOverviewTable,
-  #labOverviewTable + p { display: none !important; }
 
   /* 2. Sticky RA filter on mobile */
   #schedule > .card-body { overflow-x: visible; overflow: visible; } /* Allow sticky inside */
@@ -1174,12 +1197,12 @@ body {
   border-radius: var(--radius-sm);
   padding: 10px 6px;
   text-align: center;
-  transition: all 0.15s;
+  transition: all var(--transition-fast);
 }
 .lab-cubicle:hover {
   border-color: #4285F4;
-  box-shadow: 0 2px 8px rgba(66,133,244,0.15);
-  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(66,133,244,0.18);
+  transform: translateY(-2px);
 }
 .lab-num {
   display: block;
@@ -1253,15 +1276,17 @@ body {
   left: 0;
   right: 0;
   z-index: 200;
-  background: rgba(0,0,0,0.85);
+  background: rgba(10,8,6,0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   color: white;
   transform: translateY(100%);
-  transition: transform 0.3s ease;
+  transition: transform 0.4s cubic-bezier(0.32, 0.72, 0, 1);
   max-height: 85vh;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
-  border-top-left-radius: 16px;
-  border-top-right-radius: 16px;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
 }
 .emergency-panel.open { transform: translateY(0); }
 
@@ -1306,14 +1331,15 @@ body {
 .e-contact:last-child { border-bottom: none; }
 
 .e-icon {
-  width: 44px;
-  height: 44px;
+  width: 46px;
+  height: 46px;
   border-radius: var(--radius);
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 20px;
   flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
 }
 .e-icon.red { background: #D32F2F; }
 .e-icon.blue { background: #1565C0; }
@@ -1336,7 +1362,10 @@ body {
   padding: 8px 14px;
   border-radius: var(--radius-sm);
   text-decoration: none;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
 }
+.e-action a:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(255,204,0,0.4); }
+.e-action a:active { transform: scale(0.97); }
 
 .e-protocol {
   margin-top: 16px;
@@ -1385,15 +1414,21 @@ body {
   display: none;
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.4);
+  background: rgba(0,0,0,0.35);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
   z-index: 199;
+  animation: overlayFade 0.25s ease;
 }
+@keyframes overlayFade { from { opacity: 0; } to { opacity: 1; } }
 .overlay.open { display: block; }
 
 /* ── RESPONSIVE ── */
 @media (max-width: 420px) {
   .top-bar h1 { font-size: 14px; }
   .btn-emergency { font-size: 11px; padding: 7px 10px; }
+  .mode-toggle { display: flex; }
+  .mode-tab { padding: 5px 10px; font-size: 11px; }
   .section-header { padding: 12px 14px; gap: 10px; }
   .section-num { width: 32px; height: 32px; font-size: 13px; }
   .section-title h2 { font-size: 15px; }
@@ -1731,9 +1766,9 @@ body {
   .lab-acc-head { padding: 14px 20px; }
   .lab-acc-body { padding: 0 20px 20px; }
 
-  /* ── CONTACT CHIPS: desktop grid ── */
-  .contact-chip { max-width: 320px; }
-  .lab-contacts-strip { gap: 10px; padding: 14px; border-radius: var(--radius); }
+  /* ── CONTACT LIST: desktop tweaks ── */
+  .contact-chip { padding: 10px 16px; }
+  .lab-contacts-strip { border-radius: var(--radius-sm); }
 
   /* ── CALLOUTS: refined ── */
   .callout { border-radius: var(--radius); }
@@ -1767,8 +1802,8 @@ body {
 }
 
 /* Smooth open/close animation */
-.section-body, .card-body { animation: fadeIn 0.2s ease; }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
+.section-body, .card-body { animation: fadeSlideDown 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+@keyframes fadeSlideDown { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
 
 /* ── BACK TO TOP ── */
 .btn-top {
@@ -1779,19 +1814,20 @@ body {
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  background: var(--cardinal);
+  background: linear-gradient(135deg, #990000, #7a0000);
   color: white;
   border: none;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 3px 12px rgba(0,0,0,0.25);
+  box-shadow: 0 4px 16px rgba(153,0,0,0.3), 0 2px 6px rgba(0,0,0,0.1);
   opacity: 0;
   pointer-events: none;
   transform: translateY(10px);
-  transition: opacity 0.25s, transform 0.25s;
+  transition: opacity var(--transition-med), transform var(--transition-med), box-shadow var(--transition-fast);
 }
+.btn-top:hover { box-shadow: 0 6px 24px rgba(153,0,0,0.4), 0 3px 10px rgba(0,0,0,0.15); }
 .btn-top.visible {
   opacity: 1;
   pointer-events: auto;
@@ -1857,10 +1893,10 @@ body {
   border-radius: var(--radius);
   margin-top: 12px;
   overflow: hidden;
-  transition: box-shadow 0.2s;
+  transition: box-shadow var(--transition-med), border-color var(--transition-fast);
   scroll-margin-top: 150px;
 }
-.lab-accordion:hover { box-shadow: var(--shadow-sm); }
+.lab-accordion:hover { box-shadow: var(--shadow-md); border-color: var(--border); }
 .lab-accordion.lab-current { border-color: var(--cardinal); border-width: 2px; }
 .lab-accordion.lab-past { opacity: 0.55; }
 .lab-accordion.lab-past:hover { opacity: 0.8; }
@@ -1871,7 +1907,7 @@ body {
   padding: 12px 16px;
   cursor: pointer;
   background: var(--surface);
-  transition: background 0.15s;
+  transition: background var(--transition-fast);
   user-select: none;
 }
 .lab-acc-head:hover { background: var(--surface-alt); }
@@ -1922,57 +1958,53 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  padding: 7px 14px;
-  margin: 12px 0 8px;
+  padding: 6px 12px;
+  margin: 10px 0 8px;
   font-family: 'DM Sans', sans-serif;
   font-size: 12px;
-  font-weight: 700;
-  color: white;
-  background: var(--cardinal);
-  border: none;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background: var(--surface);
+  border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   cursor: pointer;
   transition: all 0.15s;
 }
-.lab-contacts-toggle:hover { background: var(--cardinal-dark); }
+.lab-contacts-toggle:hover { background: var(--surface-alt); border-color: var(--text-muted); }
 .lab-contacts-toggle:active { transform: scale(0.97); }
 .lab-contacts-strip {
   display: none;
-  flex-wrap: wrap;
-  gap: 8px;
-  padding: 12px;
+  flex-direction: column;
+  gap: 0;
   margin-bottom: 12px;
-  background: #F5F5F5;
-  border: 1.5px solid var(--border);
-  border-radius: var(--radius);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
 }
 .lab-contacts-strip.open { display: flex; }
 .contact-chip {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 10px 12px;
-  background: white;
-  border: 1.5px solid #D0D0D0;
-  border-radius: var(--radius-sm);
+  gap: 10px;
+  padding: 9px 14px;
+  border-bottom: 1px solid var(--border-light);
   font-size: 13px;
-  flex: 1;
-  min-width: 180px;
-  max-width: 280px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
 }
+.contact-chip:last-child { border-bottom: none; }
+.contact-chip:nth-child(even) { background: var(--surface-alt); }
 .contact-chip-name {
-  font-weight: 700;
-  color: #1A1A1A;
+  font-weight: 600;
+  color: var(--text);
   white-space: nowrap;
   font-size: 13px;
 }
 .contact-chip-role {
-  font-size: 10px;
+  font-size: 9px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  padding: 2px 6px;
+  padding: 1px 5px;
   border-radius: 3px;
   white-space: nowrap;
 }
@@ -1988,18 +2020,18 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 34px;
-  height: 34px;
+  width: 30px;
+  height: 30px;
   border-radius: var(--radius-sm);
-  font-size: 15px;
+  font-size: 14px;
   text-decoration: none;
   transition: all 0.15s;
-  border: 1.5px solid transparent;
+  border: none;
 }
-.contact-chip-links a.chip-phone { background: #2E7D32; color: white; }
-.contact-chip-links a.chip-phone:hover { background: #1B5E20; }
-.contact-chip-links a.chip-email { background: #1565C0; color: white; }
-.contact-chip-links a.chip-email:hover { background: #0D47A1; }
+.contact-chip-links a.chip-phone { background: var(--surface-alt); color: #2E7D32; }
+.contact-chip-links a.chip-phone:hover { background: #E8F5E9; }
+.contact-chip-links a.chip-email { background: var(--surface-alt); color: #1565C0; }
+.contact-chip-links a.chip-email:hover { background: #E3F2FD; }
 
 .schedule-table tr.ra-highlight td {
   background: #FFF3C4 !important;
@@ -2026,35 +2058,6 @@ body {
   font-weight: 700;
   color: #8B6914;
 }
-/* Clickable overview rows */
-#labOverviewTable tr[data-jump-lab]:hover td {
-  background: var(--surface-alt);
-  color: var(--cardinal);
-  transition: background 0.15s, color 0.15s;
-}
-#labOverviewTable tr[data-jump-lab] td:first-child strong {
-  text-decoration: underline;
-  text-decoration-color: transparent;
-  transition: text-decoration-color 0.15s;
-}
-#labOverviewTable tr[data-jump-lab]:hover td:first-child strong {
-  text-decoration-color: var(--cardinal);
-}
-/* Overview table badges */
-.lab-overview-badge {
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
-  padding: 2px 8px;
-  border-radius: 4px;
-  white-space: nowrap;
-}
-#labOverviewTable th:last-child, #labOverviewTable td:last-child {
-  text-align: right;
-  width: 90px;
-}
-
 /* ── SCHEDULE FILTER ── */
 .schedule-filter {
   display: flex;
@@ -2116,29 +2119,200 @@ body {
 .footer-inner { display: flex; flex-direction: column; gap: 4px; }
 .footer-brand { font-weight: 500; }
 .footer-meta { font-size: 11px; }
+
+/* ── CUSTOM SCROLLBAR ── */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 4px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+::-webkit-scrollbar-thumb:hover { background: var(--text-muted); border: 2px solid transparent; background-clip: padding-box; }
+html { scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
+
+/* ── SELECTION ── */
+::selection { background: rgba(153,0,0,0.15); color: var(--text); }
+
+/* ── FOCUS VISIBLE ── */
+:focus-visible {
+  outline: 2px solid var(--cardinal);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible {
+  outline: 2px solid var(--cardinal);
+  outline-offset: 2px;
+}
+input:focus-visible, select:focus-visible { outline-offset: -1px; }
+
+/* ── SUBTLE BUTTON HOVER LIFTS ── */
+.btn-emergency {
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+.btn-emergency:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(255,204,0,0.3); }
+.btn-checklist {
+  transition: all var(--transition-fast);
+}
+.btn-checklist:hover { background: rgba(255,255,255,0.25); transform: translateY(-1px); }
+
+/* ── SCHEDULE TABLE ENHANCEMENTS ── */
+.schedule-table { border-radius: var(--radius-sm); overflow: hidden; }
+
+/* ── PAST DAY STRIKETHROUGH ── */
+.day-past-header {
+  text-decoration: line-through;
+  text-decoration-color: var(--text-muted);
+  opacity: 0.45;
+  transition: opacity var(--transition-fast);
+}
+.day-past-header:hover { opacity: 0.7; }
+.schedule-table tr.day-past td {
+  text-decoration: line-through;
+  text-decoration-color: var(--text-muted);
+  opacity: 0.4;
+  transition: opacity var(--transition-fast);
+}
+.schedule-table tr.day-past:hover td {
+  opacity: 0.65;
+}
+/* Keep UPDATED badge readable even on past days */
+.day-past-header span { text-decoration: none; display: inline-block; }
+/* Online schedule past rows */
+#onlineTable tr.online-past td {
+  text-decoration: line-through;
+  text-decoration-color: var(--text-muted);
+  opacity: 0.4;
+  transition: opacity var(--transition-fast);
+}
+#onlineTable tr.online-past:hover td { opacity: 0.65; }
+
+/* ── BADGE PILL REFINEMENT ── */
+.badge {
+  transition: transform var(--transition-fast);
+}
+
+/* ── LIVE INDICATOR GLOW ── */
+.live-indicator {
+  box-shadow: 0 0 0 0 rgba(46,125,50,0.2);
+  animation: liveGlow 2s ease-in-out infinite;
+}
+@keyframes liveGlow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(46,125,50,0.2); }
+  50% { box-shadow: 0 0 0 6px rgba(46,125,50,0); }
+}
+
+/* ── CONTACT CHIP HOVER ── */
+.contact-chip {
+  transition: background var(--transition-fast);
+}
+.contact-chip:hover { background: var(--surface-alt) !important; }
+
+/* ── FILTER SELECT REFINEMENT ── */
+.schedule-filter select {
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+.schedule-filter select:focus {
+  box-shadow: 0 0 0 3px var(--cardinal-glow);
+}
+
+/* ── EXPANDED COPY LINK TRANSITION ── */
+.btn-copy-link {
+  transition: color var(--transition-fast), border-color var(--transition-fast), transform var(--transition-fast);
+}
+.btn-copy-link:active { transform: scale(0.95); }
+
+/* ── PASSWORD INPUT REFINEMENT ── */
+.pw-box input:focus {
+  box-shadow: 0 0 0 3px var(--cardinal-glow);
+}
+.pw-box button {
+  transition: background var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+.pw-box button:hover {
+  background: var(--cardinal-dark);
+  box-shadow: 0 4px 12px rgba(153,0,0,0.3);
+  transform: translateY(-1px);
+}
+.pw-box button:active { transform: translateY(0) scale(0.98); }
+
+/* ── EXPAND ALL BUTTON REFINEMENT ── */
+.btn-expand-all, .btn-expand-all-global {
+  transition: all var(--transition-fast);
+}
+
+/* ── SECTION CHEVRON ── */
+.section-chevron {
+  transition: transform var(--transition-med);
+}
+
+/* ── MODE TOGGLE ── */
+.mode-toggle {
+  display: flex;
+  gap: 0;
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 8px;
+  padding: 3px;
+  flex-shrink: 0;
+}
+.mode-tab {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 6px 14px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  color: rgba(255,255,255,0.6);
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+  letter-spacing: 0.02em;
+}
+.mode-tab:hover { color: rgba(255,255,255,0.85); background: rgba(255,255,255,0.08); }
+.mode-tab.active {
+  background: rgba(255,255,255,0.95);
+  color: var(--cardinal-dark);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+}
+.mode-tab.active[data-mode="inperson"] { color: #7a0000; }
+.mode-tab.active[data-mode="online"] { color: #0D47A1; }
+
+/* ── MODE CONTENT VISIBILITY ── */
+[data-mode="inperson"] { transition: opacity 0.2s ease; }
+[data-mode="online"] { transition: opacity 0.2s ease; }
+body.mode-online [data-mode="inperson"] { display: none !important; }
+body.mode-inperson [data-mode="online"] { display: none !important; }
+[data-mode="reference"] { /* always visible */ }
+
+/* ── NAV PILLS MODE FILTERING ── */
+body.mode-online .nav-pill[data-nav-mode="inperson"],
+body.mode-online .nav-divider[data-nav-mode="inperson"],
+body.mode-online .nav-group-label[data-nav-mode="inperson"] { display: none !important; }
+body.mode-inperson .nav-pill[data-nav-mode="online"],
+body.mode-inperson .nav-divider[data-nav-mode="online"],
+body.mode-inperson .nav-group-label[data-nav-mode="online"] { display: none !important; }
 </style>
 </head>
 <body>
 
-<!-- ═══ PASSWORD GATE ═══ -->
-<div class="pw-gate" id="pwGate">
-  <div class="pw-box">
-    <h1>MKT Subject Pool — Operations Hub</h1>
-    <p class="pw-sub">Marshall Behavioral Research Lab · BUAD 307 · Spring 2026</p>
-    <div style="width:40px;height:2px;background:var(--cardinal);margin:16px auto 20px;border-radius:1px;"></div>
-    <input type="password" id="pwInput" placeholder="Enter password" autocomplete="off">
-    <button id="pwSubmit">Unlock</button>
-    <div class="pw-hint" id="pwHint"></div>
-  </div>
-</div>
-
-<!-- ═══ APP CONTENT (hidden until authenticated) ═══ -->
-<div class="app-content" id="appContent">
+<!-- ═══ APP CONTENT ═══ -->
+<div id="appContent">
 
 <!-- ═══ TOP BAR ═══ -->
 <header class="top-bar">
   <div class="top-bar-inner">
     <h1>MKT Subject Pool — Operations Hub <small>Marshall Behavioral Research Lab · BUAD 307 · Spring 2026</small></h1>
+    <div class="mode-toggle" id="modeToggle">
+      <button class="mode-tab active" data-mode="inperson">🏫 In-Person</button>
+      <button class="mode-tab" data-mode="online">💻 Online</button>
+    </div>
     <div class="session-clock" id="sessionClock"></div>
     <div style="display:flex;gap:8px;align-items:center;">
       <button class="btn-checklist" id="btnChecklists">✅ Checklists</button>
@@ -2162,21 +2336,22 @@ body {
 <!-- ═══ NAV PILLS ═══ -->
 <nav class="nav-pills" id="navPills">
   <div class="nav-pills-inner">
-    <span class="nav-group-label">Schedules</span>
-    <a class="nav-pill" href="#schedule"><span class="pill-num">📅</span> In-Person Schedule</a>
-    <a class="nav-pill" href="#onlineSchedule"><span class="pill-num">💻</span> Online Schedule</a>
-    <span class="nav-divider"></span>
-    <span class="nav-group-label">In-Person Session Guides</span>
-    <a class="nav-pill" href="#s1"><span class="pill-num">§1</span> Orientation</a>
-    <a class="nav-pill" href="#s2"><span class="pill-num">§2</span> Before</a>
-    <a class="nav-pill" href="#s3"><span class="pill-num">§3</span> Check-In</a>
-    <a class="nav-pill" href="#s4"><span class="pill-num">§4</span> Session</a>
-    <a class="nav-pill" href="#script"><span class="pill-num">📝</span> Script</a>
-    <a class="nav-pill" href="#s5"><span class="pill-num">§5</span> After</a>
-    <a class="nav-pill" href="#s6"><span class="pill-num">§6</span> Scenarios</a>
-    <span class="nav-divider"></span>
-    <span class="nav-group-label">Online Study Guides</span>
-    <a class="nav-pill" href="#onlineGuides"><span class="pill-num">💻</span> Online Guides <span style="font-size:9px;opacity:0.7;margin-left:2px;">🚧</span></a>
+    <span class="nav-group-label" data-nav-mode="inperson">Schedule</span>
+    <a class="nav-pill" href="#schedule" data-nav-mode="inperson"><span class="pill-num">📅</span> In-Person Schedule</a>
+    <span class="nav-divider" data-nav-mode="inperson"></span>
+    <span class="nav-group-label" data-nav-mode="inperson">Session Guides</span>
+    <a class="nav-pill" href="#s1" data-nav-mode="inperson"><span class="pill-num">§1</span> Orientation</a>
+    <a class="nav-pill" href="#s2" data-nav-mode="inperson"><span class="pill-num">§2</span> Before</a>
+    <a class="nav-pill" href="#s3" data-nav-mode="inperson"><span class="pill-num">§3</span> Check-In</a>
+    <a class="nav-pill" href="#s4" data-nav-mode="inperson"><span class="pill-num">§4</span> Session</a>
+    <a class="nav-pill" href="#script" data-nav-mode="inperson"><span class="pill-num">📝</span> Script</a>
+    <a class="nav-pill" href="#s5" data-nav-mode="inperson"><span class="pill-num">§5</span> After</a>
+    <a class="nav-pill" href="#s6" data-nav-mode="inperson"><span class="pill-num">§6</span> Scenarios</a>
+    <span class="nav-divider" data-nav-mode="online"></span>
+    <span class="nav-group-label" data-nav-mode="online">Schedule</span>
+    <a class="nav-pill" href="#onlineSchedule" data-nav-mode="online"><span class="pill-num">💻</span> Online Schedule</a>
+    <span class="nav-group-label" data-nav-mode="online">Guides</span>
+    <a class="nav-pill" href="#onlineGuides" data-nav-mode="online"><span class="pill-num">💻</span> Online Guides <span style="font-size:9px;opacity:0.7;margin-left:2px;">🚧</span></a>
     <span class="nav-divider"></span>
     <span class="nav-group-label">Reference</span>
     <a class="nav-pill" href="#sA"><span class="pill-num">A–F</span> Appendices</a>
@@ -2193,41 +2368,24 @@ body {
 <main class="content" id="mainContent">
 
 <!-- ═══ LAST UPDATED + GLOBAL CONTROLS ═══ -->
-<div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin:12px 0 4px;font-size:12px;">
+<div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin:12px 0 4px;font-size:12px;" data-mode="inperson">
   <div class="last-updated-banner" id="lastUpdated" style="display:inline-flex;align-items:center;gap:6px;padding:5px 12px;background:#FFF3E0;border:1px solid #FFCC80;border-radius:6px;color:#E65100;font-weight:600;">
-    <span>🔄</span> Updated Feb 23 — Lab 1 Tue schedule changed (Joseph → Bri & Atvika)
+    <span>🔄</span> Updated Feb 27 — Lab 2 schedule revised (Mon & Wed changes; Saumya covers for Agustin)
   </div>
   <button class="btn-expand-all-global" id="btnExpandAllGlobal" style="padding:5px 12px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;color:var(--text-secondary);background:var(--surface);border:1.5px solid var(--border);border-radius:6px;cursor:pointer;white-space:nowrap;">
     ↕ Expand All
   </button>
 </div>
 
-<!-- ═══ CONTEXT LEGEND ═══ -->
-<div style="margin:12px 0 8px;padding:6px 12px;font-size:12px;color:var(--text-muted);display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
-  <span style="display:inline-flex;align-items:center;gap:4px;"><span style="width:10px;height:10px;background:#C49A10;border-radius:2px;display:inline-block;"></span> <strong style="color:var(--text-secondary);">In-Person</strong> — schedules, procedures &amp; guides (§1–§6)</span>
-  <span style="color:var(--border);">|</span>
-  <span style="display:inline-flex;align-items:center;gap:4px;"><span style="width:10px;height:10px;background:#1976D2;border-radius:2px;display:inline-block;"></span> <strong style="color:var(--text-secondary);">Online</strong> — schedule only, procedures coming soon</span>
-</div>
-
 <!-- ══════════════════════════════════════ -->
 <!-- SESSION SCHEDULE -->
 <!-- ══════════════════════════════════════ -->
-<div class="card" id="schedule" data-search style="border-left:4px solid var(--gold-muted);margin-bottom:16px;scroll-margin-top:150px;">
+<div class="card" id="schedule" data-search data-mode="inperson" style="border-left:4px solid var(--gold-muted);margin-bottom:16px;scroll-margin-top:150px;">
   <div class="card-head" style="background:linear-gradient(135deg,#FFF8E1,#FFFDF5);">
     <span class="ch-icon">📅</span> Spring 2026 In-Person Lab Session Schedule
     <svg class="ch-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
   </div>
   <div class="card-body">
-    <table class="ref-table" id="labOverviewTable">
-      <tr><th>Session</th><th>Date</th><th>PhD Supervisor</th><th></th></tr>
-      <tr data-jump-lab="1" style="cursor:pointer;"><td><strong>Lab 1</strong></td><td>Week of Feb 23</td><td>Steve Carney</td><td><span class="lab-overview-badge" data-badge-lab="1"></span></td></tr>
-      <tr data-jump-lab="2" style="cursor:pointer;"><td><strong>Lab 2</strong></td><td>Week of Mar 2</td><td>Maansi Dalmia</td><td><span class="lab-overview-badge" data-badge-lab="2"></span></td></tr>
-      <tr data-jump-lab="3" style="cursor:pointer;"><td><strong>Lab 3</strong></td><td>Week of Apr 6</td><td>Swaroop Poudel</td><td><span class="lab-overview-badge" data-badge-lab="3"></span></td></tr>
-      <tr data-jump-lab="4" style="cursor:pointer;"><td><strong>Lab 4</strong></td><td>Week of Apr 13</td><td>Reyna Wang</td><td><span class="lab-overview-badge" data-badge-lab="4"></span></td></tr>
-      <tr data-jump-lab="5" style="cursor:pointer;"><td><strong>Lab 5</strong></td><td>Week of Apr 27</td><td>Minjeong Ko</td><td><span class="lab-overview-badge" data-badge-lab="5"></span></td></tr>
-    </table>
-    <p style="font-size:12.5px;color:var(--text-muted);margin-top:8px;">The PhD Supervisor listed is your point of contact for that session's study prep, order, and credits.</p>
-
     <!-- RA Filter -->
     <div class="schedule-filter" style="margin-top:16px;">
       <label for="raFilter">👤 Find my shifts:</label>
@@ -2249,7 +2407,7 @@ body {
     <div id="labAccordions">
 
       <!-- Lab 1 -->
-      <div class="lab-accordion lab-current open" data-lab="1" data-week-start="2026-02-23" data-week-end="2026-02-28">
+      <div class="lab-accordion lab-current" data-lab="1" data-week-start="2026-02-23" data-week-end="2026-02-28">
         <div class="lab-acc-head">
           <span class="lab-acc-label">Lab 1</span>
           <span class="lab-acc-meta">Wk of Feb 23 · Steve Carney · 14 sessions</span>
@@ -2293,13 +2451,13 @@ body {
           <svg class="lab-acc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
         </div>
         <div class="lab-acc-body">
-          <p style="font-weight:600;font-size:13px;color:var(--text-secondary);margin:12px 0 6px;">Monday, Mar 2</p>
+          <p style="font-weight:600;font-size:13px;color:var(--text-secondary);margin:12px 0 6px;">Monday, Mar 2 <span style="font-size:11px;font-weight:700;padding:1px 6px;border-radius:4px;background:#FFF3E0;color:#E65100;border:1px solid #FFCC80;vertical-align:middle;margin-left:4px;">UPDATED</span></p>
           <table class="ref-table schedule-table" style="font-size:13px;">
             <tr><th>#</th><th>Time</th><th>RAs</th></tr>
-            <tr data-ra="Joseph" data-date="2026-03-02" style="background:var(--surface-alt);font-style:italic;color:var(--text-secondary);"><td>SETUP</td><td>10:30 – 11:00 AM</td><td>Joseph</td></tr>
-            <tr data-ra="Joseph,Agustin" data-date="2026-03-02"><td>1</td><td>11:00 – 12:00 PM</td><td>Joseph, Agustin</td></tr>
-            <tr data-ra="Joseph,Agustin" data-date="2026-03-02"><td>2</td><td>12:00 – 1:00 PM</td><td>Joseph, Agustin</td></tr>
-            <tr data-ra="Joseph,Agustin" data-date="2026-03-02"><td>3</td><td>1:00 – 2:00 PM</td><td>Joseph, Agustin</td></tr>
+            <tr data-ra="Joseph,Agustin" data-date="2026-03-02"><td>1</td><td>10:30 – 11:30 AM</td><td>Joseph, Agustin</td></tr>
+            <tr data-ra="Joseph,Agustin" data-date="2026-03-02"><td>2</td><td>11:30 – 12:30 PM</td><td>Joseph, Agustin</td></tr>
+            <tr data-ra="Joseph,Saumya" data-date="2026-03-02" style="background:#FFF3E0;"><td>3</td><td>12:30 – 1:30 PM</td><td>Joseph, Saumya <span style="font-size:10px;font-weight:700;padding:1px 6px;border-radius:4px;background:#FFF3E0;color:#E65100;border:1px solid #FFCC80;vertical-align:middle;margin-left:4px;">Saumya covers for Agustin</span></td></tr>
+            <tr data-ra="Joseph,Agustin" data-date="2026-03-02" style="background:var(--surface-alt);font-style:italic;color:var(--text-secondary);"><td>BREAK</td><td>1:30 – 2:00 PM</td><td>Joseph, Agustin <span style="font-size:10px;font-weight:700;padding:1px 6px;border-radius:4px;background:#E3F2FD;color:#1565C0;border:1px solid #90CAF9;vertical-align:middle;margin-left:4px;">LUNCH</span></td></tr>
             <tr data-ra="Joseph,Agustin" data-date="2026-03-02"><td>4</td><td>2:00 – 3:00 PM</td><td>Joseph, Agustin</td></tr>
             <tr data-ra="Joseph,Agustin" data-date="2026-03-02"><td>5</td><td>3:00 – 4:00 PM</td><td>Joseph, Agustin</td></tr>
             <tr data-ra="Joseph,Agustin" data-date="2026-03-02"><td>6</td><td>4:00 – 5:00 PM</td><td>Joseph, Agustin</td></tr>
@@ -2310,17 +2468,17 @@ body {
             <tr data-ra="Saumya" data-date="2026-03-03" style="background:var(--surface-alt);font-style:italic;color:var(--text-secondary);"><td>SETUP</td><td>11:30 – 12:00 PM</td><td>Saumya</td></tr>
             <tr data-ra="Saumya,Alex" data-date="2026-03-03"><td>7</td><td>12:00 – 1:00 PM</td><td>Saumya, Alex</td></tr>
           </table>
-          <p style="font-weight:600;font-size:13px;color:var(--text-secondary);margin:14px 0 6px;">Wednesday, Mar 4</p>
+          <p style="font-weight:600;font-size:13px;color:var(--text-secondary);margin:14px 0 6px;">Wednesday, Mar 4 <span style="font-size:11px;font-weight:700;padding:1px 6px;border-radius:4px;background:#FFF3E0;color:#E65100;border:1px solid #FFCC80;vertical-align:middle;margin-left:4px;">UPDATED</span></p>
           <table class="ref-table schedule-table" style="font-size:13px;">
             <tr><th>#</th><th>Time</th><th>RAs</th></tr>
             <tr data-ra="Agustin" data-date="2026-03-04" style="background:var(--surface-alt);font-style:italic;color:var(--text-secondary);"><td>SETUP</td><td>10:30 – 11:00 AM</td><td>Agustin</td></tr>
             <tr data-ra="Agustin,Joseph" data-date="2026-03-04"><td>8</td><td>11:00 – 12:00 PM</td><td>Agustin, Joseph</td></tr>
             <tr data-ra="Agustin,Joseph" data-date="2026-03-04"><td>9</td><td>12:00 – 1:00 PM</td><td>Agustin, Joseph</td></tr>
             <tr data-ra="Agustin,Joseph" data-date="2026-03-04"><td>10</td><td>1:00 – 2:00 PM</td><td>Agustin, Joseph</td></tr>
-            <tr data-ra="Agustin,Joseph" data-date="2026-03-04"><td>11</td><td>2:00 – 3:00 PM</td><td>Agustin, Joseph</td></tr>
-            <tr data-ra="Agustin,Alex" data-date="2026-03-04"><td>12</td><td>3:00 – 4:00 PM</td><td>Agustin, Alex</td></tr>
-            <tr data-ra="Agustin,Alex" data-date="2026-03-04"><td>13</td><td>4:00 – 5:00 PM</td><td>Agustin, Alex</td></tr>
-            <tr data-ra="Agustin,Alex" data-date="2026-03-04"><td>14</td><td>5:00 – 6:00 PM</td><td>Agustin, Alex</td></tr>
+            <tr data-ra="Saumya,Joseph" data-date="2026-03-04" style="background:#FFF3E0;"><td>11</td><td>2:00 – 3:00 PM</td><td>Saumya, Joseph <span style="font-size:10px;font-weight:700;padding:1px 6px;border-radius:4px;background:#FFF3E0;color:#E65100;border:1px solid #FFCC80;vertical-align:middle;margin-left:4px;">Saumya covers for Agustin</span></td></tr>
+            <tr data-ra="Saumya,Alex" data-date="2026-03-04"><td>12</td><td>3:30 – 4:30 PM</td><td>Saumya, Alex</td></tr>
+            <tr data-ra="Saumya,Alex" data-date="2026-03-04"><td>13</td><td>4:30 – 5:30 PM</td><td>Saumya, Alex</td></tr>
+            <tr data-ra="Saumya,Alex" data-date="2026-03-04"><td>14</td><td>5:30 – 6:30 PM</td><td>Saumya, Alex</td></tr>
           </table>
         </div>
       </div>
@@ -2448,7 +2606,7 @@ body {
 <!-- ══════════════════════════════════════ -->
 <!-- ONLINE STUDIES SCHEDULE -->
 <!-- ══════════════════════════════════════ -->
-<div class="card" id="onlineSchedule" data-search style="border-left:4px solid #1976D2;margin-bottom:16px;scroll-margin-top:150px;">
+<div class="card" id="onlineSchedule" data-search data-mode="online" style="border-left:4px solid #1976D2;margin-bottom:16px;scroll-margin-top:150px;">
   <div class="card-head" style="background:linear-gradient(135deg,#E3F2FD,#F5FAFF);">
     <span class="ch-icon">💻</span> Spring 2026 Online Studies Schedule
     <svg class="ch-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
@@ -2482,7 +2640,7 @@ body {
 <!-- ══════════════════════════════════════ -->
 <!-- §1 ORIENTATION -->
 <!-- ══════════════════════════════════════ -->
-<div class="section" id="s1" data-search>
+<div class="section" id="s1" data-search data-mode="inperson">
   <div class="section-header">
     <div class="section-num">§1</div>
     <div class="section-title">
@@ -2594,10 +2752,23 @@ body {
           Per Provost policy, all card access to VPD expires at the end of each semester. This affects all undergraduates, master's, and PhD students. Access must be reactivated each semester.
         </div>
         <p>Faculty and full-time staff are not affected. Test your card access before your first session each semester (ideally during training).</p>
-        <p>If access isn't working, contact Brian Huh immediately: <a href="/cdn-cgi/l/email-protection#7d1508151f3d101c0f0e151c111153080e1e53181908"><span class="__cf_email__" data-cfemail="1078657872507d71626378717c7c3e6563733e757465">[email&#160;protected]</span></a> / <a href="tel:2138219746">213-821-9746</a></p>
+
+        <p style="font-weight:700;margin-top:16px;margin-bottom:6px;">🔓 First-Time Tap Card Setup (Schlage Reader)</p>
+        <p>When your card has been newly registered or re-registered (which happens every semester due to the Provost deactivation), the Schlage reader requires <strong>three long taps</strong> to initialize your card. Hold your card firmly against the Schlage logo each time — a long press, not a quick tap.</p>
+        <div class="steps">
+          <div class="step"><div class="step-content"><strong>Tap 1</strong> — Hold card to the Schlage logo. Wait for the <strong>beep</strong>. Logo flashes <strong style="color:#C62828;">red</strong>. Lift card.</div></div>
+          <div class="step"><div class="step-content"><strong>Tap 2</strong> — Hold card to the logo again. Wait for the <strong>beep</strong>. Logo flashes <strong style="color:#C62828;">red</strong> again. Lift card.</div></div>
+          <div class="step"><div class="step-content"><strong>Tap 3</strong> — Hold card to the logo one more time. You'll hear a <strong>beep</strong> and the logo turns <strong style="color:#2E7D32;">green</strong> — door unlocks.</div></div>
+        </div>
+        <div class="callout callout-info">
+          <span class="label">Key Points</span>
+          Each tap must be a <strong>long press</strong> — you'll know it registered when you hear the beep. If you don't hear a beep, the tap didn't count; try again with firmer contact. After the three-tap initialization, your card will work with a single tap for the rest of the semester.
+        </div>
+
+        <p>If access isn't working after this process, contact Brian Huh immediately: <a href="/cdn-cgi/l/email-protection#7d1508151f3d101c0f0e151c111153080e1e53181908"><span class="__cf_email__" data-cfemail="1078657872507d71626378717c7c3e6563733e757465">[email&#160;protected]</span></a> / <a href="tel:2138219746">213-821-9746</a></p>
         <div class="callout callout-phd">
           <span class="label">PhD Reminder</span>
-          Remind your RAs to verify access is working before the first session of each new semester.
+          Remind your RAs to verify access is working before the first session of each new semester. Card re-registration happens every semester — RAs will need to do the three-tap initialization again.
         </div>
       </div>
     </div>
@@ -2669,7 +2840,7 @@ body {
 <!-- ══════════════════════════════════════ -->
 <!-- §2 BEFORE THE SESSION -->
 <!-- ══════════════════════════════════════ -->
-<div class="section" id="s2" data-search>
+<div class="section" id="s2" data-search data-mode="inperson">
   <div class="section-header">
     <div class="section-num">§2</div>
     <div class="section-title">
@@ -2793,7 +2964,7 @@ body {
 <!-- ══════════════════════════════════════ -->
 <!-- §3 CHECK-IN -->
 <!-- ══════════════════════════════════════ -->
-<div class="section" id="s3" data-search>
+<div class="section" id="s3" data-search data-mode="inperson">
   <div class="section-header">
     <div class="section-num">§3</div>
     <div class="section-title">
@@ -2890,7 +3061,7 @@ body {
 <!-- ══════════════════════════════════════ -->
 <!-- §4 DURING THE SESSION -->
 <!-- ══════════════════════════════════════ -->
-<div class="section" id="s4" data-search>
+<div class="section" id="s4" data-search data-mode="inperson">
   <div class="section-header">
     <div class="section-num">§4</div>
     <div class="section-title">
@@ -3114,7 +3285,7 @@ body {
 <!-- ══════════════════════════════════════ -->
 <!-- §5 AFTER SESSION -->
 <!-- ══════════════════════════════════════ -->
-<div class="section" id="s5" data-search>
+<div class="section" id="s5" data-search data-mode="inperson">
   <div class="section-header">
     <div class="section-num">§5</div>
     <div class="section-title">
@@ -3184,7 +3355,7 @@ body {
 <!-- ══════════════════════════════════════ -->
 <!-- §6 SCENARIOS & EMERGENCIES -->
 <!-- ══════════════════════════════════════ -->
-<div class="section" id="s6" data-search>
+<div class="section" id="s6" data-search data-mode="inperson">
   <div class="section-header">
     <div class="section-num">§6</div>
     <div class="section-title">
@@ -3295,7 +3466,7 @@ body {
 <!-- ══════════════════════════════════════ -->
 <!-- ONLINE STUDY GUIDES -->
 <!-- ══════════════════════════════════════ -->
-<div class="section" id="onlineGuides" data-search style="scroll-margin-top:150px;">
+<div class="section" id="onlineGuides" data-search data-mode="online" style="scroll-margin-top:150px;">
   <div class="section-header" style="border-left:3px solid #1976D2;">
     <div class="section-num" style="background:#1976D2;font-size:13px;">💻</div>
     <div class="section-title">
@@ -3325,7 +3496,7 @@ body {
 <!-- ══════════════════════════════════════ -->
 <!-- APPENDICES -->
 <!-- ══════════════════════════════════════ -->
-<div class="section" id="sA" data-search>
+<div class="section" id="sA" data-search data-mode="reference">
   <div class="section-header">
     <div class="section-num" style="font-size:11px;">A–F</div>
     <div class="section-title">
@@ -3474,7 +3645,7 @@ body {
 <!-- ══════════════════════════════════════ -->
 <!-- CONTACTS -->
 <!-- ══════════════════════════════════════ -->
-<div class="section" id="sC" data-search>
+<div class="section" id="sC" data-search data-mode="reference">
   <div class="section-header">
     <div class="section-num" style="font-size:14px;">☎</div>
     <div class="section-title">
@@ -3804,11 +3975,39 @@ body {
   </div>
 </div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
 (function() {
+
+  // ── MODE TOGGLE ──
+  var currentMode = 'inperson';
+  document.body.classList.add('mode-inperson');
+
+  function setMode(mode) {
+    currentMode = mode;
+    document.body.classList.remove('mode-inperson', 'mode-online');
+    document.body.classList.add('mode-' + mode);
+    var tabs = document.querySelectorAll('.mode-tab');
+    for (var i = 0; i < tabs.length; i++) {
+      if (tabs[i].getAttribute('data-mode') === mode) {
+        tabs[i].classList.add('active');
+      } else {
+        tabs[i].classList.remove('active');
+      }
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
 
   // ── EVENT DELEGATION ──
   document.addEventListener('click', function(e) {
+    // Mode toggle tabs — check FIRST before anything else
+    var modeTab = e.target.closest('.mode-tab');
+    if (modeTab) {
+      e.preventDefault();
+      e.stopPropagation();
+      setMode(modeTab.getAttribute('data-mode'));
+      return;
+    }
+
     // Section headers (but not expand-all button)
     var header = e.target.closest('.section-header');
     if (header && !e.target.closest('.btn-expand-all')) {
@@ -4269,22 +4468,7 @@ body {
         });
       }
 
-      // Overview table: click row → open exclusively + scroll to accordion
-      var overviewTable = document.getElementById('labOverviewTable');
-      if (overviewTable) {
-        overviewTable.addEventListener('click', function(e) {
-          var row = e.target.closest('tr[data-jump-lab]');
-          if (!row) return;
-          var labNum = row.getAttribute('data-jump-lab');
-          var acc = document.querySelector('.lab-accordion[data-lab="' + labNum + '"]');
-          if (acc) {
-            openExclusive(acc);
-            acc.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          }
-        });
-      }
-
-      // Auto-classify: past / current / next + mirror badges to overview table
+      // Auto-classify: past / current / next
       var accs = document.querySelectorAll('.lab-accordion');
       var today = new Date();
       today.setHours(0, 0, 0, 0);
@@ -4294,29 +4478,75 @@ body {
         var ws = new Date(accs[a].getAttribute('data-week-start') + 'T00:00:00');
         var we = new Date(accs[a].getAttribute('data-week-end') + 'T23:59:59');
         var labNum = accs[a].getAttribute('data-lab');
-        var overviewBadge = document.querySelector('.lab-overview-badge[data-badge-lab="' + labNum + '"]');
 
         if (today >= ws && today <= we) {
-          accs[a].classList.add('lab-current', 'open');
+          accs[a].classList.add('lab-current');
           var badge = accs[a].querySelector('.lab-acc-badge');
           if (badge) { badge.className = 'lab-acc-badge this-week'; badge.textContent = 'This Week'; badge.style.display = ''; }
-          if (overviewBadge) { overviewBadge.className = 'lab-overview-badge lab-acc-badge this-week'; overviewBadge.textContent = 'This Week'; }
           foundCurrent = true;
         } else if (today > we) {
           accs[a].classList.add('lab-past');
           accs[a].classList.remove('open');
           var pbadge = accs[a].querySelector('.lab-acc-badge');
           if (pbadge) { pbadge.className = 'lab-acc-badge completed'; pbadge.textContent = 'Completed'; pbadge.style.display = ''; }
-          if (overviewBadge) { overviewBadge.className = 'lab-overview-badge lab-acc-badge completed'; overviewBadge.textContent = 'Completed'; }
         } else if (!foundNext) {
           foundNext = true;
           var nbadge = accs[a].querySelector('.lab-acc-badge');
           if (nbadge) { nbadge.className = 'lab-acc-badge next-up'; nbadge.textContent = 'Next Up'; nbadge.style.display = ''; }
-          if (overviewBadge) { overviewBadge.className = 'lab-overview-badge lab-acc-badge next-up'; overviewBadge.textContent = 'Next Up'; }
-          // If no current week, open the next one
-          if (!foundCurrent) { accs[a].classList.add('open'); }
         }
       }
+
+      // ── Strike through past days ──
+      // Mark individual day rows and their headers as past
+      (function() {
+        var todayDate = new Date();
+        todayDate.setHours(23, 59, 59, 999); // end of today — don't strike today
+
+        // Collect unique dates from schedule rows
+        var allRows = document.querySelectorAll('.schedule-table tr[data-date]');
+        var pastDates = {};
+        for (var r = 0; r < allRows.length; r++) {
+          var dateStr = allRows[r].getAttribute('data-date');
+          var rowDate = new Date(dateStr + 'T23:59:59');
+          if (rowDate < todayDate) {
+            pastDates[dateStr] = true;
+            allRows[r].classList.add('day-past');
+          }
+        }
+
+        // Mark day header <p> elements that precede past-day tables
+        var accBodies = document.querySelectorAll('.lab-acc-body');
+        for (var b = 0; b < accBodies.length; b++) {
+          var children = accBodies[b].children;
+          for (var c = 0; c < children.length; c++) {
+            if (children[c].tagName === 'P' && children[c].style.fontWeight === '600') {
+              // Find the next table's first data row to get its date
+              var nextTable = null;
+              for (var n = c + 1; n < children.length; n++) {
+                if (children[n].tagName === 'TABLE') { nextTable = children[n]; break; }
+                if (children[n].tagName === 'P') break; // next day header, stop
+              }
+              if (nextTable) {
+                var firstRow = nextTable.querySelector('tr[data-date]');
+                if (firstRow) {
+                  var dStr = firstRow.getAttribute('data-date');
+                  if (pastDates[dStr]) {
+                    children[c].classList.add('day-past-header');
+                  }
+                }
+              }
+            }
+          }
+        }
+        // Also mark online schedule past rows
+        var onlineRows = document.querySelectorAll('#onlineTable tr[data-online-date]');
+        for (var o = 0; o < onlineRows.length; o++) {
+          var oDate = new Date(onlineRows[o].getAttribute('data-online-date') + 'T23:59:59');
+          if (oDate < todayDate) {
+            onlineRows[o].classList.add('online-past');
+          }
+        }
+      })();
 
       // RA highlight filter
       var select = document.getElementById('raFilter');
@@ -4692,45 +4922,5 @@ body {
 
 </div><!-- /app-content -->
 
-<script>
-// ── PASSWORD GATE ──
-(function() {
-  var gate = document.getElementById('pwGate');
-  var app = document.getElementById('appContent');
-  var input = document.getElementById('pwInput');
-  var btn = document.getElementById('pwSubmit');
-  var hint = document.getElementById('pwHint');
-  var KEY = 'buad307_auth';
-
-  function unlock() {
-    gate.classList.add('unlocked');
-    app.classList.add('unlocked');
-    try { sessionStorage.setItem(KEY, '1'); } catch(e) {}
-  }
-
-  function attempt() {
-    if (input.value === 'Fighton!') {
-      unlock();
-    } else {
-      input.classList.add('pw-error');
-      hint.textContent = 'Incorrect password';
-      setTimeout(function() { input.classList.remove('pw-error'); }, 400);
-      input.select();
-    }
-  }
-
-  // Check if already authenticated this session
-  try {
-    if (sessionStorage.getItem(KEY) === '1') { unlock(); return; }
-  } catch(e) {}
-
-  btn.addEventListener('click', attempt);
-  input.addEventListener('keydown', function(e) {
-    if (e.key === 'Enter') attempt();
-    hint.textContent = '';
-  });
-  input.focus();
-})();
-</script>
 </body>
 </html>
