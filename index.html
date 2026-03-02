@@ -2233,6 +2233,11 @@ body {
 .lab-acc-badge.this-week { background: #E8F5E9; color: #2E7D32; border: 1px solid #A5D6A7; }
 .lab-acc-badge.next-up { background: #E3F2FD; color: #1565C0; border: 1px solid #90CAF9; }
 .lab-acc-badge.completed { background: var(--surface-alt); color: var(--text-muted); border: 1px solid var(--border-light); }
+.lab-acc-badge.in-progress { background: #FFF3E0; color: #E65100; border: 1px solid #FFB74D; animation: inProgressPulse 2s ease-in-out infinite; }
+@keyframes inProgressPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(230,81,0,0.2); }
+  50% { box-shadow: 0 0 0 5px rgba(230,81,0,0); }
+}
 .lab-acc-chevron {
   margin-left: auto;
   width: 20px;
@@ -2934,7 +2939,7 @@ body.mode-inperson .nav-group-label[data-nav-mode="online"] { display: none !imp
     <div id="labAccordions">
 
       <!-- Lab 1 -->
-      <div class="lab-accordion lab-current" data-lab="1" data-week-start="2026-02-23" data-week-end="2026-02-28">
+      <div class="lab-accordion lab-current" id="lab1" data-lab="1" data-week-start="2026-02-23" data-week-end="2026-02-28">
         <div class="lab-acc-head">
           <span class="lab-acc-label">Lab 1</span>
           <span class="lab-acc-meta">Wk of Feb 23 · Steve Carney · 14 sessions</span>
@@ -2970,7 +2975,7 @@ body.mode-inperson .nav-group-label[data-nav-mode="online"] { display: none !imp
       </div>
 
       <!-- Lab 2 -->
-      <div class="lab-accordion" data-lab="2" data-week-start="2026-03-02" data-week-end="2026-03-07">
+      <div class="lab-accordion" id="lab2" data-lab="2" data-week-start="2026-03-02" data-week-end="2026-03-07">
         <div class="lab-acc-head">
           <span class="lab-acc-label">Lab 2</span>
           <span class="lab-acc-meta">Wk of Mar 2 · Maansi Dalmia · 14 sessions</span>
@@ -2981,6 +2986,7 @@ body.mode-inperson .nav-group-label[data-nav-mode="online"] { display: none !imp
           <p style="font-weight:600;font-size:13px;color:var(--text-secondary);margin:12px 0 6px;">Monday, Mar 2 <span style="font-size:11px;font-weight:700;padding:1px 6px;border-radius:4px;background:#FFF3E0;color:#E65100;border:1px solid #FFCC80;vertical-align:middle;margin-left:4px;">UPDATED</span></p>
           <table class="ref-table schedule-table" style="font-size:13px;">
             <tr><th>#</th><th>Time</th><th>RAs</th></tr>
+            <tr data-ra="Joseph" data-date="2026-03-02" style="background:var(--surface-alt);font-style:italic;color:var(--text-secondary);"><td>SETUP</td><td>10:00 – 10:30 AM</td><td>Joseph</td></tr>
             <tr data-ra="Joseph,Agustin" data-date="2026-03-02"><td>1</td><td>10:30 – 11:30 AM</td><td>Joseph, Agustin</td></tr>
             <tr data-ra="Joseph,Agustin" data-date="2026-03-02"><td>2</td><td>11:30 – 12:30 PM</td><td>Joseph, Agustin</td></tr>
             <tr data-ra="Joseph,Saumya" data-date="2026-03-02" style="background:#FFF3E0;"><td>3</td><td>12:30 – 1:30 PM</td><td>Joseph, Saumya <span style="font-size:10px;font-weight:700;padding:1px 6px;border-radius:4px;background:#FFF3E0;color:#E65100;border:1px solid #FFCC80;vertical-align:middle;margin-left:4px;">Saumya covers for Agustin</span></td></tr>
@@ -3011,7 +3017,7 @@ body.mode-inperson .nav-group-label[data-nav-mode="online"] { display: none !imp
       </div>
 
       <!-- Lab 3 -->
-      <div class="lab-accordion" data-lab="3" data-week-start="2026-04-06" data-week-end="2026-04-11">
+      <div class="lab-accordion" id="lab3" data-lab="3" data-week-start="2026-04-06" data-week-end="2026-04-11">
         <div class="lab-acc-head">
           <span class="lab-acc-label">Lab 3</span>
           <span class="lab-acc-meta">Wk of Apr 6 · Swaroop Poudel · 14 sessions</span>
@@ -3052,7 +3058,7 @@ body.mode-inperson .nav-group-label[data-nav-mode="online"] { display: none !imp
       </div>
 
       <!-- Lab 4 -->
-      <div class="lab-accordion" data-lab="4" data-week-start="2026-04-13" data-week-end="2026-04-18">
+      <div class="lab-accordion" id="lab4" data-lab="4" data-week-start="2026-04-13" data-week-end="2026-04-18">
         <div class="lab-acc-head">
           <span class="lab-acc-label">Lab 4</span>
           <span class="lab-acc-meta">Wk of Apr 13 · Reyna Wang · 14 sessions</span>
@@ -3087,7 +3093,7 @@ body.mode-inperson .nav-group-label[data-nav-mode="online"] { display: none !imp
       </div>
 
       <!-- Lab 5 -->
-      <div class="lab-accordion" data-lab="5" data-week-start="2026-04-27" data-week-end="2026-05-02">
+      <div class="lab-accordion" id="lab5" data-lab="5" data-week-start="2026-04-27" data-week-end="2026-05-02">
         <div class="lab-acc-head">
           <span class="lab-acc-label">Lab 5</span>
           <span class="lab-acc-meta">Wk of Apr 27 · Minjeong Ko · 14 sessions</span>
@@ -3179,7 +3185,7 @@ body.mode-inperson .nav-group-label[data-nav-mode="online"] { display: none !imp
   <div class="section-body">
 
     <!-- Lab Layout -->
-    <div class="card" data-search>
+    <div class="card" id="s1-layout" data-search>
       <div class="card-head">
         <span class="ch-icon">🗺</span> Lab Layout — VPD LL102
         <svg class="ch-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
@@ -3249,7 +3255,7 @@ body.mode-inperson .nav-group-label[data-nav-mode="online"] { display: none !imp
     </div>
 
     <!-- Roles -->
-    <div class="card" data-search>
+    <div class="card" id="s1-roles" data-search>
       <div class="card-head">
         <span class="ch-icon">👤</span> Roles & Responsibilities
         <svg class="ch-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
@@ -3268,7 +3274,7 @@ body.mode-inperson .nav-group-label[data-nav-mode="online"] { display: none !imp
     </div>
 
     <!-- Card Access -->
-    <div class="card" data-search>
+    <div class="card" id="s1-access" data-search>
       <div class="card-head">
         <span class="ch-icon">🪪</span> Card Access & Building Policy
         <svg class="ch-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
@@ -3301,7 +3307,7 @@ body.mode-inperson .nav-group-label[data-nav-mode="online"] { display: none !imp
     </div>
 
     <!-- Communication -->
-    <div class="card" data-search>
+    <div class="card" id="s1-comms" data-search>
       <div class="card-head">
         <span class="ch-icon">💬</span> Communication & Escalation Chain
         <svg class="ch-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
@@ -3318,7 +3324,7 @@ body.mode-inperson .nav-group-label[data-nav-mode="online"] { display: none !imp
     </div>
 
     <!-- SimpleTexting -->
-    <div class="card" data-search>
+    <div class="card" id="s1-texting" data-search>
       <div class="card-head">
         <span class="ch-icon">📱</span> SimpleTexting — RA Quick Reference
         <svg class="ch-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
@@ -3379,7 +3385,7 @@ body.mode-inperson .nav-group-label[data-nav-mode="online"] { display: none !imp
   <div class="section-body">
 
     <!-- Study Prep -->
-    <div class="card" data-search>
+    <div class="card" id="s2-study-prep" data-search>
       <div class="card-head">
         <span class="ch-icon">📋</span> Study Preparation (Week Before — By Thursday)
         <svg class="ch-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
@@ -3401,7 +3407,7 @@ body.mode-inperson .nav-group-label[data-nav-mode="online"] { display: none !imp
     </div>
 
     <!-- Computer Setup -->
-    <div class="card" data-search>
+    <div class="card" id="s2-lab-setup" data-search>
       <div class="card-head">
         <span class="ch-icon">🖥</span> Checklist: Lab & Computer Setup (30 Min Early)
         <svg class="ch-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
@@ -3430,7 +3436,7 @@ body.mode-inperson .nav-group-label[data-nav-mode="online"] { display: none !imp
     </div>
 
     <!-- Materials & Printing -->
-    <div class="card" data-search>
+    <div class="card" id="s2-materials" data-search>
       <div class="card-head">
         <span class="ch-icon">🖨</span> Materials & Printing
         <svg class="ch-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
@@ -3459,7 +3465,7 @@ body.mode-inperson .nav-group-label[data-nav-mode="online"] { display: none !imp
     </div>
 
     <!-- Phone Policy -->
-    <div class="card" data-search>
+    <div class="card" id="s2-phone" data-search>
       <div class="card-head">
         <span class="ch-icon">📵</span> Phone Policy
         <svg class="ch-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
@@ -3474,7 +3480,7 @@ body.mode-inperson .nav-group-label[data-nav-mode="online"] { display: none !imp
     </div>
 
     <!-- Video Display -->
-    <div class="card" data-search>
+    <div class="card" id="s2-video" data-search>
       <div class="card-head">
         <span class="ch-icon">🖥</span> Troubleshooting: Video Display Issues
         <svg class="ch-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
@@ -3503,7 +3509,7 @@ body.mode-inperson .nav-group-label[data-nav-mode="online"] { display: none !imp
   <div class="section-body">
 
     <!-- Pre-Hour -->
-    <div class="card" data-search>
+    <div class="card" id="s3-before" data-search>
       <div class="card-head">
         <span class="ch-icon">🕐</span> 5 Minutes Before the Hour
         <svg class="ch-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
@@ -3522,7 +3528,7 @@ body.mode-inperson .nav-group-label[data-nav-mode="online"] { display: none !imp
     </div>
 
     <!-- At the Hour -->
-    <div class="card" data-search>
+    <div class="card" id="s3-checkin" data-search>
       <div class="card-head">
         <span class="ch-icon">🚪</span> At the Hour — Check-In Procedure
         <svg class="ch-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
@@ -3541,7 +3547,7 @@ body.mode-inperson .nav-group-label[data-nav-mode="online"] { display: none !imp
     </div>
 
     <!-- Special Cases -->
-    <div class="card" data-search>
+    <div class="card" id="s3-scenarios" data-search>
       <div class="card-head">
         <span class="ch-icon">❓</span> Special Check-In Scenarios
         <svg class="ch-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
@@ -3570,7 +3576,7 @@ body.mode-inperson .nav-group-label[data-nav-mode="online"] { display: none !imp
     </div>
 
     <!-- Door Close -->
-    <div class="card always-open" data-search>
+    <div class="card always-open" id="s3-overview" data-search>
       <div class="card-head">
         <span class="ch-icon">🔒</span> Door Close Policy
       </div>
@@ -3672,7 +3678,7 @@ body.mode-inperson .nav-group-label[data-nav-mode="online"] { display: none !imp
     </div>
 
     <!-- Monitoring -->
-    <div class="card" data-search>
+    <div class="card" id="s4-observation" data-search>
       <div class="card-head">
         <span class="ch-icon">👁</span> Observation & Monitoring
         <svg class="ch-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
@@ -3688,7 +3694,7 @@ body.mode-inperson .nav-group-label[data-nav-mode="online"] { display: none !imp
     </div>
 
     <!-- Participant Questions -->
-    <div class="card" data-search>
+    <div class="card" id="s4-questions" data-search>
       <div class="card-head">
         <span class="ch-icon">🙋</span> Common Participant Questions
         <svg class="ch-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
@@ -3721,7 +3727,7 @@ body.mode-inperson .nav-group-label[data-nav-mode="online"] { display: none !imp
     </div>
 
     <!-- Tech Issues -->
-    <div class="card" data-search>
+    <div class="card" id="s4-tech-issues" data-search>
       <div class="card-head">
         <span class="ch-icon">⚙️</span> Technical Issues — Previous Respondent Data
         <svg class="ch-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
@@ -3747,7 +3753,7 @@ body.mode-inperson .nav-group-label[data-nav-mode="online"] { display: none !imp
     </div>
 
     <!-- Fillers -->
-    <div class="card" data-search>
+    <div class="card" id="s4-fillers" data-search>
       <div class="card-head">
         <span class="ch-icon">📄</span> Filler Studies & Headphones
         <svg class="ch-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
@@ -3762,7 +3768,7 @@ body.mode-inperson .nav-group-label[data-nav-mode="online"] { display: none !imp
     </div>
 
     <!-- Documentation -->
-    <div class="card" data-search>
+    <div class="card" id="s4-documentation" data-search>
       <div class="card-head">
         <span class="ch-icon">📊</span> Session Documentation
         <svg class="ch-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
@@ -3824,7 +3830,7 @@ body.mode-inperson .nav-group-label[data-nav-mode="online"] { display: none !imp
   <div class="section-body">
 
     <!-- End Script -->
-    <div class="card" data-search>
+    <div class="card" id="s5-end-procedure" data-search>
       <div class="card-head">
         <span class="ch-icon">🏁</span> Checklist: End-of-Session Procedure
         <svg class="ch-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
@@ -3854,7 +3860,7 @@ body.mode-inperson .nav-group-label[data-nav-mode="online"] { display: none !imp
     </div>
 
     <!-- Credit Posting -->
-    <div class="card" data-search>
+    <div class="card" id="s5-credits" data-search>
       <div class="card-head">
         <span class="ch-icon">✅</span> Credit Posting & Follow-Up
         <svg class="ch-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
@@ -3894,7 +3900,7 @@ body.mode-inperson .nav-group-label[data-nav-mode="online"] { display: none !imp
   <div class="section-body">
 
     <!-- Doorbell -->
-    <div class="card" data-search>
+    <div class="card" id="s6-doorbell" data-search>
       <div class="card-head">
         <span class="ch-icon">🔔</span> Video Doorbell / Knock at Door
         <svg class="ch-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
@@ -3912,7 +3918,7 @@ body.mode-inperson .nav-group-label[data-nav-mode="online"] { display: none !imp
     </div>
 
     <!-- Late Arrivals -->
-    <div class="card" data-search>
+    <div class="card" id="s6-late" data-search>
       <div class="card-head">
         <span class="ch-icon">⏰</span> Late Arrivals
         <svg class="ch-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
@@ -3931,7 +3937,7 @@ body.mode-inperson .nav-group-label[data-nav-mode="online"] { display: none !imp
     </div>
 
     <!-- Aggressive Behavior -->
-    <div class="card" data-search>
+    <div class="card" id="s6-aggressive" data-search>
       <div class="card-head">
         <span class="ch-icon">⚠️</span> Aggressive or Threatening Behavior
         <svg class="ch-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
@@ -3951,7 +3957,7 @@ body.mode-inperson .nav-group-label[data-nav-mode="online"] { display: none !imp
     </div>
 
     <!-- Emergencies -->
-    <div class="card" data-search>
+    <div class="card" id="s6-emergency" data-search>
       <div class="card-head">
         <span class="ch-icon">🚨</span> Emergency Protocols
         <svg class="ch-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
@@ -4003,7 +4009,7 @@ body.mode-inperson .nav-group-label[data-nav-mode="online"] { display: none !imp
     <svg class="section-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
   </div>
   <div class="section-body">
-    <div class="card always-open" data-search>
+    <div class="card always-open" id="sA-overview" data-search>
       <div class="card-body" style="text-align:center;padding:40px 24px 48px;">
         <div style="font-size:56px;margin-bottom:16px;">🚧</div>
         <h3 style="font-size:19px;font-weight:700;color:var(--text);margin-bottom:10px;">Under Construction</h3>
@@ -4035,7 +4041,7 @@ body.mode-inperson .nav-group-label[data-nav-mode="online"] { display: none !imp
   <div class="section-body">
 
     <!-- Appendix A -->
-    <div class="card" data-search>
+    <div class="card" id="appendix-a" data-search>
       <div class="card-head">
         <span class="ch-icon">🅰</span> Appendix A: Check-In Flowchart
         <svg class="ch-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
@@ -4074,7 +4080,7 @@ body.mode-inperson .nav-group-label[data-nav-mode="online"] { display: none !imp
     </div>
 
     <!-- Appendix B -->
-    <div class="card" data-search>
+    <div class="card" id="appendix-b" data-search>
       <div class="card-head">
         <span class="ch-icon">🅱</span> Appendix B: Video Doorbell Protocol
         <svg class="ch-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
@@ -4096,7 +4102,7 @@ body.mode-inperson .nav-group-label[data-nav-mode="online"] { display: none !imp
     </div>
 
     <!-- Appendix C -->
-    <div class="card" data-search>
+    <div class="card" id="appendix-c" data-search>
       <div class="card-head">
         <span class="ch-icon">🅲</span> Appendix C: Technical Issue Resolution
         <svg class="ch-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
@@ -4117,7 +4123,7 @@ body.mode-inperson .nav-group-label[data-nav-mode="online"] { display: none !imp
     </div>
 
     <!-- Appendix D -->
-    <div class="card" data-search>
+    <div class="card" id="appendix-d" data-search>
       <div class="card-head">
         <span class="ch-icon">🅳</span> Appendix D: Escalation Protocol
         <svg class="ch-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
@@ -4136,7 +4142,7 @@ body.mode-inperson .nav-group-label[data-nav-mode="online"] { display: none !imp
     </div>
 
     <!-- Appendix E -->
-    <div class="card" data-search>
+    <div class="card" id="appendix-e" data-search>
       <div class="card-head">
         <span class="ch-icon">🅴</span> Appendix E: Building Emergency Protocol
         <svg class="ch-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
@@ -4156,7 +4162,7 @@ body.mode-inperson .nav-group-label[data-nav-mode="online"] { display: none !imp
     </div>
 
     <!-- Appendix F -->
-    <div class="card" data-search>
+    <div class="card" id="appendix-f" data-search>
       <div class="card-head">
         <span class="ch-icon">🅵</span> Appendix F: Study Folder Setup
         <svg class="ch-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
@@ -4183,7 +4189,7 @@ body.mode-inperson .nav-group-label[data-nav-mode="online"] { display: none !imp
   </div>
   <div class="section-body">
 
-    <div class="card always-open" data-search>
+    <div class="card always-open" id="sC-overview" data-search>
       <div class="card-head"><span class="ch-icon">📇</span> Essential Contacts</div>
       <div class="card-body">
         <table class="ref-table">
@@ -4212,7 +4218,7 @@ body.mode-inperson .nav-group-label[data-nav-mode="online"] { display: none !imp
       </div>
     </div>
 
-    <div class="card" data-search>
+    <div class="card" id="sC-directory" data-search>
       <div class="card-head">
         <span class="ch-icon">👥</span> Team Directory — PhDs & Research Assistants
         <svg class="ch-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
@@ -4251,7 +4257,7 @@ body.mode-inperson .nav-group-label[data-nav-mode="online"] { display: none !imp
       </div>
     </div>
 
-    <div class="card always-open" data-search>
+    <div class="card always-open" id="sC-support" data-search>
       <div class="card-head"><span class="ch-icon">🚨</span> Emergency Numbers</div>
       <div class="card-body">
         <table class="ref-table">
@@ -4512,8 +4518,34 @@ body.mode-inperson .nav-group-label[data-nav-mode="online"] { display: none !imp
 (function() {
 
   // ── SCROLL HELPER (delays to let sections animate open) ──
+  function getStickyOffset() {
+    var offset = 0;
+    var topBar = document.querySelector('.top-bar');
+    var searchBar = document.querySelector('.search-bar');
+    var navPills = document.getElementById('navPills');
+    if (topBar) offset += topBar.getBoundingClientRect().height;
+    if (searchBar) offset += searchBar.getBoundingClientRect().height;
+    if (navPills) offset += navPills.getBoundingClientRect().height;
+    return offset + 12; // 12px breathing room
+  }
+
+  function updateScrollPadding() {
+    var offset = getStickyOffset();
+    document.documentElement.style.scrollPaddingTop = offset + 'px';
+    var sections = document.querySelectorAll('.section, .card, .lab-accordion');
+    for (var i = 0; i < sections.length; i++) {
+      sections[i].style.scrollMarginTop = offset + 'px';
+    }
+  }
+  updateScrollPadding();
+  window.addEventListener('resize', updateScrollPadding);
+
   function scrollToEl(el, delay) {
-    setTimeout(function() { el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, delay || 80);
+    setTimeout(function() {
+      var offset = getStickyOffset();
+      var elTop = el.getBoundingClientRect().top + window.pageYOffset;
+      window.scrollTo({ top: elTop - offset, behavior: 'smooth' });
+    }, delay || 80);
   }
 
   // ── MODE TOGGLE ──
@@ -4611,7 +4643,7 @@ body.mode-inperson .nav-group-label[data-nav-mode="online"] { display: none !imp
         if (parentSection) parentSection.classList.add('open');
         if (target.classList.contains('card')) target.classList.add('open');
         else target.classList.add('open');
-        scrollToEl(target);
+        scrollToEl(target, 150);
       }
       return;
     }
@@ -4833,7 +4865,7 @@ body.mode-inperson .nav-group-label[data-nav-mode="online"] { display: none !imp
     if (item.section) item.section.classList.add('open');
     if (item.el) {
       item.el.classList.add('open');
-      scrollToEl(item.el);
+      scrollToEl(item.el, 150);
     }
     closeDropdown();
     searchInput.blur();
@@ -5076,62 +5108,86 @@ body.mode-inperson .nav-group-label[data-nav-mode="online"] { display: none !imp
         }
       }
 
-      // ── Strike through past days ──
-      // Mark individual day rows and their headers as past
-      (function() {
-        var todayDate = new Date();
-        todayDate.setHours(23, 59, 59, 999); // end of today — don't strike today
+      // ── Strike through past sessions (by end time, not by day) ──
+      // Mark individual rows as past only after their end time has passed
+      function updatePastSessions() {
+        var now = new Date();
 
-        // Collect unique dates from schedule rows
+        function parseEndTime(dateStr, timeText) {
+          // Parse time range like "10:00 – 10:30 AM" or "10:30 – 11:30 AM" or "9:00 AM – 10:00 AM"
+          var match = timeText.match(/(\d{1,2}):(\d{2})\s*(AM|PM)?\s*[–\-]\s*(\d{1,2}):(\d{2})\s*(AM|PM)/i);
+          if (!match) return null;
+          var endAMPM = match[6].toUpperCase();
+          var eh = parseInt(match[4]), em = parseInt(match[5]);
+          if (endAMPM === 'PM' && eh !== 12) eh += 12;
+          if (endAMPM === 'AM' && eh === 12) eh = 0;
+          var dp = dateStr.split('-');
+          return new Date(parseInt(dp[0]), parseInt(dp[1]) - 1, parseInt(dp[2]), eh, em);
+        }
+
+        // Clear previous past marks so we recalculate fresh
+        var prevPastRows = document.querySelectorAll('.day-past');
+        for (var p = 0; p < prevPastRows.length; p++) prevPastRows[p].classList.remove('day-past');
+        var prevPastHeaders = document.querySelectorAll('.day-past-header');
+        for (var ph = 0; ph < prevPastHeaders.length; ph++) prevPastHeaders[ph].classList.remove('day-past-header');
+        var prevOnline = document.querySelectorAll('.online-past');
+        for (var po = 0; po < prevOnline.length; po++) prevOnline[po].classList.remove('online-past');
+
+        // In-person schedule rows
         var allRows = document.querySelectorAll('.schedule-table tr[data-date]');
-        var pastDates = {};
         for (var r = 0; r < allRows.length; r++) {
           var dateStr = allRows[r].getAttribute('data-date');
-          var rowDate = new Date(dateStr + 'T23:59:59');
-          if (rowDate < todayDate) {
-            pastDates[dateStr] = true;
+          var tds = allRows[r].querySelectorAll('td');
+          if (tds.length < 2) continue;
+          var timeText = tds[1].textContent.trim();
+          var endTime = parseEndTime(dateStr, timeText);
+          if (endTime && now >= endTime) {
             allRows[r].classList.add('day-past');
           }
         }
 
-        // Mark day header <p> elements that precede past-day tables
+        // Mark day header <p> elements as past only if ALL rows under that day are past
         var accBodies = document.querySelectorAll('.lab-acc-body');
         for (var b = 0; b < accBodies.length; b++) {
           var children = accBodies[b].children;
           for (var c = 0; c < children.length; c++) {
             if (children[c].tagName === 'P' && children[c].style.fontWeight === '600') {
-              // Find the next table's first data row to get its date
+              // Find the next table
               var nextTable = null;
               for (var n = c + 1; n < children.length; n++) {
                 if (children[n].tagName === 'TABLE') { nextTable = children[n]; break; }
-                if (children[n].tagName === 'P') break; // next day header, stop
+                if (children[n].tagName === 'P') break;
               }
               if (nextTable) {
-                var firstRow = nextTable.querySelector('tr[data-date]');
-                if (firstRow) {
-                  var dStr = firstRow.getAttribute('data-date');
-                  if (pastDates[dStr]) {
-                    children[c].classList.add('day-past-header');
-                  }
+                var dataRows = nextTable.querySelectorAll('tr[data-date]');
+                var allPast = dataRows.length > 0;
+                for (var dr = 0; dr < dataRows.length; dr++) {
+                  if (!dataRows[dr].classList.contains('day-past')) { allPast = false; break; }
+                }
+                if (allPast) {
+                  children[c].classList.add('day-past-header');
                 }
               }
             }
           }
         }
-        // Also mark online schedule past rows
+
+        // Online schedule past rows (keep day-level since no times)
         var onlineRows = document.querySelectorAll('#onlineTable tr[data-online-date]');
         for (var o = 0; o < onlineRows.length; o++) {
           var oDate = new Date(onlineRows[o].getAttribute('data-online-date') + 'T23:59:59');
-          if (oDate < todayDate) {
-            onlineRows[o].classList.add('online-past');
-          }
+          if (now < oDate) continue;
+          onlineRows[o].classList.add('online-past');
         }
+      }
+      updatePastSessions();
+      setInterval(updatePastSessions, 60000); // Refresh every 60s
 
-        // Day-of-week color coding on day headers
+      // Day-of-week color coding on day headers (one-time setup)
+      (function() {
         var dayMap = ['day-sun','day-mon','day-tue','day-wed','day-thu','day-fri','day-sat'];
         var dayHeaders = document.querySelectorAll('.lab-acc-body > p[style*="font-weight:600"]');
         for (var d = 0; d < dayHeaders.length; d++) {
-          // Find the next table's first data row to get its date
           var sib = dayHeaders[d].nextElementSibling;
           while (sib && sib.tagName !== 'TABLE') sib = sib.nextElementSibling;
           if (sib) {
@@ -5193,7 +5249,7 @@ body.mode-inperson .nav-group-label[data-nav-mode="online"] { display: none !imp
           if (scheduleCard) scheduleCard.classList.add('open');
           // Open the target accordion
           openExclusive(acc);
-          scrollToEl(acc);
+          scrollToEl(acc, 150);
         });
 
         // Toggle sub-labs when schedule pill is clicked
@@ -5212,7 +5268,7 @@ body.mode-inperson .nav-group-label[data-nav-mode="online"] { display: none !imp
               var scheduleCard = document.getElementById('schedule');
               if (scheduleCard) {
                 scheduleCard.classList.add('open');
-                scrollToEl(scheduleCard);
+                scrollToEl(scheduleCard, 150);
               }
             }
           });
@@ -5256,7 +5312,7 @@ body.mode-inperson .nav-group-label[data-nav-mode="online"] { display: none !imp
           if (btn._targetSection) btn._targetSection.classList.add('open');
           if (btn._targetCard) {
             btn._targetCard.classList.add('open');
-            scrollToEl(btn._targetCard);
+            scrollToEl(btn._targetCard, 150);
           }
         });
 
@@ -5289,7 +5345,7 @@ body.mode-inperson .nav-group-label[data-nav-mode="online"] { display: none !imp
               var section = document.querySelector(sec);
               if (section) {
                 section.classList.add('open');
-                scrollToEl(section);
+                scrollToEl(section, 150);
               }
             };
           })(subCards, href));
@@ -5513,6 +5569,7 @@ body.mode-inperson .nav-group-label[data-nav-mode="online"] { display: none !imp
     var rows = document.querySelectorAll('.schedule-table tr[data-date]');
     var clockEl = document.getElementById('sessionClock');
     var liveFound = false;
+    var liveAccordions = {};
 
     // Clear previous
     for (var i = 0; i < rows.length; i++) rows[i].classList.remove('session-live');
@@ -5543,6 +5600,27 @@ body.mode-inperson .nav-group-label[data-nav-mode="online"] { display: none !imp
       if (now >= start && now < end) {
         rows[j].classList.add('session-live');
         liveFound = true;
+        // Track which lab accordion has a live session
+        var parentAcc = rows[j].closest('.lab-accordion');
+        if (parentAcc) liveAccordions[parentAcc.getAttribute('data-lab')] = parentAcc;
+      }
+    }
+
+    // Update lab accordion badges: in-progress if live, revert to this-week if not
+    var allAccs = document.querySelectorAll('.lab-accordion');
+    for (var a = 0; a < allAccs.length; a++) {
+      var labId = allAccs[a].getAttribute('data-lab');
+      var badge = allAccs[a].querySelector('.lab-acc-badge');
+      if (!badge) continue;
+      if (liveAccordions[labId]) {
+        badge.className = 'lab-acc-badge in-progress';
+        badge.textContent = '● In Progress';
+        badge.style.display = '';
+      } else if (allAccs[a].classList.contains('lab-current') && !liveAccordions[labId]) {
+        // Revert current-week lab back to This Week when no live session
+        badge.className = 'lab-acc-badge this-week';
+        badge.textContent = 'This Week';
+        badge.style.display = '';
       }
     }
 
@@ -5634,13 +5712,19 @@ body.mode-inperson .nav-group-label[data-nav-mode="online"] { display: none !imp
     if (hash && hash.length > 1) {
       var target = document.querySelector(hash);
       if (target) {
+        // If target is a lab accordion, open its parent schedule card too
+        if (target.classList.contains('lab-accordion')) {
+          var scheduleCard = target.closest('.card');
+          if (scheduleCard) scheduleCard.classList.add('open');
+          target.classList.add('open');
+        }
         var parentSection = target.closest('.section');
         if (parentSection) parentSection.classList.add('open');
         if (target.classList.contains('card')) target.classList.add('open');
         else if (target.classList.contains('section')) target.classList.add('open');
         setTimeout(function() {
-          scrollToEl(target);
-        }, 100);
+          scrollToEl(target, 300);
+        }, 150);
       }
     }
   }
