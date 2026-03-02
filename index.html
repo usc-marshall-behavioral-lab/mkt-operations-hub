@@ -2939,11 +2939,11 @@ body.mode-inperson .nav-group-label[data-nav-mode="online"] { display: none !imp
     <div id="labAccordions">
 
       <!-- Lab 1 -->
-      <div class="lab-accordion lab-current" id="lab1" data-lab="1" data-week-start="2026-02-23" data-week-end="2026-02-28">
+      <div class="lab-accordion" id="lab1" data-lab="1" data-week-start="2026-02-23" data-week-end="2026-02-28">
         <div class="lab-acc-head">
           <span class="lab-acc-label">Lab 1</span>
           <span class="lab-acc-meta">Wk of Feb 23 · Steve Carney · 14 sessions</span>
-          <span class="lab-acc-badge this-week" id="lab1Badge">This Week</span>
+          <span class="lab-acc-badge" id="lab1Badge" style="display:none;"></span>
           <svg class="lab-acc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
         </div>
         <div class="lab-acc-body">
@@ -2979,7 +2979,7 @@ body.mode-inperson .nav-group-label[data-nav-mode="online"] { display: none !imp
         <div class="lab-acc-head">
           <span class="lab-acc-label">Lab 2</span>
           <span class="lab-acc-meta">Wk of Mar 2 · Maansi Dalmia · 14 sessions</span>
-          <span class="lab-acc-badge next-up" id="lab2Badge" style="display:none;">Next Up</span>
+          <span class="lab-acc-badge" id="lab2Badge" style="display:none;"></span>
           <svg class="lab-acc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
         </div>
         <div class="lab-acc-body">
@@ -3021,6 +3021,7 @@ body.mode-inperson .nav-group-label[data-nav-mode="online"] { display: none !imp
         <div class="lab-acc-head">
           <span class="lab-acc-label">Lab 3</span>
           <span class="lab-acc-meta">Wk of Apr 6 · Swaroop Poudel · 14 sessions</span>
+          <span class="lab-acc-badge" id="lab3Badge" style="display:none;"></span>
           <svg class="lab-acc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
         </div>
         <div class="lab-acc-body">
@@ -3062,6 +3063,7 @@ body.mode-inperson .nav-group-label[data-nav-mode="online"] { display: none !imp
         <div class="lab-acc-head">
           <span class="lab-acc-label">Lab 4</span>
           <span class="lab-acc-meta">Wk of Apr 13 · Reyna Wang · 14 sessions</span>
+          <span class="lab-acc-badge" id="lab4Badge" style="display:none;"></span>
           <svg class="lab-acc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
         </div>
         <div class="lab-acc-body">
@@ -3097,6 +3099,7 @@ body.mode-inperson .nav-group-label[data-nav-mode="online"] { display: none !imp
         <div class="lab-acc-head">
           <span class="lab-acc-label">Lab 5</span>
           <span class="lab-acc-meta">Wk of Apr 27 · Minjeong Ko · 14 sessions</span>
+          <span class="lab-acc-badge" id="lab5Badge" style="display:none;"></span>
           <svg class="lab-acc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
         </div>
         <div class="lab-acc-body">
@@ -4525,7 +4528,11 @@ body.mode-inperson .nav-group-label[data-nav-mode="online"] { display: none !imp
     var navPills = document.getElementById('navPills');
     if (topBar) offset += topBar.getBoundingClientRect().height;
     if (searchBar) offset += searchBar.getBoundingClientRect().height;
-    if (navPills) offset += navPills.getBoundingClientRect().height;
+    // Only include nav pills if they're horizontally stacked (mobile/tablet),
+    // not when they're a fixed sidebar (desktop ≥1100px)
+    if (navPills && window.innerWidth < 1100) {
+      offset += navPills.getBoundingClientRect().height;
+    }
     return offset + 12; // 12px breathing room
   }
 
@@ -5090,6 +5097,9 @@ body.mode-inperson .nav-group-label[data-nav-mode="online"] { display: none !imp
         var ws = new Date(accs[a].getAttribute('data-week-start') + 'T00:00:00');
         var we = new Date(accs[a].getAttribute('data-week-end') + 'T23:59:59');
         var labNum = accs[a].getAttribute('data-lab');
+
+        // Clear any stale state first
+        accs[a].classList.remove('lab-current', 'lab-past');
 
         if (today >= ws && today <= we) {
           accs[a].classList.add('lab-current');
