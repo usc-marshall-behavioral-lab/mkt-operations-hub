@@ -137,7 +137,7 @@
 html {
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
-  scroll-padding-top: 150px;
+  scroll-padding-top: 0; /* dynamically set by JS getStickyOffset() */
 }
 
 body {
@@ -730,7 +730,6 @@ body {
 /* ── SECTION ── */
 .section {
   margin-top: 20px;
-  scroll-margin-top: 140px;
 }
 
 .section-header {
@@ -835,7 +834,6 @@ body {
   margin-top: 8px;
   overflow: hidden;
   box-shadow: var(--shadow-sm);
-  scroll-margin-top: 140px;
   transition: box-shadow var(--transition-med), transform var(--transition-med);
 }
 .card:hover { box-shadow: var(--shadow-md); }
@@ -2190,12 +2188,64 @@ body {
   margin-top: 12px;
   overflow: hidden;
   transition: box-shadow var(--transition-med), border-color var(--transition-fast);
-  scroll-margin-top: 140px;
 }
 .lab-accordion:hover { box-shadow: var(--shadow-md); border-color: var(--border); }
 .lab-accordion.lab-current { border-color: var(--cardinal); border-width: 2px; }
-.lab-accordion.lab-past { opacity: 0.55; }
-.lab-accordion.lab-past:hover { opacity: 0.8; }
+.lab-accordion.lab-past { opacity: 0.4; }
+.lab-accordion.lab-past:hover { opacity: 0.7; }
+.lab-accordion.lab-past .lab-acc-head {
+  padding: 8px 14px;
+  gap: 8px;
+}
+.lab-accordion.lab-past .lab-acc-label { font-size: 13px; }
+.lab-accordion.lab-past .lab-acc-meta { font-size: 11px; }
+.lab-accordion.lab-past .lab-acc-chevron { width: 14px; height: 14px; }
+
+/* Past labs collapsed wrapper */
+.past-labs-toggle {
+  display: none; /* JS shows it when past labs exist */
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  background: var(--surface-alt);
+  border: 1px dashed var(--border);
+  border-radius: var(--radius-sm);
+  padding: 8px 14px;
+  margin-top: 12px;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  transition: all var(--transition-fast);
+}
+.past-labs-toggle:hover { color: var(--text-secondary); border-color: var(--text-muted); background: var(--surface); }
+.past-labs-toggle .plt-count { font-family: 'JetBrains Mono', monospace; font-size: 11px; }
+.lab-accordion.lab-past.lab-hidden { display: none; }
+.past-labs-toggle .plt-chevron { display: inline-block; transition: transform 0.2s; margin-right: 4px; font-size: 10px; }
+.past-labs-toggle.expanded .plt-chevron { transform: rotate(90deg); }
+
+/* Next shift banner */
+.next-shift-banner {
+  display: none;
+  background: linear-gradient(135deg, #E8F5E9, #F1F8E9);
+  border: 1.5px solid #A5D6A7;
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  margin-top: 10px;
+  font-size: 13px;
+  color: var(--text);
+  line-height: 1.5;
+}
+.next-shift-banner.visible { display: flex; align-items: center; gap: 10px; }
+.next-shift-banner .nsb-icon { font-size: 18px; flex-shrink: 0; }
+.next-shift-banner .nsb-label { font-weight: 500; }
+.next-shift-banner .nsb-label strong { font-weight: 700; color: #2E7D32; }
+.next-shift-banner .nsb-time {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  font-weight: 600;
+  color: #2E7D32;
+}
 .lab-acc-head {
   display: flex;
   align-items: center;
@@ -2587,6 +2637,43 @@ input:focus-visible, select:focus-visible { outline-offset: -1px; }
   color: var(--text-secondary);
   font-weight: 500;
 }
+/* RA inline contact chips */
+.ra-contact-links {
+  display: inline;
+  margin-left: 2px;
+  white-space: nowrap;
+  opacity: 0.35;
+  transition: opacity var(--transition-fast);
+}
+.schedule-table tr:hover .ra-contact-links { opacity: 1; }
+.ra-contact-links a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  font-size: 11px;
+  text-decoration: none;
+  vertical-align: middle;
+  margin-left: 1px;
+  transition: background var(--transition-fast);
+}
+.ra-contact-links a.ra-phone {
+  color: #2E7D32;
+}
+.ra-contact-links a.ra-email {
+  color: #1565C0;
+}
+.ra-contact-links a:hover {
+  background: var(--surface-alt);
+}
+/* Hide contact links on SETUP/BREAK rows */
+.schedule-table tr[style*="font-style:italic"] .ra-contact-links { display: none; }
+/* On mobile: always show (no hover) */
+@media (max-width: 600px) {
+  .ra-contact-links { opacity: 0.6; }
+}
 /* Match header widths */
 .schedule-table th:first-child { width: 36px; text-align: center; }
 .schedule-table th:nth-child(2) { width: 160px; }
@@ -2904,7 +2991,7 @@ body.mode-inperson .nav-group-label[data-nav-mode="online"] { display: none !imp
 <!-- ═══ GLOBAL CONTROLS ═══ -->
 <div class="content-toolbar">
   <div class="last-updated-banner" id="lastUpdated" data-mode="inperson">
-    <span>🔄</span> Updated Feb 27 — Lab 2 schedule revised (Mon &amp; Wed changes; Saumya covers for Agustin)
+    <span>🔄</span> Updated <span id="lastUpdatedDate"></span> — Lab 3, 4 &amp; 5 schedules revised
   </div>
   <button class="btn-expand-all-global" id="btnExpandAllGlobal">↕ Expand All</button>
 </div>
@@ -2923,6 +3010,7 @@ body.mode-inperson .nav-group-label[data-nav-mode="online"] { display: none !imp
       <label for="raFilter">👤 Find my shifts:</label>
       <select id="raFilter">
         <option value="">Everyone</option>
+        <option value="Adiba">Adiba</option>
         <option value="Agustin">Agustin</option>
         <option value="Alex">Alex</option>
         <option value="Atvika">Atvika</option>
@@ -2934,6 +3022,17 @@ body.mode-inperson .nav-group-label[data-nav-mode="online"] { display: none !imp
       </select>
       <span class="filter-count" id="raFilterCount"></span>
     </div>
+
+    <!-- Next Shift Banner -->
+    <div class="next-shift-banner" id="nextShiftBanner">
+      <span class="nsb-icon">📍</span>
+      <span class="nsb-label" id="nextShiftLabel"></span>
+    </div>
+
+    <!-- Past Labs Toggle -->
+    <button class="past-labs-toggle" id="pastLabsToggle">
+      <span class="plt-chevron">▶</span> Show past labs <span class="plt-count" id="pastLabsCount"></span>
+    </button>
 
     <!-- ═══ LAB ACCORDIONS ═══ -->
     <div id="labAccordions">
@@ -2947,7 +3046,7 @@ body.mode-inperson .nav-group-label[data-nav-mode="online"] { display: none !imp
           <svg class="lab-acc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
         </div>
         <div class="lab-acc-body">
-          <p style="font-weight:600;font-size:13px;color:var(--text-secondary);margin:12px 0 6px;">Tuesday, Feb 24 <span style="font-size:11px;font-weight:700;padding:1px 6px;border-radius:4px;background:#FFF3E0;color:#E65100;border:1px solid #FFCC80;vertical-align:middle;margin-left:4px;">UPDATED</span></p>
+          <p style="font-weight:600;font-size:13px;color:var(--text-secondary);margin:12px 0 6px;">Tuesday, Feb 24</p>
           <table class="ref-table schedule-table" style="font-size:13px;">
             <tr><th>#</th><th>Time</th><th>RAs</th></tr>
             <tr data-ra="Bri" data-date="2026-02-24" style="background:var(--surface-alt);font-style:italic;color:var(--text-secondary);"><td>SETUP</td><td>8:30 – 9:00 AM</td><td>Bri</td></tr>
@@ -2983,13 +3082,13 @@ body.mode-inperson .nav-group-label[data-nav-mode="online"] { display: none !imp
           <svg class="lab-acc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
         </div>
         <div class="lab-acc-body">
-          <p style="font-weight:600;font-size:13px;color:var(--text-secondary);margin:12px 0 6px;">Monday, Mar 2 <span style="font-size:11px;font-weight:700;padding:1px 6px;border-radius:4px;background:#FFF3E0;color:#E65100;border:1px solid #FFCC80;vertical-align:middle;margin-left:4px;">UPDATED</span></p>
+          <p style="font-weight:600;font-size:13px;color:var(--text-secondary);margin:12px 0 6px;">Monday, Mar 2</p>
           <table class="ref-table schedule-table" style="font-size:13px;">
             <tr><th>#</th><th>Time</th><th>RAs</th></tr>
             <tr data-ra="Joseph" data-date="2026-03-02" style="background:var(--surface-alt);font-style:italic;color:var(--text-secondary);"><td>SETUP</td><td>10:00 – 10:30 AM</td><td>Joseph</td></tr>
             <tr data-ra="Joseph,Agustin" data-date="2026-03-02"><td>1</td><td>10:30 – 11:30 AM</td><td>Joseph, Agustin</td></tr>
             <tr data-ra="Joseph,Agustin" data-date="2026-03-02"><td>2</td><td>11:30 – 12:30 PM</td><td>Joseph, Agustin</td></tr>
-            <tr data-ra="Joseph,Saumya" data-date="2026-03-02" style="background:#FFF3E0;"><td>3</td><td>12:30 – 1:30 PM</td><td>Joseph, Saumya <span style="font-size:10px;font-weight:700;padding:1px 6px;border-radius:4px;background:#FFF3E0;color:#E65100;border:1px solid #FFCC80;vertical-align:middle;margin-left:4px;">Saumya covers for Agustin</span></td></tr>
+            <tr data-ra="Joseph,Saumya" data-date="2026-03-02"><td>3</td><td>12:30 – 1:30 PM</td><td>Joseph, Saumya</td></tr>
             <tr data-ra="Joseph,Agustin" data-date="2026-03-02" style="background:var(--surface-alt);font-style:italic;color:var(--text-secondary);"><td>BREAK</td><td>1:30 – 2:00 PM</td><td>Joseph, Agustin <span style="font-size:10px;font-weight:700;padding:1px 6px;border-radius:4px;background:#E3F2FD;color:#1565C0;border:1px solid #90CAF9;vertical-align:middle;margin-left:4px;">LUNCH</span></td></tr>
             <tr data-ra="Joseph,Agustin" data-date="2026-03-02"><td>4</td><td>2:00 – 3:00 PM</td><td>Joseph, Agustin</td></tr>
             <tr data-ra="Joseph,Agustin" data-date="2026-03-02"><td>5</td><td>3:00 – 4:00 PM</td><td>Joseph, Agustin</td></tr>
@@ -3001,14 +3100,14 @@ body.mode-inperson .nav-group-label[data-nav-mode="online"] { display: none !imp
             <tr data-ra="Saumya" data-date="2026-03-03" style="background:var(--surface-alt);font-style:italic;color:var(--text-secondary);"><td>SETUP</td><td>11:30 – 12:00 PM</td><td>Saumya</td></tr>
             <tr data-ra="Saumya,Alex" data-date="2026-03-03"><td>7</td><td>12:00 – 1:00 PM</td><td>Saumya, Alex</td></tr>
           </table>
-          <p style="font-weight:600;font-size:13px;color:var(--text-secondary);margin:14px 0 6px;">Wednesday, Mar 4 <span style="font-size:11px;font-weight:700;padding:1px 6px;border-radius:4px;background:#FFF3E0;color:#E65100;border:1px solid #FFCC80;vertical-align:middle;margin-left:4px;">UPDATED</span></p>
+          <p style="font-weight:600;font-size:13px;color:var(--text-secondary);margin:14px 0 6px;">Wednesday, Mar 4</p>
           <table class="ref-table schedule-table" style="font-size:13px;">
             <tr><th>#</th><th>Time</th><th>RAs</th></tr>
             <tr data-ra="Agustin" data-date="2026-03-04" style="background:var(--surface-alt);font-style:italic;color:var(--text-secondary);"><td>SETUP</td><td>10:30 – 11:00 AM</td><td>Agustin</td></tr>
             <tr data-ra="Agustin,Joseph" data-date="2026-03-04"><td>8</td><td>11:00 – 12:00 PM</td><td>Agustin, Joseph</td></tr>
             <tr data-ra="Agustin,Joseph" data-date="2026-03-04"><td>9</td><td>12:00 – 1:00 PM</td><td>Agustin, Joseph</td></tr>
             <tr data-ra="Agustin,Joseph" data-date="2026-03-04"><td>10</td><td>1:00 – 2:00 PM</td><td>Agustin, Joseph</td></tr>
-            <tr data-ra="Saumya,Joseph" data-date="2026-03-04" style="background:#FFF3E0;"><td>11</td><td>2:00 – 3:00 PM</td><td>Saumya, Joseph <span style="font-size:10px;font-weight:700;padding:1px 6px;border-radius:4px;background:#FFF3E0;color:#E65100;border:1px solid #FFCC80;vertical-align:middle;margin-left:4px;">Saumya covers for Agustin</span></td></tr>
+            <tr data-ra="Saumya,Joseph" data-date="2026-03-04"><td>11</td><td>2:00 – 3:00 PM</td><td>Saumya, Joseph</td></tr>
             <tr data-ra="Saumya,Alex" data-date="2026-03-04"><td>12</td><td>3:30 – 4:30 PM</td><td>Saumya, Alex</td></tr>
             <tr data-ra="Saumya,Alex" data-date="2026-03-04"><td>13</td><td>4:30 – 5:30 PM</td><td>Saumya, Alex</td></tr>
             <tr data-ra="Saumya,Alex" data-date="2026-03-04"><td>14</td><td>5:30 – 6:30 PM</td><td>Saumya, Alex</td></tr>
@@ -3029,16 +3128,16 @@ body.mode-inperson .nav-group-label[data-nav-mode="online"] { display: none !imp
           <table class="ref-table schedule-table" style="font-size:13px;">
             <tr><th>#</th><th>Time</th><th>RAs</th></tr>
             <tr data-ra="Agustin" data-date="2026-04-06" style="background:var(--surface-alt);font-style:italic;color:var(--text-secondary);"><td>SETUP</td><td>11:30 – 12:00 PM</td><td>Agustin</td></tr>
-            <tr data-ra="Joseph,Agustin" data-date="2026-04-06"><td>1</td><td>12:00 – 1:00 PM</td><td>Joseph, Agustin</td></tr>
-            <tr data-ra="Joseph,Agustin" data-date="2026-04-06"><td>2</td><td>1:00 – 2:00 PM</td><td>Joseph, Agustin</td></tr>
+            <tr data-ra="Atvika,Agustin" data-date="2026-04-06"><td>1</td><td>12:00 – 1:00 PM</td><td>Atvika, Agustin</td></tr>
+            <tr data-ra="Atvika,Agustin" data-date="2026-04-06"><td>2</td><td>1:00 – 2:00 PM</td><td>Atvika, Agustin</td></tr>
           </table>
           <p style="font-weight:600;font-size:13px;color:var(--text-secondary);margin:14px 0 6px;">Tuesday, Apr 7</p>
           <table class="ref-table schedule-table" style="font-size:13px;">
             <tr><th>#</th><th>Time</th><th>RAs</th></tr>
             <tr data-ra="Saumya" data-date="2026-04-07" style="background:var(--surface-alt);font-style:italic;color:var(--text-secondary);"><td>SETUP</td><td>9:30 – 10:00 AM</td><td>Saumya</td></tr>
-            <tr data-ra="Saumya,Joseph" data-date="2026-04-07"><td>3</td><td>10:00 – 11:00 AM</td><td>Saumya, Joseph</td></tr>
-            <tr data-ra="Saumya,Joseph" data-date="2026-04-07"><td>4</td><td>11:00 – 12:00 PM</td><td>Saumya, Joseph</td></tr>
-            <tr data-ra="Saumya,Joseph" data-date="2026-04-07"><td>5</td><td>12:00 – 1:00 PM</td><td>Saumya, Joseph</td></tr>
+            <tr data-ra="Saumya,Atvika" data-date="2026-04-07"><td>3</td><td>10:00 – 11:00 AM</td><td>Saumya, Atvika</td></tr>
+            <tr data-ra="Saumya,Atvika" data-date="2026-04-07"><td>4</td><td>11:00 – 12:00 PM</td><td>Saumya, Atvika</td></tr>
+            <tr data-ra="Saumya,Atvika" data-date="2026-04-07"><td>5</td><td>12:00 – 1:00 PM</td><td>Saumya, Atvika</td></tr>
             <tr data-ra="Saumya" data-date="2026-04-07" style="background:var(--surface-alt);font-style:italic;color:var(--text-secondary);"><td>SETUP</td><td>2:30 – 3:00 PM</td><td>Saumya</td></tr>
             <tr data-ra="Saumya,Atvika" data-date="2026-04-07"><td>6</td><td>3:00 – 4:00 PM</td><td>Saumya, Atvika</td></tr>
             <tr data-ra="Saumya,Atvika" data-date="2026-04-07"><td>7</td><td>4:00 – 5:00 PM</td><td>Saumya, Atvika</td></tr>
@@ -3046,14 +3145,14 @@ body.mode-inperson .nav-group-label[data-nav-mode="online"] { display: none !imp
           <p style="font-weight:600;font-size:13px;color:var(--text-secondary);margin:14px 0 6px;">Wednesday, Apr 8</p>
           <table class="ref-table schedule-table" style="font-size:13px;">
             <tr><th>#</th><th>Time</th><th>RAs</th></tr>
-            <tr data-ra="Leia" data-date="2026-04-08" style="background:var(--surface-alt);font-style:italic;color:var(--text-secondary);"><td>SETUP</td><td>8:30 – 9:00 AM</td><td>Leia</td></tr>
-            <tr data-ra="Leia,Agustin" data-date="2026-04-08"><td>8</td><td>9:00 – 10:00 AM</td><td>Leia, Agustin</td></tr>
-            <tr data-ra="Leia,Agustin" data-date="2026-04-08"><td>9</td><td>10:00 – 11:00 AM</td><td>Leia, Agustin</td></tr>
-            <tr data-ra="Leia,Agustin" data-date="2026-04-08"><td>10</td><td>11:00 – 12:00 PM</td><td>Leia, Agustin</td></tr>
-            <tr data-ra="Leia,Agustin" data-date="2026-04-08"><td>11</td><td>12:00 – 1:00 PM</td><td>Leia, Agustin</td></tr>
-            <tr data-ra="Agustin,Alex" data-date="2026-04-08"><td>12</td><td>1:00 – 2:00 PM</td><td>Agustin, Alex</td></tr>
-            <tr data-ra="Agustin,Alex" data-date="2026-04-08"><td>13</td><td>2:00 – 3:00 PM</td><td>Agustin, Alex</td></tr>
-            <tr data-ra="Agustin,Alex" data-date="2026-04-08"><td>14</td><td>3:00 – 4:00 PM</td><td>Agustin, Alex</td></tr>
+            <tr data-ra="Leia" data-date="2026-04-08" style="background:var(--surface-alt);font-style:italic;color:var(--text-secondary);"><td>SETUP</td><td>8:00 – 8:30 AM</td><td>Leia</td></tr>
+            <tr data-ra="Leia,Agustin" data-date="2026-04-08"><td>8</td><td>8:30 – 9:30 AM</td><td>Leia, Agustin</td></tr>
+            <tr data-ra="Leia,Agustin" data-date="2026-04-08"><td>9</td><td>9:30 – 10:30 AM</td><td>Leia, Agustin</td></tr>
+            <tr data-ra="Leia,Agustin" data-date="2026-04-08"><td>10</td><td>10:30 – 11:30 AM</td><td>Leia, Agustin</td></tr>
+            <tr data-ra="Leia,Agustin" data-date="2026-04-08"><td>11</td><td>11:30 AM – 12:30 PM</td><td>Leia, Agustin</td></tr>
+            <tr data-ra="Saumya,Alex" data-date="2026-04-08"><td>12</td><td>2:00 – 3:00 PM</td><td>Saumya, Alex</td></tr>
+            <tr data-ra="Saumya,Alex" data-date="2026-04-08"><td>13</td><td>3:00 – 4:00 PM</td><td>Saumya, Alex</td></tr>
+            <tr data-ra="Saumya,Alex" data-date="2026-04-08"><td>14</td><td>4:00 – 5:00 PM</td><td>Saumya, Alex</td></tr>
           </table>
         </div>
       </div>
@@ -3070,14 +3169,15 @@ body.mode-inperson .nav-group-label[data-nav-mode="online"] { display: none !imp
           <p style="font-weight:600;font-size:13px;color:var(--text-secondary);margin:12px 0 6px;">Tuesday, Apr 14</p>
           <table class="ref-table schedule-table" style="font-size:13px;">
             <tr><th>#</th><th>Time</th><th>RAs</th></tr>
-            <tr data-ra="Joseph" data-date="2026-04-14" style="background:var(--surface-alt);font-style:italic;color:var(--text-secondary);"><td>SETUP</td><td>8:30 – 9:00 AM</td><td>Joseph</td></tr>
-            <tr data-ra="Joseph,Saumya" data-date="2026-04-14"><td>1</td><td>9:00 – 10:00 AM</td><td>Joseph, Saumya</td></tr>
-            <tr data-ra="Joseph,Saumya" data-date="2026-04-14"><td>2</td><td>10:00 – 11:00 AM</td><td>Joseph, Saumya</td></tr>
-            <tr data-ra="Joseph,Saumya" data-date="2026-04-14"><td>3</td><td>11:00 – 12:00 PM</td><td>Joseph, Saumya</td></tr>
-            <tr data-ra="Joseph,Saumya" data-date="2026-04-14"><td>4</td><td>12:00 – 1:00 PM</td><td>Joseph, Saumya</td></tr>
-            <tr data-ra="Joseph,Saumya" data-date="2026-04-14"><td>5</td><td>1:00 – 2:00 PM</td><td>Joseph, Saumya</td></tr>
-            <tr data-ra="Joseph,Saumya" data-date="2026-04-14"><td>6</td><td>2:00 – 3:00 PM</td><td>Joseph, Saumya</td></tr>
-            <tr data-ra="Joseph,Saumya" data-date="2026-04-14"><td>7</td><td>3:00 – 4:00 PM</td><td>Joseph, Saumya</td></tr>
+            <tr data-ra="Saumya" data-date="2026-04-14" style="background:var(--surface-alt);font-style:italic;color:var(--text-secondary);"><td>SETUP</td><td>8:30 – 9:00 AM</td><td>Saumya</td></tr>
+            <tr data-ra="Adiba,Saumya" data-date="2026-04-14"><td>1</td><td>9:00 – 10:00 AM</td><td>Adiba, Saumya</td></tr>
+            <tr data-ra="Adiba,Saumya" data-date="2026-04-14"><td>2</td><td>10:00 – 11:00 AM</td><td>Adiba, Saumya</td></tr>
+            <tr data-ra="Adiba,Saumya" data-date="2026-04-14"><td>3</td><td>11:00 – 12:00 PM</td><td>Adiba, Saumya</td></tr>
+            <tr data-ra="Adiba,Saumya" data-date="2026-04-14"><td>4</td><td>12:00 – 1:00 PM</td><td>Adiba, Saumya</td></tr>
+            <tr data-ra="Adiba,Saumya" data-date="2026-04-14" style="background:var(--surface-alt);font-style:italic;color:var(--text-secondary);"><td>BREAK</td><td>1:00 – 1:30 PM</td><td>Adiba, Saumya <span style="font-size:10px;font-weight:700;padding:1px 6px;border-radius:4px;background:#E3F2FD;color:#1565C0;border:1px solid #90CAF9;vertical-align:middle;margin-left:4px;">LUNCH</span></td></tr>
+            <tr data-ra="Adiba,Saumya" data-date="2026-04-14"><td>5</td><td>1:30 – 2:30 PM</td><td>Adiba, Saumya</td></tr>
+            <tr data-ra="Lissa,Saumya" data-date="2026-04-14"><td>6</td><td>2:30 – 3:30 PM</td><td>Lissa, Saumya</td></tr>
+            <tr data-ra="Lissa,Saumya" data-date="2026-04-14"><td>7</td><td>3:30 – 4:30 PM</td><td>Lissa, Saumya</td></tr>
           </table>
           <p style="font-weight:600;font-size:13px;color:var(--text-secondary);margin:14px 0 6px;">Wednesday, Apr 15</p>
           <table class="ref-table schedule-table" style="font-size:13px;">
@@ -3087,9 +3187,10 @@ body.mode-inperson .nav-group-label[data-nav-mode="online"] { display: none !imp
             <tr data-ra="Leia,Agustin" data-date="2026-04-15"><td>9</td><td>10:00 – 11:00 AM</td><td>Leia, Agustin</td></tr>
             <tr data-ra="Leia,Agustin" data-date="2026-04-15"><td>10</td><td>11:00 – 12:00 PM</td><td>Leia, Agustin</td></tr>
             <tr data-ra="Leia,Agustin" data-date="2026-04-15"><td>11</td><td>12:00 – 1:00 PM</td><td>Leia, Agustin</td></tr>
-            <tr data-ra="Agustin,Saumya" data-date="2026-04-15"><td>12</td><td>1:00 – 2:00 PM</td><td>Agustin, Saumya</td></tr>
-            <tr data-ra="Agustin,Saumya" data-date="2026-04-15"><td>13</td><td>2:00 – 3:00 PM</td><td>Agustin, Saumya</td></tr>
-            <tr data-ra="Agustin,Saumya" data-date="2026-04-15"><td>14</td><td>3:00 – 4:00 PM</td><td>Agustin, Saumya</td></tr>
+            <tr data-ra="Agustin" data-date="2026-04-15" style="background:var(--surface-alt);font-style:italic;color:var(--text-secondary);"><td>BREAK</td><td>1:00 – 1:30 PM</td><td>Agustin <span style="font-size:10px;font-weight:700;padding:1px 6px;border-radius:4px;background:#E3F2FD;color:#1565C0;border:1px solid #90CAF9;vertical-align:middle;margin-left:4px;">LUNCH · Leia ends, Saumya starts</span></td></tr>
+            <tr data-ra="Agustin,Saumya" data-date="2026-04-15"><td>12</td><td>1:30 – 2:30 PM</td><td>Agustin, Saumya</td></tr>
+            <tr data-ra="Agustin,Saumya" data-date="2026-04-15"><td>13</td><td>2:30 – 3:30 PM</td><td>Agustin, Saumya</td></tr>
+            <tr data-ra="Agustin,Saumya" data-date="2026-04-15"><td>14</td><td>3:30 – 4:30 PM</td><td>Agustin, Saumya</td></tr>
           </table>
         </div>
       </div>
@@ -3114,20 +3215,22 @@ body.mode-inperson .nav-group-label[data-nav-mode="online"] { display: none !imp
           <p style="font-weight:600;font-size:13px;color:var(--text-secondary);margin:14px 0 6px;">Wednesday, Apr 29</p>
           <table class="ref-table schedule-table" style="font-size:13px;">
             <tr><th>#</th><th>Time</th><th>RAs</th></tr>
-            <tr data-ra="Alex" data-date="2026-04-29" style="background:var(--surface-alt);font-style:italic;color:var(--text-secondary);"><td>SETUP</td><td>2:30 – 3:00 PM</td><td>Alex</td></tr>
-            <tr data-ra="Saumya,Alex" data-date="2026-04-29"><td>4</td><td>3:00 – 4:00 PM</td><td>Saumya, Alex</td></tr>
-            <tr data-ra="Saumya,Alex" data-date="2026-04-29"><td>5</td><td>4:00 – 5:00 PM</td><td>Saumya, Alex</td></tr>
-            <tr data-ra="Saumya,Alex" data-date="2026-04-29"><td>6</td><td>5:00 – 6:00 PM</td><td>Saumya, Alex</td></tr>
+            <tr data-ra="Alex" data-date="2026-04-29" style="background:var(--surface-alt);font-style:italic;color:var(--text-secondary);"><td>SETUP</td><td>2:00 – 2:30 PM</td><td>Alex</td></tr>
+            <tr data-ra="Saumya,Alex" data-date="2026-04-29"><td>4</td><td>2:30 – 3:30 PM</td><td>Saumya, Alex</td></tr>
+            <tr data-ra="Saumya,Alex" data-date="2026-04-29"><td>5</td><td>3:30 – 4:30 PM</td><td>Saumya, Alex</td></tr>
+            <tr data-ra="Saumya,Alex" data-date="2026-04-29"><td>6</td><td>4:30 – 5:30 PM</td><td>Saumya, Alex</td></tr>
+            <tr data-ra="Saumya,Alex" data-date="2026-04-29" style="background:var(--surface-alt);font-style:italic;color:var(--text-secondary);"><td>BREAK</td><td>5:30 – 6:00 PM</td><td>Saumya, Alex <span style="font-size:10px;font-weight:700;padding:1px 6px;border-radius:4px;background:#E3F2FD;color:#1565C0;border:1px solid #90CAF9;vertical-align:middle;margin-left:4px;">MEAL BREAK</span></td></tr>
             <tr data-ra="Saumya,Alex" data-date="2026-04-29"><td>7</td><td>6:00 – 7:00 PM</td><td>Saumya, Alex</td></tr>
             <tr data-ra="Saumya,Alex" data-date="2026-04-29"><td>8</td><td>7:00 – 8:00 PM</td><td>Saumya, Alex</td></tr>
           </table>
           <p style="font-weight:600;font-size:13px;color:var(--text-secondary);margin:14px 0 6px;">Friday, May 1</p>
           <table class="ref-table schedule-table" style="font-size:13px;">
             <tr><th>#</th><th>Time</th><th>RAs</th></tr>
-            <tr data-ra="Lissa" data-date="2026-05-01" style="background:var(--surface-alt);font-style:italic;color:var(--text-secondary);"><td>SETUP</td><td>1:30 – 2:00 PM</td><td>Lissa</td></tr>
-            <tr data-ra="Lissa,Joseph" data-date="2026-05-01"><td>9</td><td>2:00 – 3:00 PM</td><td>Lissa, Joseph</td></tr>
-            <tr data-ra="Lissa,Joseph" data-date="2026-05-01"><td>10</td><td>3:00 – 4:00 PM</td><td>Lissa, Joseph</td></tr>
-            <tr data-ra="Lissa,Joseph" data-date="2026-05-01"><td>11</td><td>4:00 – 5:00 PM</td><td>Lissa, Joseph</td></tr>
+            <tr data-ra="Lissa" data-date="2026-05-01" style="background:var(--surface-alt);font-style:italic;color:var(--text-secondary);"><td>SETUP</td><td>1:00 – 1:30 PM</td><td>Lissa</td></tr>
+            <tr data-ra="Lissa,Alex" data-date="2026-05-01"><td>9</td><td>1:30 – 2:30 PM</td><td>Lissa, Alex</td></tr>
+            <tr data-ra="Lissa,Alex" data-date="2026-05-01"><td>10</td><td>2:30 – 3:30 PM</td><td>Lissa, Alex</td></tr>
+            <tr data-ra="Lissa,Alex" data-date="2026-05-01"><td>11</td><td>3:30 – 4:30 PM</td><td>Lissa, Alex</td></tr>
+            <tr data-ra="Lissa" data-date="2026-05-01" style="background:var(--surface-alt);font-style:italic;color:var(--text-secondary);"><td>BREAK</td><td>4:30 – 5:00 PM</td><td>Lissa <span style="font-size:10px;font-weight:700;padding:1px 6px;border-radius:4px;background:#E3F2FD;color:#1565C0;border:1px solid #90CAF9;vertical-align:middle;margin-left:4px;">MEAL BREAK · Alex ends, Agustin starts</span></td></tr>
             <tr data-ra="Lissa,Agustin" data-date="2026-05-01"><td>12</td><td>5:00 – 6:00 PM</td><td>Lissa, Agustin</td></tr>
             <tr data-ra="Lissa,Agustin" data-date="2026-05-01"><td>13</td><td>6:00 – 7:00 PM</td><td>Lissa, Agustin</td></tr>
             <tr data-ra="Lissa,Agustin" data-date="2026-05-01"><td>14</td><td>7:00 – 8:00 PM</td><td>Lissa, Agustin</td></tr>
@@ -3579,7 +3682,7 @@ body.mode-inperson .nav-group-label[data-nav-mode="online"] { display: none !imp
     </div>
 
     <!-- Door Close -->
-    <div class="card always-open" id="s3-overview" data-search>
+    <div class="card always-open" data-search>
       <div class="card-head">
         <span class="ch-icon">🔒</span> Door Close Policy
       </div>
@@ -4012,7 +4115,7 @@ body.mode-inperson .nav-group-label[data-nav-mode="online"] { display: none !imp
     <svg class="section-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
   </div>
   <div class="section-body">
-    <div class="card always-open" id="sA-overview" data-search>
+    <div class="card always-open" data-search>
       <div class="card-body" style="text-align:center;padding:40px 24px 48px;">
         <div style="font-size:56px;margin-bottom:16px;">🚧</div>
         <h3 style="font-size:19px;font-weight:700;color:var(--text);margin-bottom:10px;">Under Construction</h3>
@@ -4192,7 +4295,7 @@ body.mode-inperson .nav-group-label[data-nav-mode="online"] { display: none !imp
   </div>
   <div class="section-body">
 
-    <div class="card always-open" id="sC-overview" data-search>
+    <div class="card always-open" data-search>
       <div class="card-head"><span class="ch-icon">📇</span> Essential Contacts</div>
       <div class="card-body">
         <table class="ref-table">
@@ -4260,7 +4363,7 @@ body.mode-inperson .nav-group-label[data-nav-mode="online"] { display: none !imp
       </div>
     </div>
 
-    <div class="card always-open" id="sC-support" data-search>
+    <div class="card always-open" data-search>
       <div class="card-head"><span class="ch-icon">🚨</span> Emergency Numbers</div>
       <div class="card-body">
         <table class="ref-table">
@@ -4522,26 +4625,31 @@ body.mode-inperson .nav-group-label[data-nav-mode="online"] { display: none !imp
 
   // ── SCROLL HELPER (delays to let sections animate open) ──
   function getStickyOffset() {
-    var offset = 0;
     var topBar = document.querySelector('.top-bar');
     var searchBar = document.querySelector('.search-bar');
     var navPills = document.getElementById('navPills');
-    if (topBar) offset += topBar.getBoundingClientRect().height;
-    if (searchBar) offset += searchBar.getBoundingClientRect().height;
-    // Only include nav pills if they're horizontally stacked (mobile/tablet),
-    // not when they're a fixed sidebar (desktop ≥1100px)
-    if (navPills && window.innerWidth < 1100) {
-      offset += navPills.getBoundingClientRect().height;
+    var isDesktop = window.innerWidth >= 1100;
+    var bottom = 0;
+    if (topBar) {
+      bottom = topBar.offsetHeight;
     }
-    return offset + 12; // 12px breathing room
+    if (searchBar) {
+      var searchTop = parseFloat(getComputedStyle(searchBar).top) || 0;
+      bottom = Math.max(bottom, searchTop + searchBar.offsetHeight);
+    }
+    if (navPills && !isDesktop) {
+      var navTop = parseFloat(getComputedStyle(navPills).top) || 0;
+      bottom = Math.max(bottom, navTop + navPills.offsetHeight);
+    }
+    return bottom + 12;
   }
 
   function updateScrollPadding() {
     var offset = getStickyOffset();
     document.documentElement.style.scrollPaddingTop = offset + 'px';
-    var sections = document.querySelectorAll('.section, .card, .lab-accordion');
-    for (var i = 0; i < sections.length; i++) {
-      sections[i].style.scrollMarginTop = offset + 'px';
+    var els = document.querySelectorAll('.section, .card, .lab-accordion');
+    for (var i = 0; i < els.length; i++) {
+      els[i].style.scrollMarginTop = offset + 'px';
     }
   }
   updateScrollPadding();
@@ -5098,7 +5206,7 @@ body.mode-inperson .nav-group-label[data-nav-mode="online"] { display: none !imp
         var we = new Date(accs[a].getAttribute('data-week-end') + 'T23:59:59');
         var labNum = accs[a].getAttribute('data-lab');
 
-        // Clear any stale state first
+        // Clear stale state
         accs[a].classList.remove('lab-current', 'lab-past');
 
         if (today >= ws && today <= we) {
@@ -5118,14 +5226,55 @@ body.mode-inperson .nav-group-label[data-nav-mode="online"] { display: none !imp
         }
       }
 
-      // ── Strike through past sessions (by end time, not by day) ──
-      // Mark individual rows as past only after their end time has passed
+      // ── Auto-collapse past labs behind toggle ──
+      (function() {
+        var pastLabs = document.querySelectorAll('.lab-accordion.lab-past');
+        var toggleBtn = document.getElementById('pastLabsToggle');
+        var countEl = document.getElementById('pastLabsCount');
+        if (pastLabs.length > 0 && toggleBtn) {
+          toggleBtn.style.display = 'block';
+          if (countEl) countEl.textContent = '(' + pastLabs.length + ')';
+          // Hide past labs by default
+          for (var p = 0; p < pastLabs.length; p++) {
+            pastLabs[p].classList.add('lab-hidden');
+          }
+          var expanded = false;
+          toggleBtn.addEventListener('click', function() {
+            expanded = !expanded;
+            for (var p = 0; p < pastLabs.length; p++) {
+              if (expanded) pastLabs[p].classList.remove('lab-hidden');
+              else pastLabs[p].classList.add('lab-hidden');
+            }
+            toggleBtn.classList.toggle('expanded', expanded);
+            toggleBtn.querySelector('.plt-chevron').textContent = expanded ? '▶' : '▶';
+            var label = expanded ? 'Hide past labs' : 'Show past labs';
+            toggleBtn.innerHTML = '<span class="plt-chevron">' + (expanded ? '▼' : '▶') + '</span> ' + label + ' <span class="plt-count">(' + pastLabs.length + ')</span>';
+          });
+        }
+      })();
+
+      // ── Default: open current or next-up lab ──
+      (function() {
+        var current = document.querySelector('.lab-accordion.lab-current');
+        if (current) {
+          current.classList.add('open');
+        } else {
+          // Open first non-past lab
+          var allLabs = document.querySelectorAll('.lab-accordion');
+          for (var i = 0; i < allLabs.length; i++) {
+            if (!allLabs[i].classList.contains('lab-past')) {
+              allLabs[i].classList.add('open');
+              break;
+            }
+          }
+        }
+      })();
+
+      // ── Strike through past days ──
       function updatePastSessions() {
         var now = new Date();
-
         function parseEndTime(dateStr, timeText) {
-          // Parse time range like "10:00 – 10:30 AM" or "10:30 – 11:30 AM" or "9:00 AM – 10:00 AM"
-          var match = timeText.match(/(\d{1,2}):(\d{2})\s*(AM|PM)?\s*[–\-]\s*(\d{1,2}):(\d{2})\s*(AM|PM)/i);
+          var match = timeText.match(/(\d{1,2}):(\d{2})\s*(AM|PM)?\s*[\u2013\-]\s*(\d{1,2}):(\d{2})\s*(AM|PM)/i);
           if (!match) return null;
           var endAMPM = match[6].toUpperCase();
           var eh = parseInt(match[4]), em = parseInt(match[5]);
@@ -5134,35 +5283,26 @@ body.mode-inperson .nav-group-label[data-nav-mode="online"] { display: none !imp
           var dp = dateStr.split('-');
           return new Date(parseInt(dp[0]), parseInt(dp[1]) - 1, parseInt(dp[2]), eh, em);
         }
-
-        // Clear previous past marks so we recalculate fresh
-        var prevPastRows = document.querySelectorAll('.day-past');
-        for (var p = 0; p < prevPastRows.length; p++) prevPastRows[p].classList.remove('day-past');
-        var prevPastHeaders = document.querySelectorAll('.day-past-header');
-        for (var ph = 0; ph < prevPastHeaders.length; ph++) prevPastHeaders[ph].classList.remove('day-past-header');
+        var prevPast = document.querySelectorAll('.day-past');
+        for (var p = 0; p < prevPast.length; p++) prevPast[p].classList.remove('day-past');
+        var prevHeaders = document.querySelectorAll('.day-past-header');
+        for (var ph = 0; ph < prevHeaders.length; ph++) prevHeaders[ph].classList.remove('day-past-header');
         var prevOnline = document.querySelectorAll('.online-past');
         for (var po = 0; po < prevOnline.length; po++) prevOnline[po].classList.remove('online-past');
 
-        // In-person schedule rows
         var allRows = document.querySelectorAll('.schedule-table tr[data-date]');
         for (var r = 0; r < allRows.length; r++) {
           var dateStr = allRows[r].getAttribute('data-date');
           var tds = allRows[r].querySelectorAll('td');
           if (tds.length < 2) continue;
-          var timeText = tds[1].textContent.trim();
-          var endTime = parseEndTime(dateStr, timeText);
-          if (endTime && now >= endTime) {
-            allRows[r].classList.add('day-past');
-          }
+          var endTime = parseEndTime(dateStr, tds[1].textContent.trim());
+          if (endTime && now >= endTime) allRows[r].classList.add('day-past');
         }
-
-        // Mark day header <p> elements as past only if ALL rows under that day are past
         var accBodies = document.querySelectorAll('.lab-acc-body');
         for (var b = 0; b < accBodies.length; b++) {
           var children = accBodies[b].children;
           for (var c = 0; c < children.length; c++) {
             if (children[c].tagName === 'P' && children[c].style.fontWeight === '600') {
-              // Find the next table
               var nextTable = null;
               for (var n = c + 1; n < children.length; n++) {
                 if (children[n].tagName === 'TABLE') { nextTable = children[n]; break; }
@@ -5174,15 +5314,11 @@ body.mode-inperson .nav-group-label[data-nav-mode="online"] { display: none !imp
                 for (var dr = 0; dr < dataRows.length; dr++) {
                   if (!dataRows[dr].classList.contains('day-past')) { allPast = false; break; }
                 }
-                if (allPast) {
-                  children[c].classList.add('day-past-header');
-                }
+                if (allPast) children[c].classList.add('day-past-header');
               }
             }
           }
         }
-
-        // Online schedule past rows (keep day-level since no times)
         var onlineRows = document.querySelectorAll('#onlineTable tr[data-online-date]');
         for (var o = 0; o < onlineRows.length; o++) {
           var oDate = new Date(onlineRows[o].getAttribute('data-online-date') + 'T23:59:59');
@@ -5191,9 +5327,8 @@ body.mode-inperson .nav-group-label[data-nav-mode="online"] { display: none !imp
         }
       }
       updatePastSessions();
-      setInterval(updatePastSessions, 60000); // Refresh every 60s
+      setInterval(updatePastSessions, 60000);
 
-      // Day-of-week color coding on day headers (one-time setup)
       (function() {
         var dayMap = ['day-sun','day-mon','day-tue','day-wed','day-thu','day-fri','day-sat'];
         var dayHeaders = document.querySelectorAll('.lab-acc-body > p[style*="font-weight:600"]');
@@ -5258,6 +5393,7 @@ body.mode-inperson .nav-group-label[data-nav-mode="online"] { display: none !imp
           var scheduleCard = document.getElementById('schedule');
           if (scheduleCard) scheduleCard.classList.add('open');
           // Open the target accordion
+          acc.classList.remove('lab-hidden');
           openExclusive(acc);
           scrollToEl(acc, 150);
         });
@@ -5368,6 +5504,7 @@ body.mode-inperson .nav-group-label[data-nav-mode="online"] { display: none !imp
 
       // ── Quick Contact Strips ──
       var contactDir = {
+        'Adiba': { full: 'Adiba', phone: '', phoneFmt: '', email: 'adrita@marshall.usc.edu' },
         'Agustin': { full: 'Agustin M-T', phone: '9712807752', phoneFmt: '971-280-7752', email: 'montesta@usc.edu' },
         'Alex': { full: 'Alexander Alonzo', phone: '8183149003', phoneFmt: '818-314-9003', email: 'afalonzo@usc.edu' },
         'Atvika': { full: 'Atvika Gaur', phone: '2139945172', phoneFmt: '213-994-5172', email: 'atvikaga@usc.edu' },
@@ -5384,6 +5521,45 @@ body.mode-inperson .nav-group-label[data-nav-mode="online"] { display: none !imp
         '4': { name: 'Reyna Wang', email: 'Qiurun.Wang@marshall.usc.edu' },
         '5': { name: 'Minjeong Ko', email: 'Minjeong.Ko@marshall.usc.edu' }
       };
+
+      // ── Inject inline contact links into RA cells ──
+      (function() {
+        var allDataRows = document.querySelectorAll('.schedule-table tr[data-ra]');
+        for (var i = 0; i < allDataRows.length; i++) {
+          var row = allDataRows[i];
+          var raAttr = row.getAttribute('data-ra') || '';
+          var raNames = raAttr.split(',');
+          var raTd = row.querySelectorAll('td');
+          if (raTd.length < 3) continue;
+          var cell = raTd[2];
+
+          // Build a new cell content with contact links after each name
+          var parts = [];
+          for (var r = 0; r < raNames.length; r++) {
+            var name = raNames[r].trim();
+            var c = contactDir[name];
+            var nameHtml = name;
+            if (c) {
+              nameHtml += '<span class="ra-contact-links">';
+              if (c.phone) {
+                nameHtml += '<a class="ra-phone" href="tel:' + c.phone + '" title="Call ' + name + ' · ' + c.phoneFmt + '">📞</a>';
+              }
+              nameHtml += '<a class="ra-email" href="mailto:' + c.email + '" title="Email ' + name + ' · ' + c.email + '">✉</a>';
+              nameHtml += '</span>';
+            }
+            parts.push(nameHtml);
+          }
+
+          // Preserve any trailing badges/annotations (LUNCH, covers, etc.)
+          var existingSpans = cell.querySelectorAll('span[style]');
+          var trailing = '';
+          for (var s = 0; s < existingSpans.length; s++) {
+            trailing += ' ' + existingSpans[s].outerHTML;
+          }
+
+          cell.innerHTML = parts.join(', ') + trailing;
+        }
+      })();
 
       var allAccordions = document.querySelectorAll('.lab-accordion');
       for (var ci = 0; ci < allAccordions.length; ci++) {
@@ -5499,11 +5675,15 @@ body.mode-inperson .nav-group-label[data-nav-mode="online"] { display: none !imp
         }
         // Auto-expand accordions with matching shifts, collapse others if filtering
         var allAccs = document.querySelectorAll('.lab-accordion');
+        var pastToggle = document.getElementById('pastLabsToggle');
         if (val) {
+          // When filtering: reveal past labs with matches, hide toggle
+          if (pastToggle) pastToggle.style.display = 'none';
           for (var a = 0; a < allAccs.length; a++) {
             var labId = allAccs[a].getAttribute('data-lab');
             if (matchedAccordions[labId]) {
               allAccs[a].classList.add('open');
+              allAccs[a].classList.remove('lab-hidden');
             } else {
               allAccs[a].classList.remove('open');
             }
@@ -5516,8 +5696,9 @@ body.mode-inperson .nav-group-label[data-nav-mode="online"] { display: none !imp
           countEl.textContent = '';
           countEl.className = 'filter-count';
         }
-        // If cleared, re-apply default: open current/next
+        // If cleared, re-apply default: open current/next, re-hide past labs
         if (!val) {
+          var pastLabs = document.querySelectorAll('.lab-accordion.lab-past');
           for (var b = 0; b < allAccs.length; b++) {
             allAccs[b].classList.remove('open');
             if (allAccs[b].classList.contains('lab-current')) {
@@ -5530,6 +5711,72 @@ body.mode-inperson .nav-group-label[data-nav-mode="online"] { display: none !imp
                 allAccs[c].classList.add('open');
                 break;
               }
+            }
+          }
+          // Re-hide past labs and show toggle
+          for (var pl = 0; pl < pastLabs.length; pl++) {
+            pastLabs[pl].classList.add('lab-hidden');
+          }
+          if (pastToggle && pastLabs.length > 0) {
+            pastToggle.style.display = 'block';
+            pastToggle.classList.remove('expanded');
+            pastToggle.innerHTML = '<span class="plt-chevron">▶</span> Show past labs <span class="plt-count">(' + pastLabs.length + ')</span>';
+          }
+        }
+
+        // ── Next Shift Banner ──
+        var banner = document.getElementById('nextShiftBanner');
+        var label = document.getElementById('nextShiftLabel');
+        if (banner && label) {
+          banner.classList.remove('visible');
+          if (val) {
+            var now = new Date();
+            var nextShift = null;
+            var highlighted = document.querySelectorAll('.schedule-table tr.ra-highlight[data-date]');
+            for (var ns = 0; ns < highlighted.length; ns++) {
+              var row = highlighted[ns];
+              // Skip SETUP/BREAK rows
+              var firstTd = row.querySelector('td');
+              if (firstTd) {
+                var cellText = firstTd.textContent.trim();
+                if (cellText === 'SETUP' || cellText === 'BREAK') continue;
+              }
+              var dateStr = row.getAttribute('data-date');
+              var tds = row.querySelectorAll('td');
+              if (tds.length < 2) continue;
+              var timeText = tds[1].textContent.trim();
+              // Parse start time
+              var tm = timeText.match(/(\d{1,2}):(\d{2})\s*(AM|PM)?/i);
+              if (!tm) continue;
+              // Infer AM/PM from end time if not present on start
+              var endMatch = timeText.match(/(\d{1,2}):(\d{2})\s*(AM|PM)/i);
+              var ampm = tm[3] ? tm[3].toUpperCase() : (endMatch ? endMatch[3].toUpperCase() : 'AM');
+              var sh = parseInt(tm[1]), sm = parseInt(tm[2]);
+              if (ampm === 'PM' && sh !== 12) sh += 12;
+              if (ampm === 'AM' && sh === 12) sh = 0;
+              var dp = dateStr.split('-');
+              var startDt = new Date(parseInt(dp[0]), parseInt(dp[1]) - 1, parseInt(dp[2]), sh, sm);
+              if (startDt > now) {
+                // Find which lab this belongs to
+                var labAcc = row.closest('.lab-accordion');
+                var labLabel = labAcc ? labAcc.querySelector('.lab-acc-label').textContent : '';
+                // Format the day name
+                var dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+                var monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+                var dayName = dayNames[startDt.getDay()];
+                var monthName = monthNames[startDt.getMonth()];
+                nextShift = {
+                  label: labLabel,
+                  day: dayName + ', ' + monthName + ' ' + startDt.getDate(),
+                  time: timeText,
+                  session: cellText
+                };
+                break;
+              }
+            }
+            if (nextShift) {
+              label.innerHTML = 'Next shift: <strong>' + nextShift.day + '</strong> · <span class="nsb-time">' + nextShift.time + '</span> · ' + nextShift.label + ' (Session ' + nextShift.session + ')';
+              banner.classList.add('visible');
             }
           }
         }
@@ -5589,7 +5836,6 @@ body.mode-inperson .nav-group-label[data-nav-mode="online"] { display: none !imp
       var tds = rows[j].querySelectorAll('td');
       if (tds.length < 2) continue;
       var timeText = tds[1].textContent.trim();
-      // Parse time range like "9:00 – 10:00 AM" or "9:00 AM – 10:00 AM"
       var match = timeText.match(/(\d{1,2}):(\d{2})\s*(AM|PM)?\s*[–\-]\s*(\d{1,2}):(\d{2})\s*(AM|PM)/i);
       if (!match) continue;
 
@@ -5610,13 +5856,11 @@ body.mode-inperson .nav-group-label[data-nav-mode="online"] { display: none !imp
       if (now >= start && now < end) {
         rows[j].classList.add('session-live');
         liveFound = true;
-        // Track which lab accordion has a live session
         var parentAcc = rows[j].closest('.lab-accordion');
         if (parentAcc) liveAccordions[parentAcc.getAttribute('data-lab')] = parentAcc;
       }
     }
 
-    // Update lab accordion badges: in-progress if live, revert to this-week if not
     var allAccs = document.querySelectorAll('.lab-accordion');
     for (var a = 0; a < allAccs.length; a++) {
       var labId = allAccs[a].getAttribute('data-lab');
@@ -5627,7 +5871,6 @@ body.mode-inperson .nav-group-label[data-nav-mode="online"] { display: none !imp
         badge.textContent = '● In Progress';
         badge.style.display = '';
       } else if (allAccs[a].classList.contains('lab-current') && !liveAccordions[labId]) {
-        // Revert current-week lab back to This Week when no live session
         badge.className = 'lab-acc-badge this-week';
         badge.textContent = 'This Week';
         badge.style.display = '';
@@ -5716,16 +5959,26 @@ body.mode-inperson .nav-group-label[data-nav-mode="online"] { display: none !imp
     }
   })();
 
+  // ── 6. DYNAMIC LAST-UPDATED DATE ──
+  (function() {
+    var el = document.getElementById('lastUpdatedDate');
+    if (el) {
+      var d = new Date(document.lastModified);
+      var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+      el.textContent = months[d.getMonth()] + ' ' + d.getDate();
+    }
+  })();
+
   // ── DEEP LINK SUPPORT ──
   function handleHash() {
     var hash = window.location.hash;
     if (hash && hash.length > 1) {
       var target = document.querySelector(hash);
       if (target) {
-        // If target is a lab accordion, open its parent schedule card too
         if (target.classList.contains('lab-accordion')) {
           var scheduleCard = target.closest('.card');
           if (scheduleCard) scheduleCard.classList.add('open');
+          target.classList.remove('lab-hidden');
           target.classList.add('open');
         }
         var parentSection = target.closest('.section');
